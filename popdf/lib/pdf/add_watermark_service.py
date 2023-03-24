@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 import reportlab
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfReader, PdfWriter
+from poprogress import simple_progress
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase.pdfmetrics import registerFont
-from tqdm import tqdm
 
 
-def create_watermark(content):
+def create_watermark(temp_pdf, content, ttr_path=None):
     """创建PDF水印模板
     """
+    temp_pdf = str(temp_pdf)
+    if not ttr_path:
+        ttf_path = r'C:/Windows/Fonts/simfang.ttf'
     # 创建一个PDF文件来作为一个水印文件
-    c = canvas.Canvas('watermark.pdf')
+    c = canvas.Canvas(temp_pdf)
     reportlab.pdfbase.pdfmetrics.registerFont(
-        reportlab.pdfbase.ttfonts.TTFont('simfang', 'C:/Windows/Fonts/simfang.ttf'))
+        reportlab.pdfbase.ttfonts.TTFont('simfang', ttf_path))
     c.setFont('simfang', 20)
     c.saveState()
     c.translate(305, 505)
@@ -21,7 +24,7 @@ def create_watermark(content):
     c.drawCentredString(0, 0, content)
     c.restoreState()
     c.save()
-    pdf_watermark = PdfReader('watermark.pdf')
+    pdf_watermark = PdfReader(temp_pdf)
     return pdf_watermark
 
 
@@ -46,7 +49,7 @@ def pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out):
     mark_stream = open(pdf_file_mark, mode='rb')
     pdf_watermark = PdfReader(mark_stream, strict=False)
     # 给每一页打水印
-    for pageNumber in tqdm(range(pageNum)):
+    for pageNumber in simple_progress(range(pageNum),desc='pdf`s pages:'):
         page = pdf_input.pages[pageNumber]
         page.merge_page(pdf_watermark.pages[0])
         page.compress_content_streams()  # 压缩内容

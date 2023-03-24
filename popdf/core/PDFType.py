@@ -1,5 +1,7 @@
+import time
+
 from fpdf import FPDF
-import pikepdf
+# import pikepdf
 from PyPDF2 import PdfFileReader, PdfFileWriter, PdfReader, PdfWriter
 from pdf2docx import Converter
 import os
@@ -25,7 +27,7 @@ class MainPDF():
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
         print("水印添加结束，请打开电脑上的这个位置，查看结果文件：{path}".format(path=os.getcwd()))
 
-    def add_watermark_by_parameters(self, pdf_file, mark_str, output_file_name):
+    def add_watermark_by_parameters(self, pdf_file, mark_str, output_path, output_file_name):
         """
         给pdf添加水印，需要参数的版本
         """
@@ -34,11 +36,18 @@ class MainPDF():
         print('=' * 20)
         print('正在按要求，给你的PDF文件添加水印，请让程序飞一会儿~')
         print('=' * 20)
-        pdf_file_mark = 'watermark.pdf'  # 水印文件
-        add_watermark_service.create_watermark(str(mark_str))
-        pdf_file_out = output_file_name  # '添加了水印的文件.pdf'  # 添加PDF水印后的文件
-        add_watermark_service.pdf_add_watermark(pdf_file, pdf_file_mark, pdf_file_out)
-        print("水印添加结束，请打开电脑上的这个位置，查看结果文件：{path}".format(path=os.getcwd()))
+        _input_pdf_file = Path(pdf_file).absolute()
+        if not output_file_name:
+            output_file_name = '（加了水印的）' + _input_pdf_file.name
+        if output_path:
+            _out_pdf_file = Path(output_path).absolute() / output_file_name  # '添加了水印的文件.pdf'
+        else:
+            _out_pdf_file = Path(_input_pdf_file.parent).absolute() / output_file_name  # '添加了水印的文件.pdf'
+
+        _temp_pdf = _input_pdf_file.parent / '32012356985422-watermark.pdf'  # 水印文件
+        add_watermark_service.create_watermark(_temp_pdf, str(mark_str))  # 水印文件
+        add_watermark_service.pdf_add_watermark(_input_pdf_file, _temp_pdf, _out_pdf_file)
+        print(f"水印添加结束，请打开电脑上的这个位置，查看结果文件：{_out_pdf_file}")
 
     def file2pdf(self, file_type, path, res_pdf='file2pdf.pdf'):
         if file_type == 'txt':
@@ -87,15 +96,17 @@ class MainPDF():
                 password: 你的密码
                 res_pdf: 结果文件的名称 ，可以为空，默认是：encrypt.pdf
         """
-        pdf = pikepdf.open(path)
-        pdf.save(res_pdf, encryption=pikepdf.Encryption(owner=password, user=password, R=4))
-        pdf.close()
+        # pdf = pikepdf.open(path)
+        # pdf.save(res_pdf, encryption=pikepdf.Encryption(owner=password, user=password, R=4))
+        # pdf.close()
+        print("encrypt4pdf，该功能已过期")
 
     # PDF解密
     def decrypt4pdf(self, path, password, res_pdf='decrypt.pdf'):
-        pdf = pikepdf.open(path, password=password)
-        pdf.save(res_pdf)
-        pdf.close()
+        #     pdf = pikepdf.open(path, password=password)
+        #     pdf.save(res_pdf)
+        #     pdf.close()
+        print("decrypt4pdf，该功能已过期")
 
     # def pdf2imgs(self, pdf_path: str, out_dir=".") -> None:
     #     print('PDF开始转换，你可以加入交流群唠唠嗑：http://www.python4office.cn/wechat-group/')

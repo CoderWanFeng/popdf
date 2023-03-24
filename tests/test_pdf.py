@@ -11,9 +11,10 @@ class TestPDF(unittest.TestCase):
 
     def test_add_watermark_by_parameters(self):
         add_watermark_by_parameters(
-            pdf_file=r'./test_files/pdf/in.pdf',
+            pdf_file=r'D:\workplace\code\github\popdf\tests\test_files\pdf\in.pdf',
             mark_str='python-office',
-            output_file_name='参数-水印-测试.pdf')
+            output_path=None,
+            output_file_name=None)
 
     def test_pdf2imgs(self):
         pdf2imgs(
