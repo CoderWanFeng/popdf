@@ -23,7 +23,7 @@ popdf是python自动化办公的PDF的代码合集。
 ### 🍊pip 自动下载&更新
 
 ```
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple popdf -U
+pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 ```
 
 

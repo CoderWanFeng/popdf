@@ -47,8 +47,9 @@ class TestPDF(unittest.TestCase):
 
     def test_encrypt4pdf(self):
         encrypt4pdf(
-            path=r'./test_files/pdf/in.pdf',
-            password='123456'
+            path=r'D:\workplace\code\github\popdf\tests\test_files\pdf',
+            password='123456',
+            output_path=r'./test_output'
         )
 
     def test_decrypt4pdf(self):

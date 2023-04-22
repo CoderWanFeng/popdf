@@ -1,14 +1,21 @@
-import time
+# -*- coding: UTF-8 -*-
+'''
+@Author  ：B站/抖音/微博/小红书/公众号，都叫：程序员晚枫
+@WeChat     ：CoderWanFeng
+@Blog      ：www.python-office.com
+@Date    ：2023/4/3 23:05
+@Description     ：
+'''
 
 from fpdf import FPDF
-# import pikepdf
-from PyPDF2 import PdfFileReader, PdfFileWriter, PdfReader, PdfWriter
+import pikepdf
+from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
 from pdf2docx import Converter
 import os
 from pathlib import Path
 import fitz  # fitz就是pip install PyMuPDF
-
-from tqdm import tqdm
+from pofile import get_files
+from poprogress import simple_progress
 
 from popdf.lib.pdf import add_watermark_service
 
@@ -79,7 +86,7 @@ class MainPDF():
         for path in one_by_one:
             pdf_reader = PdfReader(path)
             # for page in tqdm(range(pdf_reader.getNumPages())):
-            for page in tqdm(range(len(pdf_reader.pages))):
+            for page in simple_progress(range(len(pdf_reader.pages))):
                 # 把每张PDF页面加入到这个可读取对象中
                 # pdf_writer.addPage(pdf_reader.getPage(page))
                 pdf_writer.add_page(pdf_reader.pages[page])
@@ -89,24 +96,30 @@ class MainPDF():
             pdf_writer.write(out)
 
     # PDF加密
-    def encrypt4pdf(self, path, password, res_pdf='encrypt.pdf'):
+    def encrypt4pdf(self, path, password, output_path, suffix='.pdf'):
         """
         @Author & Date  : CoderWanFeng 2022/5/9 18:27
         @Desc  : path: 存放文件的路径
                 password: 你的密码
                 res_pdf: 结果文件的名称 ，可以为空，默认是：encrypt.pdf
         """
-        # pdf = pikepdf.open(path)
-        # pdf.save(res_pdf, encryption=pikepdf.Encryption(owner=password, user=password, R=4))
-        # pdf.close()
-        print("encrypt4pdf，该功能已过期")
+        abs_path = Path(path).absolute()
+        pdf_list = get_files(path=str(abs_path), suffix=suffix)
+        for index, pdf_file in simple_progress(enumerate(pdf_list)):
+            pdf = pikepdf.open(pdf_file)
+            output_path = r'./' if output_path == None else output_path
+            pdf.save(str(Path(output_path).absolute()) + '//' + Path(pdf_file).stem + '（加密）' + suffix,
+                     encryption=pikepdf.Encryption(owner=password, user=password, R=4))
+            pdf.close()
+        # print("encrypt4pdf，该功能已过期")
 
     # PDF解密
     def decrypt4pdf(self, path, password, res_pdf='decrypt.pdf'):
-        #     pdf = pikepdf.open(path, password=password)
-        #     pdf.save(res_pdf)
-        #     pdf.close()
-        print("decrypt4pdf，该功能已过期")
+        pdf = pikepdf.open(path, password=password)
+        pdf.save(res_pdf)
+        pdf.close()
+
+    # print("decrypt4pdf，该功能已过期")
 
     # def pdf2imgs(self, pdf_path: str, out_dir=".") -> None:
     #     print('PDF开始转换，你可以加入交流群唠唠嗑：http://www.python4office.cn/wechat-group/')
@@ -129,26 +142,28 @@ class MainPDF():
     #         pix.writePNG(out_dir + '/' + 'images_%s.png' % pg)  # 将图片写入指定的文件夹内
     #     print(f'PDF转换Image完成，图片在你指定的output文件夹{out_dir}，如果没有指定，默认是PDF同一个文件夹')
 
-    def pdf2imgs(self, pdf_path: str, out_dir=".") -> None:
+    def pdf2imgs(self, pdf_path: str, out_dir="./") -> None:
+        pdf_file_list = get_files(pdf_path, suffix='.pdf')
         print('PDF开始转换，你可以加入交流群唠唠嗑：http://www.python4office.cn/wechat-group/')
-        pdfDoc = fitz.open(pdf_path)
-        if pdfDoc.page_count > 50:
-            print('少年，你的PDF页数有点多哟，请耐心等待~')
-        for pg in tqdm(range(pdfDoc.page_count)):
-            page = pdfDoc[pg]
-            rotate = int(0)
-            # 每个尺寸的缩放系数为1.3，这将为我们生成分辨率提高2.6的图像。
-            # 此处若是不做设置，默认图片大小为：792X612, dpi=96
-            zoom_x = 1.33333333  # (1.33333333-->1056x816)   (2-->1584x1224)
-            zoom_y = 1.33333333
-            mat = fitz.Matrix(zoom_x, zoom_y).prerotate(rotate)
-            pix = page.get_pixmap(matrix=mat, alpha=False)
-
-            if not os.path.exists(out_dir):  # 判断存放图片的文件夹是否存在
-                os.makedirs(out_dir)  # 若图片文件夹不存在就创建
-
-            pix.save(out_dir + '/' + 'images_%s.png' % pg)  # 将图片写入指定的文件夹内
-        print(f'PDF转换Image完成，图片在你指定的output文件夹{out_dir}，如果没有指定，默认是PDF同一个文件夹')
+        for pdf_file in simple_progress(pdf_file_list):
+            pdfDoc = fitz.open(pdf_file)
+            if pdfDoc.page_count > 50:
+                print('少年，你的PDF页数有点多哟，请耐心等待~')
+            for pg in simple_progress(range(pdfDoc.page_count)):
+                page = pdfDoc[pg]
+                rotate = int(0)
+                # 每个尺寸的缩放系数为1.3，这将为我们生成分辨率提高2.6的图像。
+                # 此处若是不做设置，默认图片大小为：792X612, dpi=96
+                zoom_x = 1.33333333  # (1.33333333-->1056x816)   (2-->1584x1224)
+                zoom_y = 1.33333333
+                mat = fitz.Matrix(zoom_x, zoom_y).prerotate(rotate)
+                pix = page.get_pixmap(matrix=mat, alpha=False)
+                abs_output = str(Path(out_dir).absolute())
+                if not os.path.exists(abs_output):  # 判断存放图片的文件夹是否存在
+                    os.makedirs(abs_output)  # 若图片文件夹不存在就创建
+                pdf_file_name = Path(pdf_file).stem
+                pix.save(abs_output + f'/ [{pdf_file_name}]-{pg}.jpg')  # 将图片写入指定的文件夹内
+        print(f'PDF转换Image完成，图片在你指定的output文件夹{abs_output}，如果没有指定，默认是PDF同一个文件夹')
 
     def add_img_watermark(self, pdf_file_in, pdf_file_mark, pdf_file_out):
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
