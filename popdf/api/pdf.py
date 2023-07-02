@@ -25,8 +25,8 @@ def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_nam
 
 # txt转pdf
 # @except_dec()
-def txt2pdf(path: str, res_pdf='txt2pdf.pdf'):
-    mainPDF.file2pdf(path, res_pdf)
+def txt2pdf(path: str, res_pdf='txt2pdf.pdf', output_path=r'./'):
+    mainPDF.txt2pdf(path, res_pdf, output_path)
 
 
 # PDF加密
@@ -54,8 +54,8 @@ def pdf2docx(file_path, output_path='.'):
 
 
 # @except_dec()
-def pdf2imgs(pdf_path, out_dir):
-    mainPDF.pdf2imgs(pdf_path, out_dir)
+def pdf2imgs(pdf_path, out_dir, merge=False):
+    mainPDF.pdf2imgs(pdf_path, out_dir, merge)
 
 
 # @except_dec()

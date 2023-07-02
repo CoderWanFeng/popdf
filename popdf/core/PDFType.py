@@ -6,15 +6,16 @@
 @Date    ：2023/4/3 23:05
 @Description     ：
 '''
-
-from fpdf import FPDF
-import pikepdf
-from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
-from pdf2docx import Converter
 import os
 from pathlib import Path
+
 import fitz  # fitz就是pip install PyMuPDF
-from pofile import get_files
+import pikepdf
+from PIL import Image
+from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
+from fpdf import FPDF
+from pdf2docx import Converter
+from pofile import get_files, mkdir
 from poprogress import simple_progress
 
 from popdf.lib.pdf import add_watermark_service
@@ -56,17 +57,23 @@ class MainPDF():
         add_watermark_service.pdf_add_watermark(_input_pdf_file, _temp_pdf, _out_pdf_file)
         print(f"水印添加结束，请打开电脑上的这个位置，查看结果文件：{_out_pdf_file}")
 
-    def file2pdf(self, file_type, path, res_pdf='file2pdf.pdf'):
-        if file_type == 'txt':
+    def txt2pdf(self, path, res_pdf='file2pdf.pdf', output_path=r'./'):
+        abs_path = Path(path).absolute()
+        suffix = '.txt'
+        txt_list = get_files(path=str(abs_path), suffix=suffix)
+        exsit, abs_output_path = mkdir(output_path)
+        for index, txt in simple_progress(enumerate(txt_list)):
             pdf = FPDF()
             pdf.add_page()  # Add a page
             pdf.set_font("Arial", size=15)  # set style and size of font
-            f = open(path, "r")  # open the text file in read mode
+            file_content = open(txt, "r", encoding='utf8')  # open the text file in read mode
             # insert the texts in pdf
-            for x in f:
-                pdf.cell(50, 5, txt=x, ln=1, align='C')
-            # pdf.output("path where you want to store pdf file\\file_name.pdf")
-            pdf.output(res_pdf)
+            for content in file_content:
+                pdf.cell(50, 5, txt=content, ln=1, align='C')
+            if index == 0:
+                pdf.output(os.path.join(abs_output_path, res_pdf))
+            else:
+                pdf.output(os.path.join(abs_output_path, f'{str(index)} - {res_pdf}'))
 
     def pdf2docx(self, file_path, output_path):
         word_name = os.path.basename(file_path)[:-4] + '.docx'
@@ -142,7 +149,7 @@ class MainPDF():
     #         pix.writePNG(out_dir + '/' + 'images_%s.png' % pg)  # 将图片写入指定的文件夹内
     #     print(f'PDF转换Image完成，图片在你指定的output文件夹{out_dir}，如果没有指定，默认是PDF同一个文件夹')
 
-    def pdf2imgs(self, pdf_path: str, out_dir="./") -> None:
+    def pdf2imgs(self, pdf_path: str, out_dir="./", merge: bool = False) -> None:
         pdf_file_list = get_files(pdf_path, suffix='.pdf')
         print('PDF开始转换，你可以加入交流群唠唠嗑：http://www.python4office.cn/wechat-group/')
         for pdf_file in simple_progress(pdf_file_list):
@@ -163,7 +170,41 @@ class MainPDF():
                     os.makedirs(abs_output)  # 若图片文件夹不存在就创建
                 pdf_file_name = Path(pdf_file).stem
                 pix.save(abs_output + f'/ [{pdf_file_name}]-{pg}.jpg')  # 将图片写入指定的文件夹内
+
         print(f'PDF转换Image完成，图片在你指定的output文件夹{abs_output}，如果没有指定，默认是PDF同一个文件夹')
+        if merge:
+            """
+            TODO：目前的问题：多个PDF批量转换后的图片，会合成在一张图里
+            """
+            self.generate_long_image(input_path=abs_output,
+                                     output_path=os.path.join(abs_output, "merge_output"),
+                                     img_name=pdf_file_name + '.jpg')
+
+    def generate_long_image(self, input_path: str, output_path, img_name='merge.jpg'):
+        """
+        将ppt的各个页面拼接成长图：https://blog.csdn.net/m0_51777056/article/details/130262561
+        :param input_path:
+        :param output_path:
+        :param img_name:
+        :return:
+        """
+        # 获取图片列表
+        img_list = []
+        for imgs in os.listdir(input_path):
+            img_list.append(os.path.join(input_path, imgs))
+
+        # 将获取到ppt的页面进行排序
+        ims_sort = sorted(img_list, key=lambda jpg: len(jpg))
+
+        width, height = Image.open(img_list[0]).size  # 取第一个图片尺寸
+        img_mode = Image.open(img_list[0]).mode
+        long_canvas = Image.new(img_mode, (width, height * len(img_list)))  # 创建同宽，n倍高的空白图片
+
+        # 拼接图片
+        for i, image in enumerate(ims_sort):
+            long_canvas.paste(Image.open(image), box=(0, i * height))
+        mkdir(output_path)
+        long_canvas.save(os.path.join(output_path, img_name))  # 保存长图
 
     def add_img_watermark(self, pdf_file_in, pdf_file_mark, pdf_file_out):
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
