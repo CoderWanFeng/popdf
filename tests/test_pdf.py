@@ -21,11 +21,7 @@ class TestPDF(unittest.TestCase):
             pdf_path=r'test_files/pdf/merge.pdf',
             out_dir='./images')
 
-    def test_pdf2docx(self):
-        pdf2docx(
-            file_path=r'test_files/pdf/merge.pdf',
-            output_path=r'./test_files/pdf/'
-        )
+
 
     # def test_file2pdf(self):
     #     file2pdf(
@@ -36,7 +32,7 @@ class TestPDF(unittest.TestCase):
     def test_pdf2docx(self):
         pdf2docx(
             file_path=r'test_files/pdf/merge.pdf',
-            output_path=r'./test_files/pdf/'
+            output_path=r'./test_files/docx/'
         )
 
     def test_merge2pdf(self):

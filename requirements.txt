@@ -1,0 +1,11 @@
+pytest
+fitz
+frontend
+PyMuPDF
+pikepdf
+PyPDF2
+fpdf
+pdf2docx
+pofile
+poprogress
+reportlab
