@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 '''
 @作者 ：B站/抖音/微博/小红书/公众号，都叫：程序员晚枫
-@微信 ：CoderWanFeng : https://mp.weixin.qq.com/s/yFcocJbfS9Hs375NhE8Gbw
+@微信 ：CoderWanFeng : https://mp.weixin.qq.com/s/B1V6KeXc7IOEB8DgXLWv3g
 @个人网站 ：www.python-office.com
 @Date    ：2023/4/3 23:05
 @Description     ：
@@ -75,12 +75,16 @@ class MainPDF():
             else:
                 pdf.output(os.path.join(abs_output_path, f'{str(index)} - {res_pdf}'))
 
-    def pdf2docx(self, file_path, output_path):
-        word_name = os.path.basename(file_path)[:-4] + '.docx'
-        word_path = Path(output_path) / word_name
-        cv = Converter(file_path)
-        cv.convert(word_path)
-        cv.close()
+    def pdf2docx(self, file_path, output_path, pdfSuffix='.pdf', docxSuffix=".docx"):
+        waiting_covert_pdf_files = get_files(file_path, suffix=pdfSuffix)
+        if waiting_covert_pdf_files:
+            for pdf_file in waiting_covert_pdf_files:
+                word_name = os.path.basename(pdf_file)[:-4] + docxSuffix
+                mkdir(Path(output_path))
+                word_path = Path(output_path) / word_name
+                cv = Converter(pdf_file)
+                cv.convert(word_path)
+                cv.close()
 
     # 合并pdf
     def merge2pdf(self, one_by_one, output):
@@ -209,5 +213,4 @@ class MainPDF():
     def add_img_watermark(self, pdf_file_in, pdf_file_mark, pdf_file_out):
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
 
-    def table2excel(self,):
-
+    # def table2excel(self,):

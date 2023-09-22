@@ -58,8 +58,14 @@ def merge2pdf(one_by_one, output):
 # @except_dec()
 def pdf2docx(file_path, output_path='.'):
     """
-    视频：https://www.bilibili.com/video/BV19D4y1i7Eu/
-    演示代码：
+    PDF转Word
+    视频：https://www.bilibili.com/video/BV1em4y1H7ir/
+    Args:
+        file_path: pdf的存储位置。批量处理：只填写文件夹就行
+        output_path: 转换后的输出位置
+
+    Returns:
+
     """
     mainPDF.pdf2docx(file_path, output_path)
 
