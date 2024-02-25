@@ -8,6 +8,7 @@ mainPDF = MainPDF()
 # @except_dec()
 def add_watermark() -> None:
     """
+    加水印
     视频：https://www.bilibili.com/video/BV1Se411T7au
     演示代码：
     """
@@ -18,6 +19,7 @@ def add_watermark() -> None:
 # @except_dec()
 def txt2pdf(path: str, res_pdf='txt2pdf.pdf', output_path=r'./'):
     """
+    txt转pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/130612189
     演示代码：
     """
@@ -28,6 +30,7 @@ def txt2pdf(path: str, res_pdf='txt2pdf.pdf', output_path=r'./'):
 # @except_dec()
 def encrypt4pdf(path, password, output_path):
     """
+    加密pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/129963432
     演示代码：
     """
@@ -38,6 +41,7 @@ def encrypt4pdf(path, password, output_path):
 # @except_dec()
 def decrypt4pdf(path, password, res_pdf='decrypt.pdf'):
     """
+    解密pdf
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
     演示代码：
     """
@@ -48,6 +52,7 @@ def decrypt4pdf(path, password, res_pdf='decrypt.pdf'):
 # @except_dec()
 def merge2pdf(one_by_one, output):
     """
+    合并pdf
     文档：https://baijiahao.baidu.com/s?id=1733062611567959337
     演示代码：
     """
@@ -73,6 +78,7 @@ def pdf2docx(file_path, output_path='.'):
 # @except_dec()
 def pdf2imgs(pdf_path, out_dir, merge=False):
     """
+    pdf转图片
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
     演示代码：
     """
@@ -101,3 +107,7 @@ def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_nam
     output_file_name：指定添加了水印的文件名称，可以不指定，默认是：添加了水印的文件.pdf
     """
     mainPDF.add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name)
+
+
+def split4pdf(input_path, output_path=r'./output_path/split_pdf.pdf', from_page=None, to_page=None):
+    mainPDF.split4pdf(input_path, output_path, from_page, to_page)

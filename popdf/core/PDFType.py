@@ -214,3 +214,40 @@ class MainPDF():
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
 
     # def table2excel(self,):
+
+    def split4pdf(self, input_path, output_path=None, from_page=None, to_page=None):
+        """
+        分割pdf文件。
+
+        :param input_path: str, 必填, 输入PDF文件的路径。
+        :param output_path: str, 选填,  输出分割后PDF文件的路径，默认为'./output_path/split_pdf.pdf'。
+        :param from_page: int, 必填, 起始页码。
+        :param to_page: int, 选填, 结束页码，默认为None，不填代表只要一页起始页码。
+        :return: None
+        """
+        # 打开输入原始PDF文件
+        pdf_document = fitz.open(input_path)
+
+        # 如果没有指定输出路径，则使用默认值
+        if output_path is None:
+            output_path = r'./output_path/split_pdf.pdf'
+        mkdir(Path(output_path).parent)
+
+        # 创建一个新的PDF文档
+        pdf_document_new = fitz.open()
+
+        # 插入指定页码的PDF页面
+        if from_page is not None and to_page is not None:
+            pdf_document_new.insert_pdf(pdf_document, from_page, to_page)
+        elif from_page is not None and to_page is None:
+            pdf_document_new.insert_pdf(pdf_document, from_page, from_page)
+        else:
+            # 如果没有指定页码，则插入整个PDF文档
+            pdf_document_new.insert_pdf(pdf_document)
+
+        # 保存分割后的PDF文件
+        pdf_document_new.save(output_path)
+
+        # 关闭文件
+        pdf_document.close()
+        pdf_document_new.close()
