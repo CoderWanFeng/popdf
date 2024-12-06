@@ -17,13 +17,13 @@ def add_watermark() -> None:
 
 # txt转pdf
 # @except_dec()
-def txt2pdf(path: str, res_pdf='txt2pdf.pdf', output_path=r'./'):
+def txt2pdf(input_path: str, output_path='txt2pdf.pdf'):
     """
     txt转pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/130612189
     演示代码：
     """
-    mainPDF.txt2pdf(path, res_pdf, output_path)
+    mainPDF.txt2pdf(input_path, output_path)
 
 
 # PDF加密
@@ -39,13 +39,13 @@ def encrypt4pdf(path, password, output_path):
 
 # PDF解密
 # @except_dec()
-def decrypt4pdf(path, password, res_pdf='decrypt.pdf'):
+def decrypt4pdf(input_path, password, output_path='decrypt.pdf'):
     """
     解密pdf
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
     演示代码：
     """
-    mainPDF.decrypt4pdf(path, password, res_pdf)
+    mainPDF.decrypt4pdf(input_path, password, output_path)
 
 
 # 合并pdf

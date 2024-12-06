@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 '''
 @作者 ：B站/抖音/微博/小红书/公众号，都叫：程序员晚枫
-@微信 ：CoderWanFeng : https://mp.weixin.qq.com/s/Nt8E8vC-ZsoN1McTOYbY2g
+@读者群     ：http://www.python4office.cn/wechat-group/
 @个人网站 ：www.python-office.com
 @Date    ：2023/4/3 23:05
 @Description     ：
@@ -10,10 +10,8 @@ import os
 from pathlib import Path
 
 import fitz  # fitz就是pip install PyMuPDF
-import pikepdf
 from PIL import Image
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
-from fpdf import FPDF
 from pdf2docx import Converter
 from pofile import get_files, mkdir
 from poprogress import simple_progress
@@ -57,23 +55,50 @@ class MainPDF():
         add_watermark_service.pdf_add_watermark(_input_pdf_file, _temp_pdf, _out_pdf_file)
         print(f"水印添加结束，请打开电脑上的这个位置，查看结果文件：{_out_pdf_file}")
 
-    def txt2pdf(self, path, res_pdf='file2pdf.pdf', output_path=r'./'):
-        abs_path = Path(path).absolute()
-        suffix = '.txt'
-        txt_list = get_files(path=str(abs_path), suffix=suffix)
-        exsit, abs_output_path = mkdir(output_path)
-        for index, txt in simple_progress(enumerate(txt_list)):
-            pdf = FPDF()
-            pdf.add_page()  # Add a page
-            pdf.set_font("Arial", size=15)  # set style and size of font
-            file_content = open(txt, "r", encoding='utf8')  # open the text file in read mode
-            # insert the texts in pdf
-            for content in file_content:
-                pdf.cell(50, 5, txt=content, ln=1, align='C')
-            if index == 0:
-                pdf.output(os.path.join(abs_output_path, res_pdf))
-            else:
-                pdf.output(os.path.join(abs_output_path, f'{str(index)} - {res_pdf}'))
+    def txt2pdf(self, input_path, output_path='file2pdf.pdf'):
+
+        # https://fitz.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
+        if not (list(map(int, fitz.VersionBind.split("."))) >= [1, 14, 0]):
+            raise SystemExit("need PyMuPDF v1.14.0+")
+
+        print("Converting '%s' to '%s.pdf'" % (input_path, output_path))
+
+        doc = fitz.open(input_path)
+
+        b = doc.convert_to_pdf()  # convert to pdf
+        pdf = fitz.open("pdf", b)  # open as pdf
+
+        toc = doc.get_toc()  # table of contents of input
+        pdf.set_toc(toc)  # simply set it for output
+        meta = doc.metadata  # read and set metadata
+        if not meta["producer"]:
+            meta["producer"] = "PyMuPDF v" + fitz.VersionBind
+
+        if not meta["creator"]:
+            meta["creator"] = "PyMuPDF PDF converter"
+        meta["modDate"] = fitz.get_pdf_now()
+        meta["creationDate"] = meta["modDate"]
+        pdf.set_metadata(meta)
+
+        # now process the links
+        link_cnti = 0
+        link_skip = 0
+        for pinput in doc:  # iterate through input pages
+            links = pinput.get_links()  # get list of links
+            link_cnti += len(links)  # count how many
+            pout = pdf[pinput.number]  # read corresp. output page
+            for l in links:  # iterate though the links
+                if l["kind"] == fitz.LINK_NAMED:  # we do not handle named links
+                    print("named link page", pinput.number, l)
+                    link_skip += 1  # count them
+                    continue
+                pout.insert_link(l)  # simply output the others
+
+        # save the conversion result
+        pdf.save(output_path, garbage=4, deflate=True)
+        # say how many named links we skipped
+        if link_cnti > 0:
+            print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
     def pdf2docx(self, file_path, output_path, pdfSuffix='.pdf', docxSuffix=".docx"):
         waiting_covert_pdf_files = get_files(file_path, suffix=pdfSuffix)
@@ -107,28 +132,49 @@ class MainPDF():
             pdf_writer.write(out)
 
     # PDF加密
-    def encrypt4pdf(self, path, password, output_path, suffix='.pdf'):
+    def encrypt4pdf(self, input_path, password, output_path, suffix='.pdf'):
         """
         @Author & Date  : CoderWanFeng 2022/5/9 18:27
         @Desc  : path: 存放文件的路径
                 password: 你的密码
                 res_pdf: 结果文件的名称 ，可以为空，默认是：encrypt.pdf
         """
-        abs_path = Path(path).absolute()
-        pdf_list = get_files(path=str(abs_path), suffix=suffix)
-        for index, pdf_file in simple_progress(enumerate(pdf_list)):
-            pdf = pikepdf.open(pdf_file)
-            output_path = r'./' if output_path == None else output_path
-            pdf.save(str(Path(output_path).absolute()) + '//' + Path(pdf_file).stem + '（加密）' + suffix,
-                     encryption=pikepdf.Encryption(owner=password, user=password, R=4))
-            pdf.close()
-        # print("encrypt4pdf，该功能已过期")
+        # abs_path = Path(input_path).absolute()
+        # pdf_list = get_files(path=str(abs_path), suffix=suffix)
+        # for index, pdf_file in simple_progress(enumerate(pdf_list)):
+        with open(input_path, 'rb') as file:
+            reader = PdfReader(file)
+
+            # 创建一个PdfFileWriter对象
+            writer = PdfWriter()
+
+            # 将每一页加入到writer中
+            for page in range(len(reader.pages)):
+                writer.add_page(reader.pages[page])
+
+            # 加密PDF
+            writer.encrypt(password)
+
+            # 写入加密后的PDF
+            with open(output_path, 'wb') as out:
+                writer.write(out)
 
     # PDF解密
-    def decrypt4pdf(self, path, password, res_pdf='decrypt.pdf'):
-        pdf = pikepdf.open(path, password=password)
-        pdf.save(res_pdf)
-        pdf.close()
+    def decrypt4pdf(self, input_path, password, output_path='decrypt.pdf'):
+        # 创建一个PdfReader对象，并提供密码来解密PDF文件
+        pdf_reader = PdfReader(input_path, password=password)
+
+        # 创建一个PdfWriter对象
+        pdf_writer = PdfWriter()
+
+        # 逐页将解密后的PDF添加到新的PDF文件中
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            pdf_writer.add_page(page)
+
+        # 将解密后的PDF写入文件
+        with open(output_path, 'wb') as out:
+            pdf_writer.write(out)
 
     # print("decrypt4pdf，该功能已过期")
 

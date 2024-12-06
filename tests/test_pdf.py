@@ -21,7 +21,16 @@ class TestPDF(unittest.TestCase):
             pdf_path=r'test_files/pdf/merge.pdf',
             out_dir='./images')
 
+    def test_txt2pdf(self):
+        # 准备测试数据
+        input_path = "test.txt"
+        output_path = "test.pdf"
 
+        # 写入测试文本
+        with open(input_path, 'w') as f:
+            f.write("This is a test text.")
+        # 调用被测方法
+        txt2pdf(input_path, output_path)
 
     # def test_file2pdf(self):
     #     file2pdf(
@@ -43,14 +52,14 @@ class TestPDF(unittest.TestCase):
 
     def test_encrypt4pdf(self):
         encrypt4pdf(
-            path=r'D:\workplace\code\github\popdf\tests\test_files\pdf',
+            path=r'./test_files/pdf/merge.pdf',
             password='123456',
-            output_path=r'./test_output'
+            output_path=r'./test_files/pdf/encrypt4pdf.pdf'
         )
 
     def test_decrypt4pdf(self):
         decrypt4pdf(
-            path=r'./test_files/pdf/encrypt.pdf',
+            input_path=r'./test_files/pdf/encrypt4pdf.pdf',
             password='123456'
         )
 
