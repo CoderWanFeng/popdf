@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from loguru import logger
+
 from popdf.core.PDFType import MainPDF
 
 mainPDF = MainPDF()
@@ -6,83 +8,86 @@ mainPDF = MainPDF()
 
 # 给pdf加水印-无参数
 # @except_dec()
-def add_watermark() -> None:
-    """
-    加水印
-    视频：https://www.bilibili.com/video/BV1Se411T7au
-    演示代码：
-    """
-    mainPDF.add_watermark()
+def add_watermark():
+    logger.warning("该功能已更新为：add_text_watermark")
+
+
+# 给pdf加水印-无参数
+# @except_dec()
+def add_text_watermark(input_file, point, text='python-office',
+                       output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
+    mainPDF.add_watermark(input_file, point, text,
+                          output_file, fontname, fontsize, color)
 
 
 # txt转pdf
 # @except_dec()
-def txt2pdf(input_path: str, output_path='txt2pdf.pdf'):
+def txt2pdf(input_file: str, output_file='txt2pdf.pdf'):
     """
     txt转pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/130612189
     演示代码：
     """
-    mainPDF.txt2pdf(input_path, output_path)
+    mainPDF.txt2pdf(input_file, output_file)
 
 
 # PDF加密
 # @except_dec()
-def encrypt4pdf(path, password, output_path):
+def encrypt4pdf(input_file, password, output_file):
     """
     加密pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/129963432
     演示代码：
     """
-    mainPDF.encrypt4pdf(path, password, output_path)
+    mainPDF.encrypt4pdf(input_file, password, output_file)
 
 
 # PDF解密
 # @except_dec()
-def decrypt4pdf(input_path, password, output_path='decrypt.pdf'):
+def decrypt4pdf(input_file, password, output_file='decrypt.pdf'):
     """
     解密pdf
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
     演示代码：
     """
-    mainPDF.decrypt4pdf(input_path, password, output_path)
+    mainPDF.decrypt4pdf(input_file, password, output_file)
 
 
 # 合并pdf
 # @except_dec()
-def merge2pdf(one_by_one, output):
+def merge2pdf(input_file_list, output_file):
     """
     合并pdf
     文档：https://baijiahao.baidu.com/s?id=1733062611567959337
     演示代码：
     """
-    mainPDF.merge2pdf(one_by_one, output)
+    mainPDF.merge2pdf(input_file_list, output_file)
 
 
 # todo：输入文件路径
 # @except_dec()
-def pdf2docx(file_path, output_path='.'):
+def pdf2docx(input_file, output_path='.'):
     """
     PDF转Word
     视频：https://www.bilibili.com/video/BV1em4y1H7ir/
     Args:
-        file_path: pdf的存储位置。批量处理：只填写文件夹就行
+        input_file: pdf的存储位置。批量处理：只填写文件夹就行
         output_path: 转换后的输出位置
 
     Returns:
 
     """
-    mainPDF.pdf2docx(file_path, output_path)
+    mainPDF.pdf2docx(input_file, output_path)
 
 
 # @except_dec()
-def pdf2imgs(pdf_path, out_dir, merge=False):
+def pdf2imgs(input_file, output_path, merge=False):
     """
     pdf转图片
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
     演示代码：
     """
-    mainPDF.pdf2imgs(pdf_path, out_dir, merge)
+    mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
 # @except_dec()
@@ -109,5 +114,5 @@ def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_nam
     mainPDF.add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name)
 
 
-def split4pdf(input_path, output_path=r'./output_path/split_pdf.pdf', from_page=None, to_page=None):
-    mainPDF.split4pdf(input_path, output_path, from_page, to_page)
+def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
+    mainPDF.split4pdf(input_file, output_file, from_page, to_page)
