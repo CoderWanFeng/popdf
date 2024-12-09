@@ -9,7 +9,7 @@
 import os
 from pathlib import Path
 
-import fitz  # fitz就是pip install PyMuPDF
+import pymupdf  # fitz就是pip install PyMuPDF
 from PIL import Image
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
 from pdf2docx import Converter
@@ -24,7 +24,7 @@ class MainPDF():
     def add_watermark(self, input_file, point, text='程序员晚枫',
                       output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)):
         # 打开输入PDF文件
-        doc = fitz.open(input_file)
+        doc = pymupdf.open(input_file)
 
         # 遍历PDF的每一页
         for page in doc:
@@ -40,26 +40,26 @@ class MainPDF():
 
     def txt2pdf(self, input_file, output_file='file2pdf.pdf'):
 
-        # https://fitz.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
-        if not (list(map(int, fitz.VersionBind.split("."))) >= [1, 14, 0]):
+        # https://pymupdf.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
+        if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
             raise SystemExit("need PyMuPDF v1.14.0+")
 
         print("Converting '%s' to '%s.pdf'" % (input_file, output_file))
 
-        doc = fitz.open(input_file)
+        doc = pymupdf.open(input_file)
 
         b = doc.convert_to_pdf()  # convert to pdf
-        pdf = fitz.open("pdf", b)  # open as pdf
+        pdf = pymupdf.open("pdf", b)  # open as pdf
 
         toc = doc.get_toc()  # table of contents of input
         pdf.set_toc(toc)  # simply set it for output
         meta = doc.metadata  # read and set metadata
         if not meta["producer"]:
-            meta["producer"] = "PyMuPDF v" + fitz.VersionBind
+            meta["producer"] = "PyMuPDF v" + pymupdf.VersionBind
 
         if not meta["creator"]:
             meta["creator"] = "PyMuPDF PDF converter"
-        meta["modDate"] = fitz.get_pdf_now()
+        meta["modDate"] = pymupdf.get_pdf_now()
         meta["creationDate"] = meta["modDate"]
         pdf.set_metadata(meta)
 
@@ -71,7 +71,7 @@ class MainPDF():
             link_cnti += len(links)  # count how many
             pout = pdf[pinput.number]  # read corresp. output page
             for l in links:  # iterate though the links
-                if l["kind"] == fitz.LINK_NAMED:  # we do not handle named links
+                if l["kind"] == pymupdf.LINK_NAMED:  # we do not handle named links
                     print("named link page", pinput.number, l)
                     link_skip += 1  # count them
                     continue
@@ -160,7 +160,7 @@ class MainPDF():
     def pdf2imgs(self, input_file: str, output_path="./", merge: bool = False) -> None:
         pdf_file_list = get_files(input_file, suffix='.pdf')
         for pdf_file in simple_progress(pdf_file_list):
-            pdfDoc = fitz.open(pdf_file)
+            pdfDoc = pymupdf.open(pdf_file)
             page_count = pdfDoc.page_count
             for pg in simple_progress(range(pdfDoc.page_count)):
                 print(f'正在处理第{pg}/{page_count}页')
@@ -170,7 +170,7 @@ class MainPDF():
                 # 此处若是不做设置，默认图片大小为：792X612, dpi=96
                 zoom_x = 1.33333333  # (1.33333333-->1056x816)   (2-->1584x1224)
                 zoom_y = 1.33333333
-                mat = fitz.Matrix(zoom_x, zoom_y).prerotate(rotate)
+                mat = pymupdf.Matrix(zoom_x, zoom_y).prerotate(rotate)
                 pix = page.get_pixmap(matrix=mat, alpha=False)
                 mkdir(output_path)
                 pdf_file_name = Path(pdf_file).stem
@@ -227,13 +227,13 @@ class MainPDF():
         :return: None
         """
         # 打开输入原始PDF文件
-        pdf_document = fitz.open(input_file)
+        pdf_document = pymupdf.open(input_file)
 
         # 如果没有指定输出路径，则使用默认值
         mkdir(Path(output_file).parent)
 
         # 创建一个新的PDF文档
-        pdf_document_new = fitz.open()
+        pdf_document_new = pymupdf.open()
 
         pdf_document_new.insert_pdf(pdf_document, from_page, to_page)
 

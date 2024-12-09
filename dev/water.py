@@ -6,28 +6,28 @@
 @代码日期    ：2024/12/8 18:25 
 @本段代码的视频说明     ：
 '''
-# import fitz
+# import pymupdf
 #
 test_file = r'./test_files/merge.pdf'
 #
 # # 打开PDF文件
-# doc = fitz.open(test_file)
+# doc = pymupdf.open(test_file)
 #
 # # 遍历PDF的每一页
 # for page in doc:
 #
-#     page.add_stamp_annot(fitz.Rect(50, 50, 200, 100), 5)
+#     page.add_stamp_annot(pymupdf.Rect(50, 50, 200, 100), 5)
 #
 #     # 保存PDF文件
 #     doc.save("watermarked_document.pdf")
 
-import fitz  # PyMuPDF
+import pymupdf  # PyMuPDF
 
 
 def add_watermark_to_pdf(input_path, point, text, watermark_text='程序员晚枫',
                          output_path='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0), ):
     # 打开输入PDF文件
-    doc = fitz.open(input_path)
+    doc = pymupdf.open(input_path)
 
     # 遍历PDF的每一页
     for page in doc:

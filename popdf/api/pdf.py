@@ -12,22 +12,41 @@ def add_watermark():
     logger.warning("该功能已更新为：add_text_watermark")
 
 
-# 给pdf加水印-无参数
-# @except_dec()
+
 def add_text_watermark(input_file, point, text='python-office',
                        output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
+    """
+    在PDF文档中添加文本水印。
+
+    Args:
+        input_file (str): 要添加水印的PDF文件路径。
+        point (tuple): 水印文本的位置，格式为(x, y)。
+        text (str, optional): 要添加的水印文本。默认为'python-office'。
+        output_file (str, optional): 输出文件的路径。默认为'./pdf_watermark.pdf'。
+        fontname (str, optional): 字体名称。默认为'Helvetica'。
+        fontsize (int, optional): 字体大小。默认为12。
+        color (tuple, optional): 字体颜色，格式为(R, G, B)。默认为(1, 0, 0)，即红色。
+
+    Returns:
+        None
+    """
     mainPDF.add_watermark(input_file, point, text,
                           output_file, fontname, fontsize, color)
 
 
-# txt转pdf
-# @except_dec()
+
 def txt2pdf(input_file: str, output_file='txt2pdf.pdf'):
     """
-    txt转pdf
-    文档：https://blog.csdn.net/weixin_42321517/article/details/130612189
-    演示代码：
+    将文本文件转换为PDF文件。
+
+    Args:
+        input_file (str): 输入的文本文件路径。
+        output_file (str, optional): 输出的PDF文件路径。默认为'txt2pdf.pdf'。
+
+    Returns:
+        None
     """
+
     mainPDF.txt2pdf(input_file, output_file)
 
 
@@ -89,6 +108,10 @@ def pdf2imgs(input_file, output_path, merge=False):
     """
     mainPDF.pdf2imgs(input_file, output_path, merge)
 
+def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
+    mainPDF.split4pdf(input_file, output_file, from_page, to_page)
+
+########################################### 下面是不推荐使用的 ###########################################
 
 # @except_dec()
 def add_img_water(pdf_file_in, pdf_file_mark, pdf_file_out):
@@ -99,7 +122,6 @@ def add_img_water(pdf_file_in, pdf_file_mark, pdf_file_out):
     mainPDF.add_img_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
 
 
-########################################### 下面是不推荐使用的 ###########################################
 
 # 给pdf加水印-有参数
 # @except_dec()
@@ -113,6 +135,3 @@ def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_nam
     """
     mainPDF.add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name)
 
-
-def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
-    mainPDF.split4pdf(input_file, output_file, from_page, to_page)

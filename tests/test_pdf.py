@@ -11,12 +11,12 @@ class TestPDF(unittest.TestCase):
 
     def test_txt2pdf(self):
         # 准备测试数据
-        input_file = "test.txt"
+        input_file = "./test_files/txt/test.txt"
         output_file = "./test_files/pdf/test.pdf"
 
         # 写入测试文本
         with open(input_file, 'w') as f:
-            f.write("This is a test text.")
+            f.write("程序员晚枫")
         # 调用被测方法
         txt2pdf(input_file, output_file)
 

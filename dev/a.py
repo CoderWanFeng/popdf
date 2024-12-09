@@ -6,19 +6,19 @@
 @代码日期    ：2024/12/6 21:45 
 @本段代码的视频说明     ：
 '''
-import fitz  # PyMuPDF
+import pymupdf  # PyMuPDF
 
 
 def add_watermark_to_pdf(pdf_path, output_path, watermark_image_path):
     # 打开PDF文件
-    doc = fitz.open(pdf_path)
+    doc = pymupdf.open(pdf_path)
 
     # 遍历PDF的每一页
     for page in doc:
         width, height = page.mediabox.width, page.mediabox.height
 
         # 定义水印的位置和大小
-        rect = fitz.Rect(width - 50, 0, width, height)  # 在页面右下角添加水印
+        rect = pymupdf.Rect(width - 50, 0, width, height)  # 在页面右下角添加水印
 
         # 插入水印图片
         page.insert_image(rect, filename=watermark_image_path, overlay=True)
