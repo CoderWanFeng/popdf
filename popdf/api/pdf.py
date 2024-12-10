@@ -111,6 +111,11 @@ def pdf2imgs(input_file, output_path, merge=False):
 def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
     mainPDF.split4pdf(input_file, output_file, from_page, to_page)
 
+
+
+def del4pdf(input_file, page_nums, output_file):
+    pass
+
 ########################################### 下面是不推荐使用的 ###########################################
 
 # @except_dec()
