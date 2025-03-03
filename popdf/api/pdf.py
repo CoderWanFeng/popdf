@@ -114,7 +114,7 @@ def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=
 
 
 def del4pdf(input_file, page_nums, output_file):
-    pass
+    mainPDF.del4pdf(input_file, page_nums, output_file)
 
 ########################################### 下面是不推荐使用的 ###########################################
 

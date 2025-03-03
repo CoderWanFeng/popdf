@@ -91,3 +91,7 @@ class TestPDF(unittest.TestCase):
     def test_add_watermark(self):
         stub_stdin(self, './test_files/pdf/程序员晚枫.pdf\npython-office\n')  # 依次输入
         add_watermark()
+    def test_del4pdf(self):
+        del4pdf(input_file="test_files/del4pdf/程序员晚枫的粉丝福利.pdf",
+                page_nums=[1,3],
+                output_file="tests/test_files/del4pdf/output_text/")
