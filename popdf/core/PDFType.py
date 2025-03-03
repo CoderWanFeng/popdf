@@ -98,7 +98,7 @@ class MainPDF():
     def merge2pdf(self, input_file_list, output_file):
         """
         @Author & Date  : CoderWanFeng 2022/5/16 23:33
-        @Desc  : merge_pdfs(paths=['开篇词.pdf', '中国元宇宙白皮书 (送审稿).pdf'], output='merge.pdf')
+        @Desc  : merge_pdfs(paths=['开篇词.pdf', '中国元宇宙白皮书 (送审稿).pdf'], output='程序员晚枫.pdf')
         """
         pdf_writer = PdfWriter()
 

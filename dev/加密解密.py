@@ -31,12 +31,12 @@ if __name__ == '__main__':
     e='encrypted_output.pdf'
     d='decrypted_output.pdf'
     # 使用示例
-    # encrypt_pdf(r'./test_files/pdf/merge.pdf', e, '123456')
+    # encrypt_pdf(r'./test_files/pdf/程序员晚枫.pdf', e, '123456')
     # 使用示例
     # decrypt_pdf(e, d, '123456')
     # https://blog.csdn.net/sinat_15136141/article/details/112135649
     # https://blog.csdn.net/sinat_15136141/article/details/112135649
-    file_path= r'./test_files/pdf/merge.pdf'
+    file_path= r'./test_files/pdf/程序员晚枫.pdf'
     # 打开PDF文件
     with open(file_path, 'rb') as file:
         # 创建一个PdfFileReader对象
