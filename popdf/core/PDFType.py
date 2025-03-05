@@ -287,3 +287,121 @@ class MainPDF():
             logger.info(f"成功删除指定页码，保存到 {output_file}")
         except Exception as e:
             logger.error(f"删除页面时出错：{e}")
+
+    def modify_file_times(self, file_path, access_time, modify_time, create_time=None) -> int:
+        """
+        修改文件的访问时间、修改时间和创建时间（仅 Windows 支持创建时间）。
+        
+        :param file_path: 文件路径
+        :param access_time: 访问时间（datetime 对象）
+        :param modify_time: 修改时间（datetime 对象）
+        :param create_time: 创建时间（datetime 对象，仅 Windows 有效）
+        :return None
+        :Author & Date  : ICodeWR 2025/3/5 23:42
+        """
+        from datetime import datetime
+
+        # 将 datetime 对象转换为时间戳
+        access_timestamp = datetime.strptime(access_time, '%Y-%m-%d %H:%M:%S')
+        access_timestamp = access_timestamp.timestamp()
+        modify_timestamp = datetime.strptime(modify_time, '%Y-%m-%d %H:%M:%S')
+        modify_timestamp = modify_timestamp.timestamp()
+
+        # 修改访问时间和修改时间（跨平台）
+        os.utime(file_path, (access_timestamp, modify_timestamp))
+    
+        # 导入平台包
+        import platform
+
+        # 如果是 Windows 系统，修改创建时间
+        if platform.system() == "Windows" and create_time:
+            try:
+                import win32file
+                import pywintypes
+    
+                # 将时间转换为 Windows 文件时间格式
+                create_timestamp = datetime.strptime(create_time, '%Y-%m-%d %H:%M:%S')
+                create_timestamp = create_timestamp.timestamp()
+                win_time = pywintypes.Time(create_timestamp)
+    
+                # 打开文件句柄
+                handle = win32file.CreateFile(
+                    file_path,
+                    win32file.GENERIC_WRITE,
+                    0,
+                    None,
+                    win32file.OPEN_EXISTING,
+                    0,
+                    None,
+                )
+    
+                # 设置创建时间
+                win32file.SetFileTime(handle, win_time, None, None)
+    
+                # 关闭文件句柄
+                handle.close()
+            except ImportError:
+                print("pywin32 未安装，无法修改创建时间。请运行 `pip install pywin32` 安装。")
+                return -1
+        elif create_time:
+            print("创建时间修改仅在 Windows 上支持。")
+        return 0
+
+
+    def modify_pdf_author_and_date(self, in_file: str, out_file: str, author: str,
+                                   access_time: str, 
+                                   modify_time: str, 
+                                   create_time: str = None) ->None:
+        """
+        设置 PDF 文件的作者、创建时间、修改时间，也会清空文件的 Title 信息
+        
+        @Note: 修改创建时间只在Windows平台有效
+    
+        :param in_file:  输入文件名，即需要修改作者和日期的文件名，字符串类型。
+        :param out_file: 输出文件名，修改作者和日期后的新文件名，字符串类型。
+        :param access_time: 指定文件访问日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型。
+        :param modify_time: 指定文件修改日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型。
+        :param create_time: 指定文件创建日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型（仅 Windows 支持）
+        :return: Nones
+        :Author & Date : ICodeWR 2025/3/5 23:42
+        """
+        if not os.path.exists(in_file):
+            print("文件不存在，请确认文件名是否正确！")
+            return None
+        
+        # 简单通过文件扩展名判单文件是否为 PDF 文件
+        if in_file.lower().endswith('.pdf'):
+
+            # 获取一个 PdfFileReader 对象
+            pdf_reader = PdfReader(open(in_file, 'rb'))
+
+            # 获取一个 PdfFileWriter 对象
+            pdf_writer = PdfWriter()
+
+            # 这里输入要修改的元信息
+            pdf_writer.add_metadata({'/Author': author,
+                                '/Title': ' ',
+                                '/Creator': author,
+                                '/Producer': author,
+                                '/Content creator': author,
+                                '/Subject': ' ',
+                                '/CreationDate': create_time,
+                                '/ModDate': modify_time})
+            
+            # 将一个 PageObject 加入到 PdfFileWriter 中
+            pdf_writer.append_pages_from_reader(pdf_reader)
+
+            # 输出到文件中
+            pdf_writer.write(open(out_file, 'wb+'))
+
+            r_tmp = self.modify_file_times(out_file, access_time, modify_time, create_time)
+            if r_tmp == 0:
+                print('\n---修改文件时间成功！---')
+            else:
+                print('\n---修改文件时间失败！---')
+        else:
+            print("文件格式错误，请输入pdf文件")
+        
+        return None
+        
+        
