@@ -8,10 +8,10 @@
 '''
 import os
 from pathlib import Path
-import pymupdf  # fitz就是pip install PyMuPDF
+
+import pymupdf
 from PIL import Image
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
-from loguru import logger
 from pdf2docx import Converter
 from pofile import get_files, mkdir
 from poprogress import simple_progress
@@ -247,43 +247,31 @@ class MainPDF():
     # 删除指定页面
     def del4pdf(self, input_file, page_nums, output_file):
         """
-        从PDF文件中删除指定页码的页面。
-
-        Args:
-            input_file (str): 输入的PDF文件路径。
-            page_nums (list): 要删除的页码列表，页码从 0 开始计数。
-            output_file (str): 输出的PDF文件路径。
-
-        Returns:
-            None
+        使用 pymupdf 从 PDF 文件中删除指定的页面。
+        
+        参数:
+        input_file (str): 输入的 PDF 文件路径。
+        page_nums (list): 需要删除的页面编号列表（基于0索引，注意页面编号不连续）。
+        output_file (str): 输出（修改后）的 PDF 文件路径。
         """
-        try:
-            # 打印输入和输出文件路径，用于调试
-            logger.info(f"输入文件路径: {input_file}")
-            logger.info(f"输出文件/文件夹路径: {output_file}")
+        # 打开输入的 PDF 文件
+        doc = pymupdf.open(input_file)
 
-            # 打开 PDF 文件
-            doc = pymupdf.open(input_file)
+        # 创建一个新的 PDF writer 对象（实际上在 pymupdf 中我们不需要显式的 writer 对象，
+        # 但我们可以创建一个新的文档来模拟这个过程）
+        new_doc = pymupdf.open()
 
-            # 对要删除的页码进行排序，从大到小，避免删除页面后页码索引变化
-            page_nums.sort(reverse=True)
-            for page_num in page_nums:
-                if 0 <= page_num < len(doc):
-                    # 删除指定页码的页面
-                    doc.delete_page(page_num)
+        # 遍历所有页面
+        for page_num in range(len(doc)):
+            # 如果当前页面编号不在删除列表中，则添加到新的文档中
+            if page_num not in page_nums:
+                new_page = new_doc.new_page(width=doc.page_rect(page_num).width, height=doc.page_rect(page_num).height)
+                new_page.show_pdf_page(doc, page_num)  # 将原文档的页面内容复制到新页面
 
-            # 判断 output_file 是否为文件夹
-            if os.path.isdir(output_file):
-                # 如果是文件夹，根据输入文件名生成输出文件名
-                file_name = os.path.basename(input_file)
-                base_name, ext = os.path.splitext(file_name)
-                new_file_name = f"{base_name}_del_pages{ext}"
-                output_file = os.path.join(output_file, new_file_name)
+        # 关闭原始文档（不需要保存）
+        doc.close()
 
-            # 保存处理后的 PDF 文件
-            doc.save(output_file)
-            # 关闭 PDF 文件
-            doc.close()
-            logger.info(f"成功删除指定页码，保存到 {output_file}")
-        except Exception as e:
-            logger.error(f"删除页面时出错：{e}")
+        # 将新文档保存到输出文件
+        new_doc.save(output_file)
+        new_doc.close()
+
