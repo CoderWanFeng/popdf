@@ -140,3 +140,52 @@ def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_nam
     """
     mainPDF.add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name)
 
+# 修改pdf文件的作者和时间-有参数
+# @except_dec()
+def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name) -> None:
+    """
+    必填参数：
+    pdf_file:pdf的位置，例如：d:/code/程序员晚枫.pdf
+    mark_str:需要添加的水印内容，例如：百度一下：程序员晚枫
+    选填参数：
+    output_file_name：指定添加了水印的文件名称，可以不指定，默认是：添加了水印的文件.pdf
+    """
+    mainPDF.add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name)
+
+# 修改文件的作者和时间-有参数
+# @except_dec()
+def modify_file_times(file_path, access_time, modify_time, create_time=None) -> None:
+    """
+    必填参数：
+    file_path: 文件名称，例如：d:/code/程序员晚枫.pdf
+    access_time: 指定文件访问日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型。
+    modify_time: 指定文件修改日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型。
+
+    选填参数：
+    param create_time: 指定文件创建日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型（仅 Windows 支持）
+    """
+    mainPDF.modify_file_times(file_path, access_time, modify_time, create_time)
+
+# 修改pdf文件的作者和时间-有参数
+# @except_dec()
+def modify_pdf_author_and_date(in_file: str, out_file: str, author: str,
+                               access_time: str, 
+                               modify_time: str, 
+                               create_time: str = None) ->None:
+    """
+    设置 PDF 文件的作者、创建时间、修改时间，也会清空文件的 Title 信息
+    修改创建时间只在 Windows 平台有效
+
+    必填参数：
+    in_file: 输入文件名，即需要修改作者和日期的文件名，字符串类型。例如：d:/code/程序员晚枫.pdf
+    out_file: 输出文件名，修改作者和日期后的新文件名，字符串类型。例如：d:/code/程序员晚枫_new.pdf
+    access_time: 指定文件访问日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型。
+    modify_time: 指定文件修改日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型。
+
+    选填参数：
+    param create_time: 指定文件创建日期和时间，格式为:"2023-10-01 12:00:00"，字符串类型（仅 Windows 支持）
+    """
+    mainPDF.modify_pdf_author_and_date(in_file, out_file,
+                                       author, 
+                                       access_time, modify_time, create_time)
+    

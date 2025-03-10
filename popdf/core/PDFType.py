@@ -8,10 +8,10 @@
 '''
 import os
 from pathlib import Path
-
-import pymupdf
+import pymupdf  # fitz就是pip install PyMuPDF
 from PIL import Image
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
+from loguru import logger
 from pdf2docx import Converter
 from pofile import get_files, mkdir
 from poprogress import simple_progress
@@ -248,7 +248,7 @@ class MainPDF():
     def del4pdf(self, input_file, page_nums, output_file):
         """
         使用 pymupdf 从 PDF 文件中删除指定的页面。
-        
+
         参数:
         input_file (str): 输入的 PDF 文件路径。
         page_nums (list): 需要删除的页面编号列表（基于0索引，注意页面编号不连续）。
