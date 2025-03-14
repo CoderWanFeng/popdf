@@ -50,13 +50,13 @@ def txt2pdf(input_file: str, output_file='txt2pdf.pdf'):
 
 # PDF加密
 # @except_dec()
-def encrypt4pdf(input_file, password, output_file):
+def encrypt4pdf( password, output_file,input_file=None,input_path=None):
     """
     加密pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/129963432
     演示代码：
     """
-    mainPDF.encrypt4pdf(input_file, password, output_file)
+    mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file,input_path=input_path)
 
 
 # PDF解密
