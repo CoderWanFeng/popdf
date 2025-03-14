@@ -1,13 +1,12 @@
-
 # demo
 .idea/
 .gitee/
 node_modules
 .cache
 .temp
-venv/
+.venv/
 build/
 dist/
 *.egg-info
-
+.vscode/
 __pycache__
