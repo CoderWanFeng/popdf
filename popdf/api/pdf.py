@@ -98,18 +98,18 @@ def pdf2docx(input_file, output_path='.'):
 
 
 # @except_dec()
-def pdf2imgs(input_file, output_path, merge=False):
-    """
-    pdf转图片
-    文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
-    演示代码：
-    """
-    mainPDF.pdf2imgs(input_file, output_path, merge)
+# ~ def pdf2imgs(input_file, output_path, merge=False):
+    # ~ """
+    # ~ pdf转图片
+    # ~ 文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
+    # ~ 演示代码：
+    # ~ """
+    # ~ mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
 
 # @except_dec()
-def pdf2imgsinbulk(input_path, output_path, merge=False):
+def pdf2imgs(input_path, output_path, merge=False):
     """
     pdf批量转图片 
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
