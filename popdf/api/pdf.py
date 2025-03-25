@@ -107,6 +107,39 @@ def pdf2imgs(input_file, output_path, merge=False):
     mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
+
+# @except_dec()
+def pdf2imgsinbulk(input_path, output_path, merge=False):
+    """
+    pdf批量转图片 
+    文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
+    演示代码：
+    Args:
+        input_path: pdf的存储位置。批量处理：只填写文件夹就行
+        output_path: 转换后的输出位置
+    """
+    import os	
+    def traverse_dir(path):
+        files = []
+        for file in os.listdir(path):
+            file_path = os.path.join(path, file)
+            if os.path.isdir(file_path):
+                traverse_dir(file_path)
+            else:
+                files.append(file_path)
+        return files
+    
+    
+    files = traverse_dir(input_path)
+    files_pdf = [f for f in files if os.path.splitext(f)[1] in [".pdf"]]
+    
+    for input_file in files_pdf:
+        base_filename = os.path.basename(input_file)
+        file_name = os.path.splitext(base_filename)[0]
+        dest_path = os.path.join(output_path, file_name)
+        mainPDF.pdf2imgs(input_file, dest_path, merge)
+		
+
 def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
     mainPDF.split4pdf(input_file, output_file, from_page, to_page)
 
