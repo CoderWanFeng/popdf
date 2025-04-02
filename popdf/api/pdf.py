@@ -5,6 +5,34 @@ from popdf.core.PDFType import MainPDF
 
 mainPDF = MainPDF()
 
+import popdf
+
+
+# todo：输入文件路径
+# @except_dec()
+def pdf2docx(input_file, output_file='input_file', input_path=None, output_path='.'):
+    """
+    PDF转Word
+    视频：https://www.bilibili.com/video/BV1em4y1H7ir/
+    <= version 1.0.2
+    Args:
+        input_file: 输入的单个pdf的存储位置。
+        output_file: 输出的单个word的存储位置，需要带后缀.docx
+        input_path: 批量转换的pdf输入位置
+        output_path: 批量转换后word的输出位置
+    Returns:
+    <= version 1.0.1
+    Args:
+        input_file: pdf的存储位置。批量处理：只填写文件夹就行
+        output_path: 转换后的输出位置
+    Returns:
+
+    """
+    if popdf.__version__ <= '1.0.1':
+        mainPDF.pdf2docx(input_file, output_path)
+    else:
+        mainPDF.pdf2docx(input_file, output_file, input_path, output_path)
+
 
 # 给pdf加水印-无参数
 # @except_dec()
@@ -50,13 +78,13 @@ def txt2pdf(input_file: str, output_file='txt2pdf.pdf'):
 
 # PDF加密
 # @except_dec()
-def encrypt4pdf( password, output_file,input_file=None,input_path=None):
+def encrypt4pdf(password, output_file, input_file=None, input_path=None):
     """
     加密pdf
     文档：https://blog.csdn.net/weixin_42321517/article/details/129963432
     演示代码：
     """
-    mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file,input_path=input_path)
+    mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file, input_path=input_path)
 
 
 # PDF解密
@@ -81,31 +109,14 @@ def merge2pdf(input_file_list, output_file):
     mainPDF.merge2pdf(input_file_list, output_file)
 
 
-# todo：输入文件路径
-# @except_dec()
-def pdf2docx(input_file, output_path='.'):
-    """
-    PDF转Word
-    视频：https://www.bilibili.com/video/BV1em4y1H7ir/
-    Args:
-        input_file: pdf的存储位置。批量处理：只填写文件夹就行
-        output_path: 转换后的输出位置
-
-    Returns:
-
-    """
-    mainPDF.pdf2docx(input_file, output_path)
-
-
 # @except_dec()
 # ~ def pdf2imgs(input_file, output_path, merge=False):
-    # ~ """
-    # ~ pdf转图片
-    # ~ 文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
-    # ~ 演示代码：
-    # ~ """
-    # ~ mainPDF.pdf2imgs(input_file, output_path, merge)
-
+# ~ """
+# ~ pdf转图片
+# ~ 文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
+# ~ 演示代码：
+# ~ """
+# ~ mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
 # @except_dec()
@@ -118,7 +129,7 @@ def pdf2imgs(input_path, output_path, merge=False):
         input_path: pdf的存储位置。批量处理：只填写文件夹就行
         output_path: 转换后的输出位置
     """
-    import os	
+    import os
     def traverse_dir(path):
         files = []
         for file in os.listdir(path):
@@ -128,17 +139,16 @@ def pdf2imgs(input_path, output_path, merge=False):
             else:
                 files.append(file_path)
         return files
-    
-    
+
     files = traverse_dir(input_path)
     files_pdf = [f for f in files if os.path.splitext(f)[1] in [".pdf"]]
-    
+
     for input_file in files_pdf:
         base_filename = os.path.basename(input_file)
         file_name = os.path.splitext(base_filename)[0]
         dest_path = os.path.join(output_path, file_name)
         mainPDF.pdf2imgs(input_file, dest_path, merge)
-		
+
 
 def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
     mainPDF.split4pdf(input_file, output_file, from_page, to_page)

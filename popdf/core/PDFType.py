@@ -17,6 +17,7 @@ from pofile import get_files, mkdir
 from poprogress import simple_progress
 
 from popdf.lib.pdf import add_watermark_service
+import popdf
 
 
 class MainPDF():
@@ -83,16 +84,19 @@ class MainPDF():
         if link_cnti > 0:
             print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
-    def pdf2docx(self, input_file, output_path, pdfSuffix='.pdf', docxSuffix=".docx"):
-        waiting_covert_pdf_files = get_files(input_file, suffix=pdfSuffix)
-        if waiting_covert_pdf_files:
-            for pdf_file in waiting_covert_pdf_files:
-                word_name = os.path.basename(pdf_file)[:-4] + docxSuffix
-                mkdir(Path(output_path))
-                word_path = Path(output_path) / word_name
-                cv = Converter(pdf_file)
-                cv.convert(word_path)
-                cv.close()
+    def pdf2docx(self, input_file, output_file=None, input_path=None, output_path=None, pdfSuffix='.pdf',
+                 docxSuffix=".docx"):
+        if popdf.__version__ <= '1.0.1':
+            waiting_covert_pdf_files = get_files(input_file, suffix=pdfSuffix)
+            if waiting_covert_pdf_files:
+                for pdf_file in waiting_covert_pdf_files:
+                    word_name = os.path.basename(pdf_file)[:-4] + docxSuffix
+                    mkdir(Path(output_path))
+                    word_path = Path(output_path) / word_name
+                    cv = Converter(pdf_file)
+                    cv.convert(word_path)
+                    cv.close()
+        # else:
 
     # 合并pdf
     def merge2pdf(self, input_file_list, output_file):
