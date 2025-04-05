@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
+
+import os
+
 from loguru import logger
 
+from popdf.core.Batch_PDFType import Batch_PDFType
 from popdf.core.PDFType import MainPDF
 
 mainPDF = MainPDF()
-
-import popdf
+batch_main_pdf = Batch_PDFType()
 
 
 # todo：输入文件路径
 # @except_dec()
-def pdf2docx(input_file, output_file='input_file', input_path=None, output_path='.'):
+def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=None):
     """
     PDF转Word
-    视频：https://www.bilibili.com/video/BV1em4y1H7ir/
-    <= version 1.0.2
+    文档：https://www.zhihu.com/question/20841069/answer/1891634195664723968
+    > version 1.0.1
     Args:
         input_file: 输入的单个pdf的存储位置。
         output_file: 输出的单个word的存储位置，需要带后缀.docx
@@ -28,10 +31,48 @@ def pdf2docx(input_file, output_file='input_file', input_path=None, output_path=
     Returns:
 
     """
-    if popdf.__version__ <= '1.0.1':
-        mainPDF.pdf2docx(input_file, output_path)
-    else:
-        mainPDF.pdf2docx(input_file, output_file, input_path, output_path)
+    try:
+        if input_file is not None and output_path is not None:  # 兼容1.0.1版本
+            mainPDF.pdf2docx(input_file=input_file, output_file=output_path)
+        elif input_file is not None and output_file is not None:  # 优先单个识别
+            mainPDF.pdf2docx(input_file=input_file, output_file=output_file)
+        elif input_path is not None and output_path is not None:
+            batch_main_pdf.pdf2docx(input_path=input_path, output_path=output_path)
+        else:
+            logger.error("参数填写错误，详见：https://www.zhihu.com/question/20841069/answer/1891634195664723968")
+    except Exception as e:
+        logger.error(e)
+
+
+# @except_dec()
+def pdf2imgs(input_path, output_path, merge=False):
+    """
+    pdf批量转图片
+    文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
+    演示代码：
+    Args:
+        input_path: pdf的存储位置。批量处理：只填写文件夹就行
+        output_path: 转换后的输出位置
+    """
+
+    def traverse_dir(path):
+        files = []
+        for file in os.listdir(path):
+            file_path = os.path.join(path, file)
+            if os.path.isdir(file_path):
+                traverse_dir(file_path)
+            else:
+                files.append(file_path)
+        return files
+
+    files = traverse_dir(input_path)
+    files_pdf = [f for f in files if os.path.splitext(f)[1] in [".pdf"]]
+
+    for input_file in files_pdf:
+        base_filename = os.path.basename(input_file)
+        file_name = os.path.splitext(base_filename)[0]
+        dest_path = os.path.join(output_path, file_name)
+        mainPDF.pdf2imgs(input_file, dest_path, merge)
 
 
 # 给pdf加水印-无参数
@@ -117,37 +158,6 @@ def merge2pdf(input_file_list, output_file):
 # ~ 演示代码：
 # ~ """
 # ~ mainPDF.pdf2imgs(input_file, output_path, merge)
-
-
-# @except_dec()
-def pdf2imgs(input_path, output_path, merge=False):
-    """
-    pdf批量转图片 
-    文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
-    演示代码：
-    Args:
-        input_path: pdf的存储位置。批量处理：只填写文件夹就行
-        output_path: 转换后的输出位置
-    """
-    import os
-    def traverse_dir(path):
-        files = []
-        for file in os.listdir(path):
-            file_path = os.path.join(path, file)
-            if os.path.isdir(file_path):
-                traverse_dir(file_path)
-            else:
-                files.append(file_path)
-        return files
-
-    files = traverse_dir(input_path)
-    files_pdf = [f for f in files if os.path.splitext(f)[1] in [".pdf"]]
-
-    for input_file in files_pdf:
-        base_filename = os.path.basename(input_file)
-        file_name = os.path.splitext(base_filename)[0]
-        dest_path = os.path.join(output_path, file_name)
-        mainPDF.pdf2imgs(input_file, dest_path, merge)
 
 
 def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):

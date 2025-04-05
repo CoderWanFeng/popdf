@@ -5,7 +5,14 @@
 	👉 <a target="_blank" href="http://www.python4office.cn/wechat-group/">本开源项目的交流群</a> 👈
 </p>
 
+
 <p align="center">
+  <a target="_blank" href='https://github.com/CoderWanFeng/popdf'>
+    <img src="https://img.shields.io/github/stars/CoderWanFeng/popdf.svg?style=social" alt="github star"/>
+    </a>
+        <a target="_blank" href='https://gitcode.com/python4office/popdf'>
+		<img src='https://gitcode.com/python4office/popdf/star/badge.svg?theme=dark' alt='gitcode star'/>
+	</a>
  <a target="_blank" href='https://github.com/CoderWanFeng/popdf'>
 <img src="https://static.pepy.tech/badge/popdf" alt="PyPI Downloads">
 </a>

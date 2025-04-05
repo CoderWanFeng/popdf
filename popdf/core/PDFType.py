@@ -8,19 +8,26 @@
 '''
 import os
 from pathlib import Path
+
 import pymupdf  # fitz就是pip install PyMuPDF
 from PIL import Image
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
 from loguru import logger
-from pdf2docx import Converter
 from pofile import get_files, mkdir
 from poprogress import simple_progress
 
 from popdf.lib.pdf import add_watermark_service
-import popdf
+from popdf.lib.utils import third_convert
 
 
 class MainPDF():
+    def __init__(self):
+        self.pdf_suffix = '.pdf'
+
+    def pdf2docx(self, input_file, output_file):
+        if input_file:
+            mkdir(Path(output_file).parent)
+            third_convert(input_file, output_file)
 
     def add_watermark(self, input_file, point, text='程序员晚枫',
                       output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)):
@@ -83,20 +90,6 @@ class MainPDF():
         # say how many named links we skipped
         if link_cnti > 0:
             print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
-
-    def pdf2docx(self, input_file, output_file=None, input_path=None, output_path=None, pdfSuffix='.pdf',
-                 docxSuffix=".docx"):
-        if popdf.__version__ <= '1.0.1':
-            waiting_covert_pdf_files = get_files(input_file, suffix=pdfSuffix)
-            if waiting_covert_pdf_files:
-                for pdf_file in waiting_covert_pdf_files:
-                    word_name = os.path.basename(pdf_file)[:-4] + docxSuffix
-                    mkdir(Path(output_path))
-                    word_path = Path(output_path) / word_name
-                    cv = Converter(pdf_file)
-                    cv.convert(word_path)
-                    cv.close()
-        # else:
 
     # 合并pdf
     def merge2pdf(self, input_file_list, output_file):

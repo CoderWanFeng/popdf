@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from popdf.api.pdf import *
@@ -6,9 +7,35 @@ from popdf.api.pdf import *
 class TestPDF(unittest.TestCase):
 
     def test_pdf2docx(self):
+        """
+        version 1.0.1
+        """
+        base_dir = os.path.dirname(__file__)
+        input_file = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', '程序员晚枫.pdf')
+        output_path = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', 'docx', '1.docx')
         pdf2docx(
-            input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            output_path=r'../test_files/docx/'
+            input_file=input_file,
+            output_path=output_path
+        )
+
+    def test_pdf2docx_single(self):
+        """
+        version 1.0.2
+        """
+        base_dir = os.path.dirname(__file__)
+        input_file = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', '程序员晚枫.pdf')
+        output_file = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', 'docx', '1.docx')
+        pdf2docx(
+            input_file=input_file,
+            output_file=output_file
+        )
+    def test_pdf2docx_batch(self):
+        """
+        version 1.0.2
+        """
+        pdf2docx(
+            input_path=r'../test_files/pdf2docx/',
+            output_path=r'../test_files/pdf2docx/docx/'
         )
 
     def test_pdf2imgs(self):
