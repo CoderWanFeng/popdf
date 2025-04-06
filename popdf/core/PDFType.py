@@ -206,6 +206,37 @@ class MainPDF():
                         writer.write(out)
             logger.info("encrypt4pdf is success")
 
+    # PDF解密
+    def decrypt4pdf(self, input_file, password, output_file='decrypt.pdf'):
+        # 创建一个PdfReader对象，并提供密码来解密PDF文件
+        pdf_reader = PdfReader(input_file, password=password)
+
+        # 创建一个PdfWriter对象
+        pdf_writer = PdfWriter()
+
+        # 逐页将解密后的PDF添加到新的PDF文件中
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            pdf_writer.add_page(page)
+        mkdir(Path(output_file).parent)
+        # 将解密后的PDF写入文件
+        with open(output_file, 'wb') as out:
+            pdf_writer.write(out)
+
+    # 批量pdf解密
+    # 暂时不支持递归文件夹下的目录
+    def decryptBatch4pdf(self, input_path, password, output_path='decrypt.pdf'):
+        # 循环调用decrypt4pdf解密
+        try:
+            for file in os.listdir(input_path):
+                file_path = os.path.join(input_path, file)
+                output_file= os.path.join(output_path,file)
+                if os.path.isfile(file_path) and file.endswith(".pdf"):
+                    self.decrypt4pdf(input_file=file_path,password=password,output_file=output_file)
+                else:
+                    print('skip %s' % file)
+        except Exception as e:
+            logger.error(e)
 
 # PDF解密
 def decrypt4pdf(self, input_file, password, output_file='decrypt.pdf'):
