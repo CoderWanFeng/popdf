@@ -22,7 +22,7 @@ def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=Non
     Returns:
     <= version 1.0.1
     Args:
-        input_file: pdf的存储位置。批量处理：只填写文件夹就行
+        input_file: pdf的存储位置。
         output_path: 转换后的输出位置
     Returns:
 
@@ -42,10 +42,18 @@ def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=Non
     """
     pdf批量转图片
     文档&视频：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/
-    演示代码：
+    > version 1.0.1
     Args:
-        input_path: pdf的存储位置。批量处理：只填写文件夹就行
+        input_file: 输入的单个pdf的存储位置。
+        output_file: 输出的单个word的存储位置，需要带后缀.docx
+        input_path: 批量转换的pdf输入位置
+        output_path: 批量转换后word的输出位置
+    Returns:
+    <= version 1.0.1
+    Args:
+        input_file: pdf的存储位置。
         output_path: 转换后的输出位置
+    Returns:
     """
     if input_file is not None and output_path is not None:  # <= version 1.0.1
         mainPDF.pdf2imgs(input_file=input_file, output_file=output_file, merge=merge)
@@ -58,7 +66,7 @@ def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=Non
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/")
 
 
-def txt2pdf(input_file: str, output_file='txt2pdf.pdf'):
+def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_path=None):
     """
     将文本文件转换为PDF文件。
     文档&视频：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/
@@ -71,7 +79,13 @@ def txt2pdf(input_file: str, output_file='txt2pdf.pdf'):
         None
     """
 
-    mainPDF.txt2pdf(input_file, output_file)
+    if input_file is not None and output_file is not None:
+        mainPDF.txt2pdf(input_file, output_file)
+    elif input_path is not None and output_path is not None:
+        batch_main_pdf.txt2pdf(input_path=input_path, output_path=output_path)
+    else:
+        logger.error(
+            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
 
 
 # 给pdf加水印-无参数

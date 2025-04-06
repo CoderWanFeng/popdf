@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pymupdf
 from pofile import get_files, mkdir
 from poprogress import simple_progress
 
@@ -29,33 +30,53 @@ class Batch_PDFType():
         pdf_files = get_files(path=input_path, suffix=self.pdf_suffix)
         if merge:
             for pdf_file in simple_progress(pdf_files):
-                pdf_to_merge_image(input_file=pdf_file, output_file=str(Path(output_path) / Path(pdf_file).stem) + '.jpg')
+                pdf_to_merge_image(input_file=pdf_file,
+                                   output_file=str(Path(output_path) / Path(pdf_file).stem) + '.jpg')
         else:
             for pdf_file in simple_progress(pdf_files):
                 pdf_to_images(input_file=pdf_file, output_path=Path(output_path) / Path(pdf_file).stem)
 
-    def generate_long_image(self, input_path: str, output_path, img_name='merge.jpg'):
-        """
-        将ppt的各个页面拼接成长图：https://blog.csdn.net/m0_51777056/article/details/130262561
-        :param input_path:
-        :param output_path:
-        :param img_name:
-        :return:
-        """
-        # 获取图片列表
-        img_list = []
-        for imgs in os.listdir(input_path):
-            img_list.append(os.path.join(input_path, imgs))
+    def txt2pdf(self, input_path=None, output_path=None):
 
-        # 将获取到ppt的页面进行排序
-        ims_sort = sorted(img_list, key=lambda jpg: len(jpg))
+        # https://pymupdf.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
+        if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
+            raise SystemExit("need PyMuPDF v1.14.0+")
 
-        width, height = Image.open(img_list[0]).size  # 取第一个图片尺寸
-        img_mode = Image.open(img_list[0]).mode
-        long_canvas = Image.new(img_mode, (width, height * len(img_list)))  # 创建同宽，n倍高的空白图片
+        print("Converting '%s' to '%s.pdf'" % (input_file, output_file))
 
-        # 拼接图片
-        for i, image in enumerate(ims_sort):
-            long_canvas.paste(Image.open(image), box=(0, i * height))
-        mkdir(output_path)
-        long_canvas.save(os.path.join(output_path, img_name))  # 保存长图
+        doc = pymupdf.open(input_file)
+
+        b = doc.convert_to_pdf()  # convert to pdf
+        pdf = pymupdf.open("pdf", b)  # open as pdf
+
+        toc = doc.get_toc()  # table of contents of input
+        pdf.set_toc(toc)  # simply set it for output
+        meta = doc.metadata  # read and set metadata
+        if not meta["producer"]:
+            meta["producer"] = "PyMuPDF v" + pymupdf.VersionBind
+
+        if not meta["creator"]:
+            meta["creator"] = "PyMuPDF PDF converter"
+        meta["modDate"] = pymupdf.get_pdf_now()
+        meta["creationDate"] = meta["modDate"]
+        pdf.set_metadata(meta)
+
+        # now process the links
+        link_cnti = 0
+        link_skip = 0
+        for pinput in doc:  # iterate through input pages
+            links = pinput.get_links()  # get list of links
+            link_cnti += len(links)  # count how many
+            pout = pdf[pinput.number]  # read corresp. output page
+            for l in links:  # iterate though the links
+                if l["kind"] == pymupdf.LINK_NAMED:  # we do not handle named links
+                    print("named link page", pinput.number, l)
+                    link_skip += 1  # count them
+                    continue
+                pout.insert_link(l)  # simply output the others
+        mkdir(Path(output_file).parent)
+        # save the conversion result
+        pdf.save(output_file, garbage=4, deflate=True)
+        # say how many named links we skipped
+        if link_cnti > 0:
+            print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
