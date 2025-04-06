@@ -41,8 +41,8 @@ class TestPDF(unittest.TestCase):
     def test_pdf2imgs(self):
         pdf2imgs(
             # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            input_path=r'../test_files/pdf',
-            output_path='./test_files/img/')
+            input_path=r'../test_files/pdf2imgs',
+            output_path='./test_files/pdf2imgs/imgs')
 
     def test_txt2pdf(self):
         # 准备测试数据
