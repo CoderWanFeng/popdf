@@ -29,6 +29,7 @@ class TestPDF(unittest.TestCase):
             input_file=input_file,
             output_file=output_file
         )
+
     def test_pdf2docx_batch(self):
         """
         version 1.0.2
@@ -41,13 +42,30 @@ class TestPDF(unittest.TestCase):
     def test_pdf2imgs(self):
         pdf2imgs(
             # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            input_path=r'../test_files/pdf',
-            output_path='./test_files/img/')
+            input_file=r'../test_files/pdf2imgs/程序员晚枫.pdf',
+            output_file='../test_files/pdf2imgs/imgs')
+
+    def test_pdf2imgs_merge(self):
+        pdf2imgs(
+            input_file=r'../test_files/pdf2imgs/程序员晚枫.pdf',
+            output_file='../test_files/pdf2imgs/imgs/1.jpg', merge=True)
+
+    def test_batch_pdf2imgs(self):
+        pdf2imgs(
+            # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
+            input_path=r'../test_files/pdf2imgs',
+            output_path='../test_files/pdf2imgs/imgs')
+
+    def test_batch_pdf2imgs_merge(self):
+        pdf2imgs(
+            # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
+            input_path=r'../test_files/pdf2imgs',
+            output_path='../test_files/pdf2imgs/imgs', merge=True)
 
     def test_txt2pdf(self):
         # 准备测试数据
         input_file = "./test_files/txt/test.txt"
-        output_file = "./test_files/pdf/test.pdf"
+        output_file = "../test_files/pdf/test.pdf"
 
         # 写入测试文本
         with open(input_file, 'w') as f:
@@ -59,7 +77,7 @@ class TestPDF(unittest.TestCase):
         split4pdf(
             input_file=r'../test_files/pdf/程序员晚枫.pdf',
             from_page=1,
-            output_file=r'./test_files/pdf/split4pdf.pdf'
+            output_file=r'../test_files/pdf/split4pdf.pdf'
         )
 
     def test_encrypt4pdf(self):
@@ -91,15 +109,6 @@ class TestPDF(unittest.TestCase):
             input_file=r'../test_files/pdf/程序员晚枫.pdf',
             page_nums=[1],
             output_file=r'./test_files/pdf/del4pdf.pdf'
-        )
-
-    ##############  以下方法待优化  #################
-
-    def test_pdf2imgs_merge(self):
-        pdf2imgs(
-            input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            output_path=r'./test_files/img/merge',
-            merge=True
         )
 
     ##############  以下方法未测试  #################
