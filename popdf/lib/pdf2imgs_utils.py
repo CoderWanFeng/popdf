@@ -21,13 +21,16 @@ def pdf_to_images(input_file, output_path):
         mat = pymupdf.Matrix(zoom_x, zoom_y).prerotate(rotate)
         pix = page.get_pixmap(matrix=mat, alpha=False)
         mkdir(output_path)
-        pdf_file_name = Path(pdf_file).stem
-        pix.save(output_path + f'/ {pdf_file_name}-{pg}.jpg')
+        pdf_file_name = Path(input_file).stem
+        pix.save(f'{str(Path(output_path).absolute())}/ {pdf_file_name}-{pg}.jpg')
 
 
-def pdf_to_merge_image(pdf_path, output_path, dpi=300):
+def pdf_to_merge_image(input_file, output_file, dpi=300):
+    """
+    直接合并为1张图片
+    """
     # 打开 PDF 文件
-    pdf_document = pymupdf.open(pdf_path)
+    pdf_document = pymupdf.open(input_file)
     images_list = []
 
     # 遍历 PDF 的每一页
@@ -55,11 +58,4 @@ def pdf_to_merge_image(pdf_path, output_path, dpi=300):
         y_offset += img.height
 
     # 保存合并后的图片
-    new_image.save(output_path)
-
-
-if __name__ == '__main__':
-    # 使用示例
-    pdf_file = r'D:\workplace\code\gitcode\popdf\tests\test_files\pdf2imgs\程序员晚枫.pdf'  # 替换为你的 PDF 文件路径
-    output_image = 'output_image.jpg'  # 替换为你想要保存的图片路径
-    pdf_to_merge_image(pdf_file, output_image)
+    new_image.save(output_file)

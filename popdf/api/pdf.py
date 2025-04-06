@@ -27,21 +27,18 @@ def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=Non
     Returns:
 
     """
-    try:
-        if input_file is not None and output_path is not None:  # 兼容1.0.1版本
-            mainPDF.pdf2docx(input_file=input_file, output_file=output_path)
-        elif input_file is not None and output_file is not None:  # 优先单个识别
-            mainPDF.pdf2docx(input_file=input_file, output_file=output_file)
-        elif input_path is not None and output_path is not None:
-            batch_main_pdf.pdf2docx(input_path=input_path, output_path=output_path)
-        else:
-            logger.error(
-                "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/")
-    except Exception as e:
-        logger.error(e)
+    if input_file is not None and output_path is not None:  # 兼容1.0.1版本
+        mainPDF.pdf2docx(input_file=input_file, output_file=output_path)
+    elif input_file is not None and output_file is not None:  # 优先单个识别
+        mainPDF.pdf2docx(input_file=input_file, output_file=output_file)
+    elif input_path is not None and output_path is not None:
+        batch_main_pdf.pdf2docx(input_path=input_path, output_path=output_path)
+    else:
+        logger.error(
+            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/")
 
 
-def pdf2imgs(input_file, output_file, input_path, output_path, merge=False):
+def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=None, merge=False):
     """
     pdf批量转图片
     文档&视频：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/
@@ -51,7 +48,7 @@ def pdf2imgs(input_file, output_file, input_path, output_path, merge=False):
         output_path: 转换后的输出位置
     """
     if input_file is not None and output_path is not None:  # <= version 1.0.1
-        mainPDF.pdf2imgs(input_file=input_file, output_file=output_path, merge=merge)
+        mainPDF.pdf2imgs(input_file=input_file, output_file=output_file, merge=merge)
     elif input_file is not None and output_file is not None:
         mainPDF.pdf2imgs(input_file=input_file, output_file=output_file, merge=merge)
     elif input_path is not None and output_path is not None:
