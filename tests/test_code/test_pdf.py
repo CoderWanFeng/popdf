@@ -108,10 +108,19 @@ class TestPDF(unittest.TestCase):
         )
 
     def test_del4pdf(self):
+        del_pdf=r'../test_files/del4pdf/程序员晚枫.pdf'
         del4pdf(
-            input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            page_nums=[1],
-            output_file=r'./test_files/pdf/del4pdf.pdf'
+            input_file=del_pdf,
+            page_nums=[3],
+            output_file=r'../test_files/del4pdf/a//del4pdf.pdf'
+        )
+
+    def test_del4pdf_batch(self):
+        del_pdf=r'../test_files/del4pdf/'
+        del4pdf(
+            input_path=del_pdf,
+            page_nums=[2],
+            output_path=r'../test_files/del4pdf/b'
         )
 
     ##############  以下方法未测试  #################
@@ -130,10 +139,10 @@ class TestPDF(unittest.TestCase):
         stub_stdin(self, './test_files/pdf/程序员晚枫.pdf\npython-office\n')  # 依次输入
         add_watermark()
 
-    def test_del4pdf(self):
-        del4pdf(input_file="../test_files/del4pdf/程序员晚枫的粉丝福利.pdf",
-                page_nums=[1, 3],
-                output_file="tests/test_files/del4pdf/output_text/")
+    # def test_del4pdf(self):
+    #     del4pdf(input_file="../test_files/del4pdf/程序员晚枫的粉丝福利.pdf",
+    #             page_nums=[1, 3],
+    #             output_file="tests/test_files/del4pdf/output_text/")
 
     def test_encrypt4pdf2(self):
         encrypt4pdf(

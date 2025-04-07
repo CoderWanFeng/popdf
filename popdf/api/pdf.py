@@ -162,8 +162,14 @@ def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=
     mainPDF.split4pdf(input_file, output_file, from_page, to_page)
 
 
-def del4pdf(input_file, page_nums, output_file):
-    mainPDF.del4pdf(input_file, page_nums, output_file)
+def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
+    if input_file is not None and output_file is not None and page_nums is not None:
+        mainPDF.del4pdf(page_nums=page_nums, input_file=input_file, output_file=output_file)
+    elif input_path is not None and output_path is not None and page_nums is not None:
+        batch_main_pdf.del4pdf(page_nums=page_nums, input_path=input_path, output_path=output_path)
+    else:
+        logger.error(
+            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/9-del4pdf/")
 
 
 ########################################### 下面是不推荐使用的 ###########################################

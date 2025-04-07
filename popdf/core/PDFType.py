@@ -6,16 +6,15 @@
 @Date    ：2023/4/3 23:05
 @Description     ：
 '''
-import os
 from pathlib import Path
 
 import pymupdf  # fitz就是pip install PyMuPDF
-from PIL import Image
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
 from loguru import logger
 from pofile import get_files, mkdir
 from poprogress import simple_progress
 
+from popdf.lib.del4pdf_utils import del_page
 from popdf.lib.pdf import add_watermark_service
 from popdf.lib.pdf2docx_utils import third_convert
 from popdf.lib.pdf2imgs_utils import pdf_to_merge_image, pdf_to_images
@@ -39,7 +38,7 @@ class MainPDF():
             pdf_to_images(input_file=input_file, output_path=output_file)
 
     def txt2pdf(self, input_file, output_file='file2pdf.pdf'):
-        
+
         # https://pymupdf.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
         if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
             raise SystemExit("need PyMuPDF v1.14.0+")
@@ -158,7 +157,6 @@ class MainPDF():
                         writer.write(out)
             logger.info("encrypt4pdf is success")
 
-
     # PDF解密
     def decrypt4pdf(self, input_file, password, output_file='decrypt.pdf'):
         # 创建一个PdfReader对象，并提供密码来解密PDF文件
@@ -176,14 +174,12 @@ class MainPDF():
         with open(output_file, 'wb') as out:
             pdf_writer.write(out)
 
-
     def add_img_watermark(self, pdf_file_in, pdf_file_mark, pdf_file_out):
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
 
-
     # def table2excel(self,):
 
-    def split4pdf(self, input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
+    def split4pdf(self, from_page=-1, to_page=-1, input_file=None, output_file=r'./split_pdf.pdf'):
         """
         分割pdf文件。
 
@@ -211,34 +207,15 @@ class MainPDF():
         pdf_document.close()
         pdf_document_new.close()
 
-
     # 删除指定页面
-    def del4pdf(self, input_file, page_nums, output_file):
+    def del4pdf(self, page_nums: list[int], input_file: str = None, output_file: str = None):
         """
         使用 pymupdf 从 PDF 文件中删除指定的页面。
 
         参数:
-        input_file (str): 输入的 PDF 文件路径。
         page_nums (list): 需要删除的页面编号列表（基于0索引，注意页面编号不连续）。
+        input_file (str): 输入的 PDF 文件路径。
         output_file (str): 输出（修改后）的 PDF 文件路径。
         """
-        # 打开输入的 PDF 文件
-        doc = pymupdf.open(input_file)
-
-        # 创建一个新的 PDF writer 对象（实际上在 pymupdf 中我们不需要显式的 writer 对象，
-        # 但我们可以创建一个新的文档来模拟这个过程）
-        new_doc = pymupdf.open()
-
-        # 遍历所有页面
-        for page_num in range(len(doc)):
-            # 如果当前页面编号不在删除列表中，则添加到新的文档中
-            if page_num not in page_nums:
-                new_page = new_doc.new_page(width=doc.page_rect(page_num).width, height=doc.page_rect(page_num).height)
-                new_page.show_pdf_page(doc, page_num)  # 将原文档的页面内容复制到新页面
-
-        # 关闭原始文档（不需要保存）
-        doc.close()
-
-        # 将新文档保存到输出文件
-        new_doc.save(output_file)
-        new_doc.close()
+        mkdir(Path(output_file).parent)
+        del_page(page_nums, input_file, output_file)

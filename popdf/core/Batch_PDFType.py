@@ -4,6 +4,7 @@ import pymupdf
 from pofile import get_files, mkdir
 from poprogress import simple_progress
 
+from popdf.lib.del4pdf_utils import del_page
 from popdf.lib.pdf2docx_utils import third_convert
 from popdf.lib.pdf2imgs_utils import pdf_to_images, pdf_to_merge_image
 
@@ -31,7 +32,7 @@ class Batch_PDFType():
         if merge:
             for pdf_file in simple_progress(pdf_files):
                 pdf_to_merge_image(input_file=pdf_file,
-                                   output_file=Path(output_path) /str( Path(pdf_file).stem) + '.jpg')
+                                   output_file=Path(output_path) / str(Path(pdf_file).stem) + '.jpg')
         else:
             for pdf_file in simple_progress(pdf_files):
                 pdf_to_images(input_file=pdf_file, output_path=Path(output_path) / Path(pdf_file).stem)
@@ -82,3 +83,19 @@ class Batch_PDFType():
             # say how many named links we skipped
             if link_cnti > 0:
                 print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
+
+    # 删除指定页面
+    def del4pdf(self, page_nums, input_path=None, output_path=None):
+        """
+        使用 pymupdf 从 PDF 文件中删除指定的页面。
+
+        参数:
+        input_file (str): 输入的 PDF 文件路径。
+        page_nums (list): 需要删除的页面编号列表（基于0索引，注意页面编号不连续）。
+        output_file (str): 输出（修改后）的 PDF 文件路径。
+        """
+        pdf_files = get_files(path=input_path, suffix=self.pdf_suffix)
+        mkdir(Path(output_path))
+        for input_file in pdf_files:
+            output_file = Path(output_path) / Path(input_file).name
+            del_page(page_nums, input_file, output_file)
