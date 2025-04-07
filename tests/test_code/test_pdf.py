@@ -6,6 +6,10 @@ from popdf.api.pdf import *
 
 class TestPDF(unittest.TestCase):
 
+    def setUp(self):
+        self.mainPdf=MainPDF()
+        self.batchPdfType=Batch_PDFType()
+
     def test_pdf2docx(self):
         """
         version 1.0.1
@@ -95,6 +99,20 @@ class TestPDF(unittest.TestCase):
             input_file=r'./test_files/pdf/encrypt4pdf.pdf',
             password='123456',
             output_file=r'./test_files/pdf/decrypt4pdf.pdf'
+        )
+
+    def test_decryptbatch4pdf(self):
+        self.batchPdfType.pdf2decryptBatch(
+            input_path=r'./test_files/decrypt4pdf/',
+            password='123456',
+            output_path=r'./test_files/decrypt4pdf/target'
+        )
+
+    def test_decryptbatch4pdf1(self):
+        self.batchPdfType.pdf2decryptBatch(
+            input_path=None,
+            password='123456',
+            output_path=r'./test_files/decrypt4pdf/target'
         )
 
     def test_add_text_watermark(self):
