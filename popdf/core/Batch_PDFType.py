@@ -31,52 +31,54 @@ class Batch_PDFType():
         if merge:
             for pdf_file in simple_progress(pdf_files):
                 pdf_to_merge_image(input_file=pdf_file,
-                                   output_file=str(Path(output_path) / Path(pdf_file).stem) + '.jpg')
+                                   output_file=Path(output_path) /str( Path(pdf_file).stem) + '.jpg')
         else:
             for pdf_file in simple_progress(pdf_files):
                 pdf_to_images(input_file=pdf_file, output_path=Path(output_path) / Path(pdf_file).stem)
 
     def txt2pdf(self, input_path=None, output_path=None):
+        txt_files = get_files(path=input_path, suffix='.txt')
+        mkdir(Path(output_path))
+        for input_file in txt_files:
+            # https://pymupdf.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
+            if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
+                raise SystemExit("need PyMuPDF v1.14.0+")
+            output_file = Path(output_path) / str(Path(input_file).stem + '.pdf')
+            print("Converting '%s' to '%s.pdf'" % (input_file, output_file))
 
-        # https://pymupdf.readthedocs.io/en/latest/recipes-common-issues-and-their-solutions.html#how-to-convert-any-document-to-pdf
-        if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
-            raise SystemExit("need PyMuPDF v1.14.0+")
+            doc = pymupdf.open(input_file)
 
-        print("Converting '%s' to '%s.pdf'" % (input_file, output_file))
+            b = doc.convert_to_pdf()  # convert to pdf
+            pdf = pymupdf.open("pdf", b)  # open as pdf
 
-        doc = pymupdf.open(input_file)
+            toc = doc.get_toc()  # table of contents of input
+            pdf.set_toc(toc)  # simply set it for output
+            meta = doc.metadata  # read and set metadata
+            if not meta["producer"]:
+                meta["producer"] = "PyMuPDF v" + pymupdf.VersionBind
 
-        b = doc.convert_to_pdf()  # convert to pdf
-        pdf = pymupdf.open("pdf", b)  # open as pdf
+            if not meta["creator"]:
+                meta["creator"] = "PyMuPDF PDF converter"
+            meta["modDate"] = pymupdf.get_pdf_now()
+            meta["creationDate"] = meta["modDate"]
+            pdf.set_metadata(meta)
 
-        toc = doc.get_toc()  # table of contents of input
-        pdf.set_toc(toc)  # simply set it for output
-        meta = doc.metadata  # read and set metadata
-        if not meta["producer"]:
-            meta["producer"] = "PyMuPDF v" + pymupdf.VersionBind
-
-        if not meta["creator"]:
-            meta["creator"] = "PyMuPDF PDF converter"
-        meta["modDate"] = pymupdf.get_pdf_now()
-        meta["creationDate"] = meta["modDate"]
-        pdf.set_metadata(meta)
-
-        # now process the links
-        link_cnti = 0
-        link_skip = 0
-        for pinput in doc:  # iterate through input pages
-            links = pinput.get_links()  # get list of links
-            link_cnti += len(links)  # count how many
-            pout = pdf[pinput.number]  # read corresp. output page
-            for l in links:  # iterate though the links
-                if l["kind"] == pymupdf.LINK_NAMED:  # we do not handle named links
-                    print("named link page", pinput.number, l)
-                    link_skip += 1  # count them
-                    continue
-                pout.insert_link(l)  # simply output the others
-        mkdir(Path(output_file).parent)
-        # save the conversion result
-        pdf.save(output_file, garbage=4, deflate=True)
-        # say how many named links we skipped
-        if link_cnti > 0:
-            print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
+            # now process the links
+            link_cnti = 0
+            link_skip = 0
+            for pinput in doc:  # iterate through input pages
+                links = pinput.get_links()  # get list of links
+                link_cnti += len(links)  # count how many
+                pout = pdf[pinput.number]  # read corresp. output page
+                for l in links:  # iterate though the links
+                    if l["kind"] == pymupdf.LINK_NAMED:  # we do not handle named links
+                        print("named link page", pinput.number, l)
+                        link_skip += 1  # count them
+                        continue
+                    pout.insert_link(l)  # simply output the others
+            mkdir(Path(output_file).parent)
+            # save the conversion result
+            pdf.save(output_file, garbage=4, deflate=True)
+            # say how many named links we skipped
+            if link_cnti > 0:
+                print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))

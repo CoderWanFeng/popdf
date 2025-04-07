@@ -64,20 +64,23 @@ class TestPDF(unittest.TestCase):
 
     def test_txt2pdf(self):
         # 准备测试数据
-        input_file = "./test_files/txt/test.txt"
-        output_file = "../test_files/pdf/test.pdf"
-
-        # 写入测试文本
-        with open(input_file, 'w') as f:
-            f.write("程序员晚枫")
+        input_file = "../test_files/txt2pdf/程序员晚枫.txt"
+        output_file = "../test_files/txt2pdf/程序员晚枫.pdf"
         # 调用被测方法
-        txt2pdf(input_file, output_file)
+        txt2pdf(input_file=input_file, output_file=output_file)
+
+    def test_batch_txt2pdf(self):
+        # 准备测试数据
+        input_path = "../test_files/txt2pdf/batch"
+        output_path = "../test_files/txt2pdf/batch_res"
+        # 调用被测方法
+        txt2pdf(input_path=input_path, output_path=output_path)
 
     def test_split4pdf(self):
         split4pdf(
-            input_file=r'../test_files/pdf/程序员晚枫.pdf',
+            input_file=r'../test_files/split4pdf/程序员晚枫.pdf',
             from_page=1,
-            output_file=r'../test_files/pdf/split4pdf.pdf'
+            output_file=r'../test_files/split4pdf/split4pdf.pdf'
         )
 
     def test_encrypt4pdf(self):
