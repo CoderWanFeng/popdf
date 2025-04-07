@@ -102,14 +102,14 @@ class TestPDF(unittest.TestCase):
         )
 
     def test_decryptbatch4pdf(self):
-        self.batchPdfType.pdf2decryptBatch(
+        decryptBatch4pdf(
             input_path=r'./test_files/decrypt4pdf/',
             password='123456',
             output_path=r'./test_files/decrypt4pdf/target'
         )
 
     def test_decryptbatch4pdf1(self):
-        self.batchPdfType.pdf2decryptBatch(
+        decryptBatch4pdf(
             input_path=None,
             password='123456',
             output_path=r'./test_files/decrypt4pdf/target'

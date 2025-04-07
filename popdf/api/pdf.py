@@ -136,6 +136,16 @@ def decrypt4pdf(input_file, password, output_file='decrypt.pdf'):
     """
     mainPDF.decrypt4pdf(input_file, password, output_file)
 
+# PDF批量解密解密
+# 只支持input_path目录下的.pdf文件,不支持递归查找子文件夹
+# @except_dec()
+def decryptBatch4pdf(input_path,output_path, password):
+    """
+    解密pdf
+    文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
+    演示代码：
+    """
+    batch_main_pdf.pdf2decryptBatch(input_path=input_path, output_path=output_path ,password=password)
 
 # 合并pdf
 # @except_dec()
