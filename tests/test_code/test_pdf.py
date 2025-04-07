@@ -6,10 +6,6 @@ from popdf.api.pdf import *
 
 class TestPDF(unittest.TestCase):
 
-    def setUp(self):
-        self.mainPdf=MainPDF()
-        self.batchPdfType=Batch_PDFType()
-
     def test_pdf2docx(self):
         """
         version 1.0.1
