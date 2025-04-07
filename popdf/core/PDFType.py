@@ -82,42 +82,33 @@ class MainPDF():
         if link_cnti > 0:
             print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
-    def add_watermark(self, input_file, point, text='程序员晚枫',
-                      output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)):
-        # 打开输入PDF文件
-        doc = pymupdf.open(input_file)
+    def split4pdf(self, from_page=-1, to_page=-1, input_file=None, output_file=r'./split_pdf.pdf'):
+        """
+        分割pdf文件。
 
-        # 遍历PDF的每一页
-        for page in doc:
-            # 插入文本
-            page.insert_text(point=point, text=text, fontname=fontname, fontsize=fontsize, color=color)
+        :param input_path: str, 必填, 输入PDF文件的路径。
+        :param output_path: str, 选填,  输出分割后PDF文件的路径，默认为'./output_path/split_pdf.pdf'。
+        :param from_page: int, 必填, 起始页码。
+        :param to_page: int, 选填, 结束页码，默认为None，不填代表只要一页起始页码。
+        :return: None
+        """
+        # 打开输入原始PDF文件
+        pdf_document = pymupdf.open(input_file)
+
+        # 如果没有指定输出路径，则使用默认值
         mkdir(Path(output_file).parent)
-        # 保存修改后的PDF文件
-        doc.save(output_file)
-        doc.close()  # 关闭PDF文件
 
-    def file2pdf(self, input_file, output_file='file2pdf.pdf'):
-        self.txt2pdf(input_file, output_file)
+        # 创建一个新的PDF文档
+        pdf_document_new = pymupdf.open()
 
-    # 合并pdf
-    def merge2pdf(self, input_file_list, output_file):
-        """
-        @Author & Date  : CoderWanFeng 2022/5/16 23:33
-        @Desc  : merge_pdfs(paths=['开篇词.pdf', '中国元宇宙白皮书 (送审稿).pdf'], output='程序员晚枫.pdf')
-        """
-        pdf_writer = PdfWriter()
+        pdf_document_new.insert_pdf(pdf_document, from_page, to_page)
 
-        for pdf_file in input_file_list:
-            pdf_reader = PdfReader(pdf_file)
-            # for page in tqdm(range(pdf_reader.getNumPages())):
-            for page in simple_progress(range(len(pdf_reader.pages))):
-                # 把每张PDF页面加入到这个可读取对象中
-                # pdf_writer.addPage(pdf_reader.getPage(page))
-                pdf_writer.add_page(pdf_reader.pages[page])
+        # 保存分割后的PDF文件
+        pdf_document_new.save(output_file)
 
-        # 把这个已合并了的PDF文档存储起来
-        with open(output_file, 'wb') as out:
-            pdf_writer.write(out)
+        # 关闭文件
+        pdf_document.close()
+        pdf_document_new.close()
 
     # PDF加密
     def encrypt4pdf(self, input_file, password, output_file, suffix='.pdf', input_path=None):
@@ -177,35 +168,25 @@ class MainPDF():
     def add_img_watermark(self, pdf_file_in, pdf_file_mark, pdf_file_out):
         add_watermark_service.pdf_add_watermark(pdf_file_in, pdf_file_mark, pdf_file_out)
 
-    # def table2excel(self,):
-
-    def split4pdf(self, from_page=-1, to_page=-1, input_file=None, output_file=r'./split_pdf.pdf'):
+    # 合并pdf
+    def merge2pdf(self, input_file_list, output_file):
         """
-        分割pdf文件。
-
-        :param input_path: str, 必填, 输入PDF文件的路径。
-        :param output_path: str, 选填,  输出分割后PDF文件的路径，默认为'./output_path/split_pdf.pdf'。
-        :param from_page: int, 必填, 起始页码。
-        :param to_page: int, 选填, 结束页码，默认为None，不填代表只要一页起始页码。
-        :return: None
+        @Author & Date  : CoderWanFeng 2022/5/16 23:33
+        @Desc  : merge_pdfs(paths=['开篇词.pdf', '中国元宇宙白皮书 (送审稿).pdf'], output='程序员晚枫.pdf')
         """
-        # 打开输入原始PDF文件
-        pdf_document = pymupdf.open(input_file)
+        pdf_writer = PdfWriter()
 
-        # 如果没有指定输出路径，则使用默认值
-        mkdir(Path(output_file).parent)
+        for pdf_file in input_file_list:
+            pdf_reader = PdfReader(pdf_file)
+            # for page in tqdm(range(pdf_reader.getNumPages())):
+            for page in simple_progress(range(len(pdf_reader.pages))):
+                # 把每张PDF页面加入到这个可读取对象中
+                # pdf_writer.addPage(pdf_reader.getPage(page))
+                pdf_writer.add_page(pdf_reader.pages[page])
 
-        # 创建一个新的PDF文档
-        pdf_document_new = pymupdf.open()
-
-        pdf_document_new.insert_pdf(pdf_document, from_page, to_page)
-
-        # 保存分割后的PDF文件
-        pdf_document_new.save(output_file)
-
-        # 关闭文件
-        pdf_document.close()
-        pdf_document_new.close()
+        # 把这个已合并了的PDF文档存储起来
+        with open(output_file, 'wb') as out:
+            pdf_writer.write(out)
 
     # 删除指定页面
     def del4pdf(self, page_nums: list[int], input_file: str = None, output_file: str = None):
@@ -219,3 +200,22 @@ class MainPDF():
         """
         mkdir(Path(output_file).parent)
         del_page(page_nums, input_file, output_file)
+
+    def add_watermark(self, input_file, point, text='程序员晚枫',
+                      output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)):
+        # 打开输入PDF文件
+        doc = pymupdf.open(input_file)
+
+        # 遍历PDF的每一页
+        for page in doc:
+            # 插入文本
+            page.insert_text(point=point, text=text, fontname=fontname, fontsize=fontsize, color=color)
+        mkdir(Path(output_file).parent)
+        # 保存修改后的PDF文件
+        doc.save(output_file)
+        doc.close()  # 关闭PDF文件
+
+    def file2pdf(self, input_file, output_file='file2pdf.pdf'):
+        self.txt2pdf(input_file, output_file)
+
+    # def table2excel(self,):

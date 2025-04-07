@@ -88,32 +88,8 @@ def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_pa
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
 
 
-# 给pdf加水印-无参数
-# @except_dec()
-def add_watermark():
-    logger.warning("该功能已更新为：add_text_watermark")
-
-
-def add_text_watermark(input_file, point, text='python-office',
-                       output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
-    """
-    在PDF文档中添加文本水印。
-
-    Args:
-        input_file (str): 要添加水印的PDF文件路径。
-        point (tuple): 水印文本的位置，格式为(x, y)。
-        text (str, optional): 要添加的水印文本。默认为'python-office'。
-        output_file (str, optional): 输出文件的路径。默认为'./pdf_watermark.pdf'。
-        fontname (str, optional): 字体名称。默认为'Helvetica'。
-        fontsize (int, optional): 字体大小。默认为12。
-        color (tuple, optional): 字体颜色，格式为(R, G, B)。默认为(1, 0, 0)，即红色。
-
-    Returns:
-        None
-    """
-    mainPDF.add_watermark(input_file, point, text,
-                          output_file, fontname, fontsize, color)
-
+def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
+    mainPDF.split4pdf(input_file, output_file, from_page, to_page)
 
 # PDF加密
 # @except_dec()
@@ -137,6 +113,28 @@ def decrypt4pdf(input_file, password, output_file='decrypt.pdf'):
     mainPDF.decrypt4pdf(input_file, password, output_file)
 
 
+
+def add_text_watermark(input_file, point, text='python-office',
+                       output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
+    """
+    在PDF文档中添加文本水印。
+
+    Args:
+        input_file (str): 要添加水印的PDF文件路径。
+        point (tuple): 水印文本的位置，格式为(x, y)。
+        text (str, optional): 要添加的水印文本。默认为'python-office'。
+        output_file (str, optional): 输出文件的路径。默认为'./pdf_watermark.pdf'。
+        fontname (str, optional): 字体名称。默认为'Helvetica'。
+        fontsize (int, optional): 字体大小。默认为12。
+        color (tuple, optional): 字体颜色，格式为(R, G, B)。默认为(1, 0, 0)，即红色。
+
+    Returns:
+        None
+    """
+    mainPDF.add_watermark(input_file, point, text,
+                          output_file, fontname, fontsize, color)
+
+
 # 合并pdf
 # @except_dec()
 def merge2pdf(input_file_list, output_file):
@@ -158,9 +156,6 @@ def merge2pdf(input_file_list, output_file):
 # ~ mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
-def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
-    mainPDF.split4pdf(input_file, output_file, from_page, to_page)
-
 
 def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
     if input_file is not None and output_file is not None and page_nums is not None:
@@ -175,6 +170,15 @@ def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, outpu
 ########################################### 下面是不推荐使用的 ###########################################
 
 # @except_dec()
+
+
+# 给pdf加水印-无参数
+# @except_dec()
+def add_watermark():
+    logger.warning("该功能已更新为：add_text_watermark")
+
+
+
 def add_img_water(pdf_file_in, pdf_file_mark, pdf_file_out):
     """
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
