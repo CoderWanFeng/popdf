@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pymupdf
@@ -7,6 +8,7 @@ from poprogress import simple_progress
 from popdf.lib.del4pdf_utils import del_page
 from popdf.lib.pdf2docx_utils import third_convert
 from popdf.lib.pdf2imgs_utils import pdf_to_images, pdf_to_merge_image
+from popdf.lib.pdfdecrypt_utils import pdf_to_decrypt
 
 
 class Batch_PDFType():
@@ -24,6 +26,23 @@ class Batch_PDFType():
                     word_name = pdf_file.stem + self.docx_suffix
                     word_path = Path(output_path) / word_name
                     third_convert(pdf_file, word_path)
+
+    # 批量pdf解密
+    # 暂时不支持递归文件夹下的目录
+    def pdf2decryptBatch(self, input_path=None, output_path=None ,password=None):
+        if input_path and output_path and password:
+            try:
+                for file in os.listdir(input_path):
+                    file_path = os.path.join(input_path, file)
+                    output_file = os.path.join(output_path, file)
+                    if os.path.isfile(file_path) and file.endswith(".pdf"):
+                        pdf_to_decrypt(input_file=file_path, password=password, output_file=output_file)
+                    else:
+                        print('skip %s' % file)
+            except Exception as e:
+                print(e)
+        else:
+            print("Please provide input path and password and output path")
 
     def pdf2imgs(self, input_path: str, output_path=None, merge: bool = False) -> None:
         if output_path:
