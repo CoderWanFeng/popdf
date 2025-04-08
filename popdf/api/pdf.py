@@ -145,20 +145,17 @@ def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf',input_
     <= version 1.0.1
     Args:
         input_file: pdf的存储位置。
-        output_path: 转换后的输出位置
+        output_file: 转换后的输出位置
         password : pdf解密密码
     Returns:
 
     """
-    if input_file is not None and output_path is not None:  # 兼容1.0.1版本
-        mainPDF.decrypt4pdf(input_file=input_file, password=password, output_file=output_path)
-    elif input_file is not None and output_file is not None:  # 优先单个识别
+    if input_file is not None and output_file is not None:  # 兼容1.0.1版本
         mainPDF.decrypt4pdf(input_file=input_file, password=password, output_file=output_file)
     elif input_path is not None and output_path is not None:
         batch_main_pdf.pdf2decryptBatch(input_path=input_path, output_path=output_path, password=password)
     else:
-        logger.error(
-            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/")
+        logger.error("参数填写错误，详见：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA")
 
 # 合并pdf
 # @except_dec()

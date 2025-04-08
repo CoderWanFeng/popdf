@@ -98,14 +98,6 @@ class TestPDF(unittest.TestCase):
         )
 
     # 兼容1.0.1版本
-    def test_decrypt4pdf0(self):
-        decrypt4pdf(
-            input_file=r'./test_files/decrypt4pdf/1.0.1.pdf',
-            password='123456',
-            output_path=r'./test_files/decrypt4pdf/target/compatibility.pdf'
-        )
-
-    # 优先单个识别
     def test_decrypt4pdf1(self):
         decrypt4pdf(
             input_file=r'./test_files/decrypt4pdf/out.pdf',
