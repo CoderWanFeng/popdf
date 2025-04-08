@@ -103,15 +103,35 @@ def encrypt4pdf(password, output_file, input_file=None, input_path=None):
 
 
 # PDF解密
+# 20250408新增PDF批量解密解密,只支持input_path目录下的.pdf文件,不支持递归查找子文件夹
 # @except_dec()
-def decrypt4pdf(input_file, password, output_file='decrypt.pdf'):
+def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf',input_path=None, output_path=None):
     """
     解密pdf
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
-    演示代码：
-    """
-    mainPDF.decrypt4pdf(input_file, password, output_file)
+    > version 1.0.1 ？
+    Args:
+        input_file: 输入的单个pdf的存储位置。
+        output_file: 输出的单个pdf的存储位置，需要带后缀.pdf
+        input_path: 批量转换的pdf输入位置
+        output_path: 批量转换后pdf的输出位置
+        password : pdf解密密码
 
+    Returns:
+    <= version 1.0.1
+    Args:
+        input_file: pdf的存储位置。
+        output_file: 转换后的输出位置
+        password : pdf解密密码
+    Returns:
+
+    """
+    if input_file is not None and output_file is not None:  # 兼容1.0.1版本
+        mainPDF.decrypt4pdf(input_file=input_file, password=password, output_file=output_file)
+    elif input_path is not None and output_path is not None:
+        batch_main_pdf.pdf2decryptBatch(input_path=input_path, output_path=output_path, password=password)
+    else:
+        logger.error("参数填写错误，详见：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA")
 
 
 def add_text_watermark(input_file, point, text='python-office',
