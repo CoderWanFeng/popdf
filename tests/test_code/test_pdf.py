@@ -97,19 +97,46 @@ class TestPDF(unittest.TestCase):
             output_file=r'./test_files/pdf/decrypt4pdf.pdf'
         )
 
-    def test_decryptbatch4pdf(self):
-        decryptBatch4pdf(
-            input_path=r'./test_files/decrypt4pdf/',
+    # 兼容1.0.1版本
+    def test_decrypt4pdf0(self):
+        decrypt4pdf(
+            input_file=r'./test_files/decrypt4pdf/1.0.1.pdf',
+            password='123456',
+            output_path=r'./test_files/decrypt4pdf/target/compatibility.pdf'
+        )
+
+    # 优先单个识别
+    def test_decrypt4pdf1(self):
+        decrypt4pdf(
+            input_file=r'./test_files/decrypt4pdf/out.pdf',
+            password='123456',
+            output_file=r'./test_files/decrypt4pdf/target/single.pdf'
+        )
+
+    # 批量解密
+    def test_decrypt4pdf2(self):
+        decrypt4pdf(
+            input_path=r'./test_files/decrypt4pdf',
             password='123456',
             output_path=r'./test_files/decrypt4pdf/target'
         )
 
-    def test_decryptbatch4pdf1(self):
-        decryptBatch4pdf(
+    # 参数异常
+    def test_decrypt4pdf3(self):
+        decrypt4pdf(
             input_path=None,
             password='123456',
             output_path=r'./test_files/decrypt4pdf/target'
         )
+    # 参数异常
+    def test_decrypt4pdf4(self):
+        decrypt4pdf(
+            input_path=None,
+            password='123456',
+            output_path=None
+        )
+
+
 
     def test_add_text_watermark(self):
         add_text_watermark(input_file=r'../test_files/pdf/程序员晚枫.pdf', point=(50, 50),
