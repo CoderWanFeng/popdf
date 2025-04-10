@@ -88,7 +88,7 @@ def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_pa
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
 
 
-def split4pdf(input_file=None, input_path=None, from_page=0, to_page=1, output_file=None, output_path=None):
+def split4pdf(input_file=None, input_path=None, output_file=None, output_path=None, from_page=0, to_page=1):
     """
     截取目标页范围的 PDF
 
@@ -100,10 +100,10 @@ def split4pdf(input_file=None, input_path=None, from_page=0, to_page=1, output_f
     Returns:
     """
     if input_file is not None and output_file is not None:
-        mainPDF.split4pdf(input_file, from_page, to_page,output_file)
+        mainPDF.split4pdf(input_file=input_file, output_file=output_path, from_page=from_page, to_page=to_page)
         print("分割单个pdf")
     elif input_path is not None and output_path is not None:
-        batch_main_pdf.split4pdfs(input_path, from_page, to_page,output_path)
+        batch_main_pdf.split4pdfs(input_path=input_path, output_path=output_path, from_page=from_page, to_page=to_page)
         print("批量分割pdf")
     else:
         logger.error(

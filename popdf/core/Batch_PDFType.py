@@ -28,7 +28,7 @@ class Batch_PDFType():
                     word_path = Path(output_path) / word_name
                     third_convert(pdf_file, word_path)
 
-    def split4pdfs(self, input_path, from_page, to_page, output_path):
+    def split4pdfs(self, input_path, output_path, from_page, to_page):
         if input_path and output_path:
             mkdir(Path(output_path))
             waiting_convert_pdf_files = get_files(path=input_path, suffix=self.pdf_suffix)
@@ -37,7 +37,7 @@ class Batch_PDFType():
                     pdf_file = Path(pdf_file).absolute()
                     pdf_name = pdf_file.stem +"split" + self.pdf_suffix
                     pdf_path = Path(output_path) / pdf_name
-                    split_for_pdf(input_file=pdf_file, from_page=from_page, to_page=to_page, output_file=pdf_path)
+                    split_for_pdf(input_file=pdf_file, output_file=pdf_path, from_page=from_page, to_page=to_page)
 
 
     # 批量pdf解密

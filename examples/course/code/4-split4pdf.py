@@ -20,8 +20,8 @@ import popdf
 # 批量截取PDF
 popdf.split4pdf(
     input_path=r'E:\popdf\tests\test_files\pdf',
-    from_page=0,
-    to_page=0,
+    from_page=1,
+    to_page=1,
     output_path=r'E:\popdf\tests\test_files\pdf'
 )
 
@@ -34,10 +34,8 @@ popdf.split4pdf(
 - output_path：输出PDF的路径，一般用于批量操作
 - input_file: 输入PDF的文件名，可以包含路径，一般用于单个文件的操作
 - output_file：输出结果的文件名，可以包含路径，一般用于单个文件的操作
-
-- from_page: 想要截取的起始页
-- to_page:   想要截取的结束页  
-
+- from_page: 想要截取的起始页 从1开始数
+- to_page:   想要截取的结束页 从1开始数
 
 """
 

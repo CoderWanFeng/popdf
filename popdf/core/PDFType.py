@@ -84,7 +84,7 @@ class MainPDF():
         if link_cnti > 0:
             print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
-    def split4pdf(self, input_file, from_page, to_page, output_file):
+    def split4pdf(self, input_file, output_file, from_page, to_page):
         """
         截取pdf文件。
 
@@ -96,7 +96,7 @@ class MainPDF():
         """
         if input_file:
             mkdir(Path(output_file).parent)
-            split_for_pdf(input_file=input_file, from_page=from_page, to_page=to_page, output_file=output_file)
+            split_for_pdf(input_file=input_file, output_file=output_file, from_page=from_page, to_page=to_page)
 
 
 
