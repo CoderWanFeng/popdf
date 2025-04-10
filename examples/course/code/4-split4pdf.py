@@ -12,9 +12,9 @@ import popdf
 # 截取单个PDF
 # popdf.split4pdf(
 #             input_file=r'E:\popdf\tests\test_files\pdf\程序员晚枫.pdf',
+#             output_file=r'E:\popdf\tests\test_files\pdf\split4pdf.pdf',
 #             from_page=1,
 #             to_page=1,
-#             output_file=r'E:\popdf\tests\test_files\pdf\split4pdf.pdf'
 #         )
 
 # 批量截取PDF
