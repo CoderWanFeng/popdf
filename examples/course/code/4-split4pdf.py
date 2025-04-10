@@ -20,9 +20,9 @@ import popdf
 # 批量截取PDF
 popdf.split4pdf(
     input_path=r'E:\popdf\tests\test_files\pdf',
+    output_path=r'E:\popdf\tests\test_files\pdf',
     from_page=1,
     to_page=1,
-    output_path=r'E:\popdf\tests\test_files\pdf'
 )
 
 """
