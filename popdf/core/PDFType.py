@@ -17,8 +17,10 @@ from poprogress import simple_progress
 from popdf.lib.del4pdf_utils import del_page
 from popdf.lib.pdf import add_watermark_service
 from popdf.lib.pdf2docx_utils import third_convert
+from popdf.lib.split4pdf_utils import split_for_pdf
 from popdf.lib.pdf2imgs_utils import pdf_to_merge_image, pdf_to_images
 
+import os
 
 class MainPDF():
     def __init__(self):
@@ -82,33 +84,22 @@ class MainPDF():
         if link_cnti > 0:
             print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
-    def split4pdf(self, from_page=-1, to_page=-1, input_file=None, output_file=r'./split_pdf.pdf'):
+    def split4pdf(self, input_file, from_page, to_page, output_file):
         """
-        分割pdf文件。
+        截取pdf文件。
 
-        :param input_path: str, 必填, 输入PDF文件的路径。
-        :param output_path: str, 选填,  输出分割后PDF文件的路径，默认为'./output_path/split_pdf.pdf'。
+        :param input_file: str, 必填, 输入PDF文件的路径。
         :param from_page: int, 必填, 起始页码。
         :param to_page: int, 选填, 结束页码，默认为None，不填代表只要一页起始页码。
+        :param output_file: str, 选填,  输出分割后PDF文件的路径'。
         :return: None
         """
-        # 打开输入原始PDF文件
-        pdf_document = pymupdf.open(input_file)
+        if input_file:
+            mkdir(Path(output_file).parent)
+            split_for_pdf(input_file=input_file, from_page=from_page, to_page=to_page, output_file=output_file)
 
-        # 如果没有指定输出路径，则使用默认值
-        mkdir(Path(output_file).parent)
 
-        # 创建一个新的PDF文档
-        pdf_document_new = pymupdf.open()
 
-        pdf_document_new.insert_pdf(pdf_document, from_page, to_page)
-
-        # 保存分割后的PDF文件
-        pdf_document_new.save(output_file)
-
-        # 关闭文件
-        pdf_document.close()
-        pdf_document_new.close()
 
     # PDF加密
     def encrypt4pdf(self, input_file, password, output_file, suffix='.pdf', input_path=None):

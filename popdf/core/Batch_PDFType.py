@@ -9,6 +9,7 @@ from popdf.lib.del4pdf_utils import del_page
 from popdf.lib.pdf2docx_utils import third_convert
 from popdf.lib.pdf2imgs_utils import pdf_to_images, pdf_to_merge_image
 from popdf.lib.pdfdecrypt_utils import pdf_to_decrypt
+from popdf.lib.split4pdf_utils import split_for_pdf
 
 
 class Batch_PDFType():
@@ -26,6 +27,18 @@ class Batch_PDFType():
                     word_name = pdf_file.stem + self.docx_suffix
                     word_path = Path(output_path) / word_name
                     third_convert(pdf_file, word_path)
+
+    def split4pdfs(self, input_path, from_page, to_page, output_path):
+        if input_path and output_path:
+            mkdir(Path(output_path))
+            waiting_convert_pdf_files = get_files(path=input_path, suffix=self.pdf_suffix)
+            if waiting_convert_pdf_files:
+                for pdf_file in waiting_convert_pdf_files:
+                    pdf_file = Path(pdf_file).absolute()
+                    pdf_name = pdf_file.stem +"split" + self.pdf_suffix
+                    pdf_path = Path(output_path) / pdf_name
+                    split_for_pdf(input_file=pdf_file, from_page=from_page, to_page=to_page, output_file=pdf_path)
+
 
     # 批量pdf解密
     # 暂时不支持递归文件夹下的目录
