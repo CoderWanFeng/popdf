@@ -4,7 +4,6 @@ from pathlib import Path
 from pofile import mkdir
 
 
-
 def split_for_pdf(input_file, output_file, from_page, to_page):
     # 因为Python从0开始计数，所以需要减1
     from_page -= 1

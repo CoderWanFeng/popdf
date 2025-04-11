@@ -97,6 +97,10 @@ class MainPDF():
         if input_file:
             mkdir(Path(output_file).parent)
             split_for_pdf(input_file=input_file, output_file=output_file, from_page=from_page, to_page=to_page)
+            return True
+        else:
+            logger.error('输入文件路径无效')
+            return False
 
 
 
