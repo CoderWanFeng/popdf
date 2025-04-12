@@ -88,8 +88,25 @@ def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_pa
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
 
 
-def split4pdf(input_file, output_file=r'./output_path/split_pdf.pdf', from_page=-1, to_page=-1):
-    mainPDF.split4pdf(input_file, output_file, from_page, to_page)
+def split4pdf(input_file=None, output_file=None, input_path=None, output_path=None, from_page=1, to_page=1):
+    """
+    截取目标页范围的 PDF
+
+    Args:
+        input_file: 输入的单个pdf的存储位置。
+        output_file: 输出的单个pdf的存储位置，需要带后缀.pdf
+        input_path: 批量切割的pdf输入位置
+        output_path: 批量切割后pdf的输出位置
+    Returns:
+    """
+    if input_file is not None and output_file is not None:
+        mainPDF.split4pdf(input_file=input_file, output_file=output_file, from_page=from_page, to_page=to_page)
+        print("分割单个pdf")
+    elif input_path is not None and output_path is not None:
+        batch_main_pdf.split4pdfs(input_path=input_path, output_path=output_path, from_page=from_page, to_page=to_page)
+        print("批量分割pdf")
+    else:
+        logger.error("参数填写错误")
 
 # PDF加密
 # @except_dec()
