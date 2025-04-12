@@ -22,7 +22,7 @@ popdf.split4pdf(
             input_file=input_file,
             output_file=output_file,
             from_page=1,
-            to_page=1,
+            # to_page=2,
         )
 
 # 拼接相对路径到绝对路径
@@ -34,7 +34,7 @@ popdf.split4pdf(
     input_path=input_path,
     output_path=output_path,
     from_page=1,
-    to_page=1,
+    to_page=2,
 )
 
 """

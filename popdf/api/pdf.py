@@ -88,7 +88,7 @@ def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_pa
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
 
 
-def split4pdf(input_file=None, output_file=None, input_path=None, output_path=None, from_page=1, to_page=1):
+def split4pdf(input_file=None, output_file=None, input_path=None, output_path=None, from_page=1, to_page=-1):
     """
     截取目标页范围的 PDF
 
