@@ -8,19 +8,31 @@
 '''
 # pip install popdf
 import popdf
+import os
+
+# 当前脚本所在目录
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+input_file = os.path.abspath(os.path.join(base_dir, '..', '..', '..', 'tests', 'test_files', 'pdf', '程序员晚枫.pdf'))
+output_file = os.path.abspath(os.path.join(base_dir, '..', '..', '..', 'tests', 'test_files', 'pdf', 'split4pdf.pdf'))
+
 
 # 截取单个PDF
-# popdf.split4pdf(
-#             input_file=r'E:\popdf\tests\test_files\pdf\程序员晚枫.pdf',
-#             output_file=r'E:\popdf\tests\test_files\pdf\split4pdf.pdf',
-#             from_page=1,
-#             to_page=1,
-#         )
+popdf.split4pdf(
+            input_file=input_file,
+            output_file=output_file,
+            from_page=1,
+            to_page=1,
+        )
+
+# 拼接相对路径到绝对路径
+input_path = os.path.abspath(os.path.join(base_dir, '..', '..', '..', 'tests', 'test_files', 'pdf'))
+output_path = input_path
 
 # 批量截取PDF
 popdf.split4pdf(
-    input_path=r'E:\popdf\tests\test_files\pdf',
-    output_path=r'E:\popdf\tests\test_files\pdf',
+    input_path=input_path,
+    output_path=output_path,
     from_page=1,
     to_page=1,
 )

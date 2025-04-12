@@ -101,12 +101,15 @@ def split4pdf(input_file=None, output_file=None, input_path=None, output_path=No
     """
     if input_file is not None and output_file is not None:
         mainPDF.split4pdf(input_file=input_file, output_file=output_file, from_page=from_page, to_page=to_page)
-        print("分割单个pdf")
+
+        return True
     elif input_path is not None and output_path is not None:
         batch_main_pdf.split4pdfs(input_path=input_path, output_path=output_path, from_page=from_page, to_page=to_page)
-        print("批量分割pdf")
+
+        return True
     else:
         logger.error("参数填写错误")
+        return False
 
 # PDF加密
 # @except_dec()
