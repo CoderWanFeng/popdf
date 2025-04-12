@@ -21,7 +21,7 @@ output_file = os.path.abspath(os.path.join(base_dir, '..', '..', '..', 'tests', 
 popdf.split4pdf(
             input_file=input_file,
             output_file=output_file,
-            from_page=1,
+            # from_page=1,
             # to_page=2,
         )
 
@@ -46,8 +46,8 @@ popdf.split4pdf(
 - output_path：输出PDF的路径，一般用于批量操作
 - input_file: 输入PDF的文件名，可以包含路径，一般用于单个文件的操作
 - output_file：输出结果的文件名，可以包含路径，一般用于单个文件的操作
-- from_page: 想要截取的起始页 从1开始数
-- to_page:   想要截取的结束页 从1开始数
+- from_page: 想要截取的起始页 从1开始数  如果不填 默认从第一页开始
+- to_page:   想要截取的结束页 从1开始数  如果不填 默认到最后一页结束
 
 """
 
