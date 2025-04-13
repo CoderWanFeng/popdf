@@ -3,7 +3,6 @@ from pathlib import Path
 
 import pymupdf
 from loguru import logger
-
 from pofile import get_files, mkdir
 from poprogress import simple_progress
 
@@ -54,20 +53,17 @@ class Batch_PDFType():
 
     # 批量pdf解密
     # 暂时不支持递归文件夹下的目录
-    def pdf2decryptBatch(self, input_path=None, output_path=None ,password=None):
+    def pdf2decryptBatch(self, input_path=None, output_path=None, password=None):
         if input_path and output_path and password:
-            try:
-                for file in os.listdir(input_path):
-                    file_path = os.path.join(input_path, file)
-                    output_file = os.path.join(output_path, file)
-                    if os.path.isfile(file_path) and file.endswith(".pdf"):
-                        pdf_to_decrypt(input_file=file_path, password=password, output_file=output_file)
-                    else:
-                        print('skip %s' % file)
-            except Exception as e:
-                print(e)
+            for file in os.listdir(input_path):
+                file_path = os.path.join(input_path, file)
+                output_file = os.path.join(output_path, file)
+                if os.path.isfile(file_path) and file.endswith(".pdf"):
+                    pdf_to_decrypt(input_file=file_path, password=password, output_file=output_file)
+                else:
+                    logger.info('skip %s' % file)
         else:
-            print("Please provide input path and password and output path")
+            logger.error("Please provide input path and password and output path")
 
     def pdf2imgs(self, input_path: str, output_path=None, merge: bool = False) -> None:
         if output_path:
@@ -89,7 +85,7 @@ class Batch_PDFType():
             if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
                 raise SystemExit("need PyMuPDF v1.14.0+")
             output_file = Path(output_path) / str(Path(input_file).stem + '.pdf')
-            print("Converting '%s' to '%s.pdf'" % (input_file, output_file))
+            logger.info("Converting '%s' to '%s.pdf'" % (input_file, output_file))
 
             doc = pymupdf.open(input_file)
 
@@ -117,7 +113,7 @@ class Batch_PDFType():
                 pout = pdf[pinput.number]  # read corresp. output page
                 for l in links:  # iterate though the links
                     if l["kind"] == pymupdf.LINK_NAMED:  # we do not handle named links
-                        print("named link page", pinput.number, l)
+                        logger.info("named link page", pinput.number, l)
                         link_skip += 1  # count them
                         continue
                     pout.insert_link(l)  # simply output the others
@@ -126,7 +122,7 @@ class Batch_PDFType():
             pdf.save(output_file, garbage=4, deflate=True)
             # say how many named links we skipped
             if link_cnti > 0:
-                print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
+                logger.info("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
     # 删除指定页面
     def del4pdf(self, page_nums, input_path=None, output_path=None):

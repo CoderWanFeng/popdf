@@ -78,12 +78,28 @@ class TestPDF(unittest.TestCase):
 
     def test_split4pdf(self):
         split4pdf(
-            input_file=r'../test_files/split4pdf/程序员晚枫.pdf',
-            from_page=1,
+            input_file=r'../test_files/split4pdf/merge2pdf.pdf',
+            from_page=2,
+            to_page=3,
             output_file=r'../test_files/split4pdf/split4pdf.pdf'
         )
 
+    def test_batch_split4pdf(self):
+        split4pdf(
+            input_path=r'../test_files/split4pdf',
+            from_page=2,
+            to_page=3,
+            output_path=r'../test_files/split4pdf/out'
+        )
+
     def test_encrypt4pdf(self):
+        encrypt4pdf(
+            input_file=r'../test_files/pdf/程序员晚枫.pdf',
+            password='123456',
+            output_file=r'./test_files/pdf/encrypt4pdf.pdf'
+        )
+
+    def test_batch_encrypt4pdf(self):
         encrypt4pdf(
             input_file=r'../test_files/pdf/程序员晚枫.pdf',
             password='123456',
@@ -120,6 +136,7 @@ class TestPDF(unittest.TestCase):
             password='123456',
             output_path=r'./test_files/decrypt4pdf/target'
         )
+
     # 参数异常
     def test_decrypt4pdf4(self):
         decrypt4pdf(
@@ -128,20 +145,18 @@ class TestPDF(unittest.TestCase):
             output_path=None
         )
 
-
-
     def test_add_text_watermark(self):
         add_text_watermark(input_file=r'../test_files/pdf/程序员晚枫.pdf', point=(50, 50),
                            output_file=r'./test_files/pdf/add_text_watermark.pdf')
 
     def test_merge2pdf(self):
         merge2pdf(
-            input_file_list=[r'./test_files/pdf/程序员晚枫.pdf', r'./test_files/pdf/程序员晚枫.pdf'],
-            output_file=r'./test_files/pdf/merge2pdf.pdf'
+            input_file_list=[r'../test_files/merge/程序员晚枫.pdf', r'../test_files/merge/程序员晚枫（作品合集）.pdf'],
+            output_file=r'../test_files/merge/merge2pdf.pdf'
         )
 
     def test_del4pdf(self):
-        del_pdf=r'../test_files/del4pdf/程序员晚枫.pdf'
+        del_pdf = r'../test_files/del4pdf/程序员晚枫.pdf'
         del4pdf(
             input_file=del_pdf,
             page_nums=[3],
@@ -149,7 +164,7 @@ class TestPDF(unittest.TestCase):
         )
 
     def test_del4pdf_batch(self):
-        del_pdf=r'../test_files/del4pdf/'
+        del_pdf = r'../test_files/del4pdf/'
         del4pdf(
             input_path=del_pdf,
             page_nums=[2],

@@ -17,10 +17,9 @@ from poprogress import simple_progress
 from popdf.lib.del4pdf_utils import del_page
 from popdf.lib.pdf import add_watermark_service
 from popdf.lib.pdf2docx_utils import third_convert
-from popdf.lib.split4pdf_utils import split_for_pdf
 from popdf.lib.pdf2imgs_utils import pdf_to_merge_image, pdf_to_images
+from popdf.lib.split4pdf_utils import split_for_pdf
 
-import os
 
 class MainPDF():
     def __init__(self):
@@ -45,7 +44,7 @@ class MainPDF():
         if not (list(map(int, pymupdf.VersionBind.split("."))) >= [1, 14, 0]):
             raise SystemExit("need PyMuPDF v1.14.0+")
 
-        print("Converting '%s' to '%s.pdf'" % (input_file, output_file))
+        logger.info("Converting '%s' to '%s.pdf'" % (input_file, output_file))
 
         doc = pymupdf.open(input_file)
 
@@ -73,7 +72,7 @@ class MainPDF():
             pout = pdf[pinput.number]  # read corresp. output page
             for l in links:  # iterate though the links
                 if l["kind"] == pymupdf.LINK_NAMED:  # we do not handle named links
-                    print("named link page", pinput.number, l)
+                    logger.info("named link page", pinput.number, l)
                     link_skip += 1  # count them
                     continue
                 pout.insert_link(l)  # simply output the others
@@ -82,7 +81,7 @@ class MainPDF():
         pdf.save(output_file, garbage=4, deflate=True)
         # say how many named links we skipped
         if link_cnti > 0:
-            print("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
+            logger.info("Skipped %i named links of a total of %i in input." % (link_skip, link_cnti))
 
     def split4pdf(self, input_file, output_file, from_page, to_page):
         """
@@ -101,9 +100,6 @@ class MainPDF():
         else:
             logger.error('输入文件路径无效')
             return False
-
-
-
 
     # PDF加密
     def encrypt4pdf(self, input_file, password, output_file, suffix='.pdf', input_path=None):
