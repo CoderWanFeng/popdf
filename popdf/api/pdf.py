@@ -111,8 +111,6 @@ def split4pdf(input_file=None, output_file=None, input_path=None, output_path=No
         logger.error("参数填写错误")
         return False
 
-# PDF加密
-# @except_dec()
 def encrypt4pdf(password, output_file, input_file=None, input_path=None):
     """
     加密pdf
@@ -122,7 +120,6 @@ def encrypt4pdf(password, output_file, input_file=None, input_path=None):
     mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file, input_path=input_path)
 
 
-# PDF解密
 # 20250408新增PDF批量解密解密,只支持input_path目录下的.pdf文件,不支持递归查找子文件夹
 # @except_dec()
 def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf',input_path=None, output_path=None):
