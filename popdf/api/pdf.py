@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import click
 from loguru import logger
 
 from popdf.core.Batch_PDFType import Batch_PDFType
@@ -9,6 +9,14 @@ mainPDF = MainPDF()
 batch_main_pdf = Batch_PDFType()
 
 
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+@click.argument('input_file', type=click.Path(exists=True), default=None)
+@click.argument('output_file', default=None)
 def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=None):
     """
     PDF转Word
@@ -111,6 +119,7 @@ def split4pdf(input_file=None, output_file=None, input_path=None, output_path=No
         logger.error("参数填写错误")
         return False
 
+
 def encrypt4pdf(password, output_file, input_file=None, input_path=None):
     """
     加密pdf
@@ -122,7 +131,7 @@ def encrypt4pdf(password, output_file, input_file=None, input_path=None):
 
 # 20250408新增PDF批量解密解密,只支持input_path目录下的.pdf文件,不支持递归查找子文件夹
 # @except_dec()
-def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf',input_path=None, output_path=None):
+def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf', input_path=None, output_path=None):
     """
     解密pdf
     文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
@@ -193,7 +202,6 @@ def merge2pdf(input_file_list, output_file):
 # ~ mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
-
 def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
     if input_file is not None and output_file is not None and page_nums is not None:
         mainPDF.del4pdf(page_nums=page_nums, input_file=input_file, output_file=output_file)
@@ -213,7 +221,6 @@ def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, outpu
 # @except_dec()
 def add_watermark():
     logger.warning("该功能已更新为：add_text_watermark")
-
 
 
 def add_img_water(pdf_file_in, pdf_file_mark, pdf_file_out):
