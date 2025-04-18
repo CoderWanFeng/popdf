@@ -192,14 +192,6 @@ def merge2pdf(input_file_list, output_file):
     mainPDF.merge2pdf(input_file_list, output_file)
 
 
-# @except_dec()
-# ~ def pdf2imgs(input_file, output_path, merge=False):
-# ~ """
-# ~ pdf转图片
-# ~ 文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
-# ~ 演示代码：
-# ~ """
-# ~ mainPDF.pdf2imgs(input_file, output_path, merge)
 
 
 def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
