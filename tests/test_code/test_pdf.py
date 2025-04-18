@@ -151,7 +151,7 @@ class TestPDF(unittest.TestCase):
 
     def test_add_text_watermark(self):
         add_text_watermark(input_file=r'../test_files/pdf/程序员晚枫.pdf', point=(50, 50),
-                           output_file=r'./test_files/pdf/add_text_watermark.pdf')
+                           output_file=r'../test_files/pdf/add_text_watermark.pdf')
 
     def test_merge2pdf(self):
         merge2pdf(

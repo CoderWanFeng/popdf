@@ -90,7 +90,7 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
     - lib：存放工具类、工具函数等。
 - tests：存放该项目的单元测试的代码，其中：
     - test_code：存放测试代码，**每新增/修改任一个函数，提交之前必须写单元测试**！
-    - test)files：存放测试文件，包括图片、Excel等。
+    - test_files：存放测试文件，包括图片、Excel等。
 - README.md、requirement.txt、setup等文件，一般不修改。
 
 
@@ -104,11 +104,11 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 
 ### 🧬贡献代码的步骤
 
-1. 在Gitee或者Github上fork项目到自己的repo
+1. 在Gitee/Github/GitCode上fork项目到自己的repo
 2. 把fork过去的项目也就是你的项目clone到你的本地
 3. 修改代码
 4. commit后push到自己的库
-5. 登录Gitee或Github在你首页可以看到一个 pull request 按钮，点击它，填写一些说明信息，然后提交到master分支即可。
+5. 登录Gitee/Github/GitCode在你首页可以看到一个 pull request 按钮，点击它，填写一些说明信息，然后提交到master/main分支即可。
 6. 等待程序员晚枫合并，＋微信说一声更好👉[CoderWanFeng](http://python4office.cn/wechat-qrcode/)
 
 -------------------------------------------------------------------------------
