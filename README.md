@@ -116,6 +116,7 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 ## 📕参考文档
 
 - [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/index.html)
+- [click](https://click.palletsprojects.com/en/stable/options/)
 - [python-office](https://www.python-office.com/)
 
 ## 📌联系作者
