@@ -15,8 +15,10 @@ def cli():
 
 
 @cli.command()
-@click.argument('input_file', type=click.Path(exists=True), default=None)
-@click.argument('output_file', default=None)
+@click.option('--input_file', default=None)
+@click.option('--output_file', default=None)
+@click.option('--input_path', default=None)
+@click.option('--output_path', default=None)
 def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=None):
     """
     PDF转Word
@@ -190,8 +192,6 @@ def merge2pdf(input_file_list, output_file):
     演示代码：
     """
     mainPDF.merge2pdf(input_file_list, output_file)
-
-
 
 
 def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
