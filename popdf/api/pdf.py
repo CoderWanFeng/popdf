@@ -11,7 +11,7 @@ batch_main_pdf = Batch_PDFType()
 
 @click.group()
 def cli():
-    pass
+    logger.info("popdf 命令行工具，查看帮助：popdf --help")
 
 
 @cli.command()
@@ -21,8 +21,7 @@ def cli():
 @click.option('--output_path', default=None)
 def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=None):
     """
-    PDF转Word
-    文档&视频：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/
+    PDF转Word 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/
     > version 1.0.1
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -50,8 +49,7 @@ def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=Non
 
 def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=None, merge=False):
     """
-    pdf批量转图片
-    文档&视频：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/
+    pdf批量转图片 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/
     > version 1.0.1
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -76,10 +74,14 @@ def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=Non
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/")
 
 
+@cli.command()
+@click.option('--input_file', default=None)
+@click.option('--output_file', default=None)
+@click.option('--input_path', default=None)
+@click.option('--output_path', default=None)
 def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_path=None):
     """
-    将文本文件转换为PDF文件。
-    文档&视频：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/
+    将文本文件转换为PDF文件。 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/
 
     Args:
         input_file (str): 输入的文本文件路径。
@@ -100,7 +102,7 @@ def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_pa
 
 def split4pdf(input_file=None, output_file=None, input_path=None, output_path=None, from_page=1, to_page=-1):
     """
-    截取目标页范围的 PDF
+    截取目标页范围的 PDF视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/4-split4pdf/
 
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -124,19 +126,21 @@ def split4pdf(input_file=None, output_file=None, input_path=None, output_path=No
 
 def encrypt4pdf(password, output_file, input_file=None, input_path=None):
     """
-    加密pdf
-    文档：https://blog.csdn.net/weixin_42321517/article/details/129963432
+    加密pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/
     演示代码：
     """
     mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file, input_path=input_path)
 
 
-# 20250408新增PDF批量解密解密,只支持input_path目录下的.pdf文件,不支持递归查找子文件夹
-# @except_dec()
+@cli.command()
+@click.option('--input_file', default=None)
+@click.option('--output_file', default=None)
+@click.option('--input_path', default=None)
+@click.option('--output_path', default=None)
+@click.option('--password', required=True, default=None)
 def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf', input_path=None, output_path=None):
     """
-    解密pdf
-    文档：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA
+    解密pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/6-decrypt4pdf/
     > version 1.0.1 ？
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -165,7 +169,7 @@ def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf', input
 def add_text_watermark(input_file, point, text='python-office',
                        output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
     """
-    在PDF文档中添加文本水印。
+    在PDF文档中添加文本水印。视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/7-add_text_watermark/
 
     Args:
         input_file (str): 要添加水印的PDF文件路径。
@@ -183,18 +187,18 @@ def add_text_watermark(input_file, point, text='python-office',
                           output_file, fontname, fontsize, color)
 
 
-# 合并pdf
-# @except_dec()
 def merge2pdf(input_file_list, output_file):
     """
-    合并pdf
-    文档：https://baijiahao.baidu.com/s?id=1733062611567959337
+    合并pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/
     演示代码：
     """
     mainPDF.merge2pdf(input_file_list, output_file)
 
 
 def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
+    """
+     删除pdf中的指定页码 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/
+    """
     if input_file is not None and output_file is not None and page_nums is not None:
         mainPDF.del4pdf(page_nums=page_nums, input_file=input_file, output_file=output_file)
     elif input_path is not None and output_path is not None and page_nums is not None:
@@ -206,11 +210,8 @@ def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, outpu
 
 ########################################### 下面是不推荐使用的 ###########################################
 
-# @except_dec()
-
 
 # 给pdf加水印-无参数
-# @except_dec()
 def add_watermark():
     logger.warning("该功能已更新为：add_text_watermark")
 
@@ -224,7 +225,6 @@ def add_img_water(pdf_file_in, pdf_file_mark, pdf_file_out):
 
 
 # 给pdf加水印-有参数
-# @except_dec()
 def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name) -> None:
     """
     必填参数：
@@ -237,7 +237,7 @@ def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_nam
 
 
 # 修改pdf文件的作者和时间-有参数
-# @except_dec()
+
 def add_watermark_by_parameters(pdf_file, mark_str, output_path, output_file_name) -> None:
     """
     必填参数：

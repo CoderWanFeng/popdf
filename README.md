@@ -26,7 +26,6 @@
 
 popdf 是python自动化办公之Excel操作的第三方库。
 
-来自于开源项目：python-office，[📘官网：https://www.python-office.com/](https://www.python-office.com/)。
 
 -------------------------------------------------------------------------------
 
