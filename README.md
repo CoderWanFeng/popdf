@@ -33,7 +33,6 @@ popdf 是python自动化办公之**PDF**操作的第三方库。
 
 ### 🍊pip 自动下载&更新
 
-
 #### 源码安装
 
 ```
@@ -44,11 +43,9 @@ cd popdf
 pip install -e .
 ```
 
-
 #### 源安装&更新
 
 我使用的是阿里云镜像。如果你的网络环境无法访问阿里云镜像，请自行更换为其他镜像。
-
 
 ```
 pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
@@ -60,24 +57,22 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 
 已有功能的说明如下：
 
-
-| 序号 | 功能        | 视频                                                  | 文档                                                                                             |
-| ---- | ----------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| 1    | 下载和安装  | 💻 [播放](https://www.bilibili.com/video/BV1BS9UYGEW7) | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/0-install)             |
-| 2    | PDF 转 Word | 💻 [播放](https://www.bilibili.com/video/BV1pB9UYSEoG) | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/)           |
-| 3    | PDF 转 图片 | 💻[播放](https://www.bilibili.com/video/BV19WRVYKEEY)  | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/)           |
-| 4    | TXT转PDF    | [播放](https://www.bilibili.com/video/BV1aCQ5YhEBm)   | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/)            |
-| 5    | 按页切割PDF | 💻[播放](https://www.bilibili.com/video/BV1PYQpY3E8z)  | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/4-split4pdf/)          |
-| 6    | PDF加密     | [播放](https://www.bilibili.com/video/BV1n1QPYJE61)   | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/)        |
-| 7    | PDF解密     | [播放](https://www.bilibili.com/video/BV11FQ6YdEU1)   | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/6-decrypt4pdf/)        |
-| 8    | PDF加水印   | [播放](https://www.bilibili.com/video/BV1x7QtYdEJt)   | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/7-add_text_watermark/) |
-| 9    | 合并PDF     | [播放](https://www.bilibili.com/video/BV1NNQhYaEVG)   | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/)          |
-| 10   | 删除PDF     | [播放](https://www.bilibili.com/video/BV1KPQhYAENX)   | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/9-del4pdf/)            |
+| 序号 | 功能         | 视频                                                   | 文档                                                                                             |
+|----|------------|------------------------------------------------------|------------------------------------------------------------------------------------------------|
+| 1  | 下载和安装      | 💻 [播放](https://www.bilibili.com/video/BV1BS9UYGEW7) | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/0-install)             |
+| 2  | PDF 转 Word | 💻 [播放](https://www.bilibili.com/video/BV1pB9UYSEoG) | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/)           |
+| 3  | PDF 转 图片   | 💻[播放](https://www.bilibili.com/video/BV19WRVYKEEY)  | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/)           |
+| 4  | TXT转PDF    | [播放](https://www.bilibili.com/video/BV1aCQ5YhEBm)    | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/)            |
+| 5  | 按页切割PDF    | 💻[播放](https://www.bilibili.com/video/BV1PYQpY3E8z)  | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/4-split4pdf/)          |
+| 6  | PDF加密      | [播放](https://www.bilibili.com/video/BV1n1QPYJE61)    | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/)        |
+| 7  | PDF解密      | [播放](https://www.bilibili.com/video/BV11FQ6YdEU1)    | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/6-decrypt4pdf/)        |
+| 8  | PDF加水印     | [播放](https://www.bilibili.com/video/BV1x7QtYdEJt)    | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/7-add_text_watermark/) |
+| 9  | 合并PDF      | [播放](https://www.bilibili.com/video/BV1NNQhYaEVG)    | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/)          |
+| 10 | 删除PDF      | [播放](https://www.bilibili.com/video/BV1KPQhYAENX)    | [查看](http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/9-del4pdf/)            |
 
 ## 🏗️添砖加瓦
 
 本项目欢迎任何人参与开发，如果是小白，可以看一下开发教程👉[如何参与开源项目？0基础入门：怎么打开GitHub？什么是issue？什么是PR？](https://www.bilibili.com/video/BV1EP411d7Np/?spm_id_from=333.999.0.0)
-
 
 #### 目录结构和pr要求如下：
 
@@ -91,7 +86,6 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
     - test_code：存放测试代码，**每新增/修改任一个函数，提交之前必须写单元测试**！
     - test_files：存放测试文件，包括图片、Excel等。
 - README.md、requirement.txt、setup等文件，一般不修改。
-
 
 ### 🐞提供bug反馈或建议
 
@@ -108,7 +102,7 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 3. 修改代码
 4. commit后push到自己的库
 5. 登录Gitee/Github/GitCode在你首页可以看到一个 pull request 按钮，点击它，填写一些说明信息，然后提交到master/main分支即可。
-6. 等待程序员晚枫合并，＋微信说一声更好👉[CoderWanFeng](http://python4office.cn/wechat-qrcode/)
+6. 等待程序员晚枫合并，＋微信说一声更好👉[python-office](http://python4office.cn/wechat-qrcode/)
 
 -------------------------------------------------------------------------------
 
@@ -117,6 +111,7 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 - [PyMuPDF](https://pymupdf.readthedocs.io/en/latest/index.html)
 - [click](https://click.palletsprojects.com/en/stable/options/)
 - [python-office](https://www.python-office.com/)
+- [pdf2docx](https://github.com/ArtifexSoftware/pdf2docx)
 
 ## 📌联系作者
 
