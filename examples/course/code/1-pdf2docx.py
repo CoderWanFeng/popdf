@@ -2,7 +2,7 @@
 '''
 @学习网站      ：https://www.python-office.com
 @读者群     ：http://www.python4office.cn/wechat-group/
-@作者  ：B站/抖音/微博/小红书/公众号，都叫：程序员晚枫，微信：CoderWanFeng
+@作者  ：B站/抖音/微博/小红书/公众号，都叫：程序员晚枫，微信：python-office
 @代码日期    ：2025/1/20 21:56
 @本段代码的视频说明     ：
 '''
@@ -11,8 +11,8 @@
 import popdf
 
 popdf.pdf2docx(
-    input_file=r'test_files/pdf/程序员晚枫.pdf',
-    output_path=r'test_files/doc/'
+    input_file=r'D:\workplace\BaiduNetdiskWorkspace\test\测试文件夹\02-03目录.pdf',
+    output_file=r'D:\workplace\code\gitcode\popdf\examples\course\code\test_files\doc\0203.docx'
 )
 
 # import poword

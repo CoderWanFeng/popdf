@@ -14,11 +14,6 @@ def cli():
     logger.info("popdf 命令行工具，查看帮助：popdf --help")
 
 
-@cli.command()
-@click.option('--input_file', default=None)
-@click.option('--output_file', default=None)
-@click.option('--input_path', default=None)
-@click.option('--output_path', default=None)
 def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=None):
     """
     PDF转Word 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/
