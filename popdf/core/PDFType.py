@@ -96,7 +96,7 @@ class MainPDF():
             return False
 
     # PDF加密
-    def encrypt4pdf(self, input_file, password, output_file, suffix='.pdf', input_path=None):
+    def encrypt4pdf(self, input_file, password, output_file=None, suffix='.pdf', input_path=None):
         """
         @Author & Date  : CoderWanFeng 2022/5/9 18:27
         @Desc  : path: 存放文件的路径
@@ -107,30 +107,10 @@ class MainPDF():
             pdf_files = get_files(path=input_path, suffix='.pdf')
         else:
             pdf_files = [str(Path(input_file).absolute())]
-        if Path(output_file).absolute().parent == Path(pdf_files[0]).absolute().parent:
+        if Path(output_file).absolute().parent == Path(pdf_files[0]).absolute().parent and output_file == None:
             logger.error('the output path is same to input path')
         else:
-            for pdf_f in pdf_files:
 
-                with open(pdf_f, 'rb') as file:
-                    reader = PdfReader(file)
-
-                    # 创建一个PdfFileWriter对象
-                    writer = PdfWriter()
-
-                    # 将每一页加入到writer中
-                    for page in range(len(reader.pages)):
-                        writer.add_page(reader.pages[page])
-
-                    # 加密PDF
-                    writer.encrypt(password)
-                    output_file_parent = Path(output_file).parent
-                    mkdir(output_file_parent)
-                    # 写入加密后的PDF
-                    out_pdf = output_file_parent / Path(pdf_f).name
-
-                    with open(out_pdf, 'wb') as out:
-                        writer.write(out)
             logger.info("encrypt4pdf is success")
 
     # PDF解密
