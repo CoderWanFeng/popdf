@@ -9,6 +9,7 @@ from pofile import get_files, mkdir
 from poprogress import simple_progress
 
 from popdf.lib.del4pdf_utils import del_page
+from popdf.lib.encrypt4pdf_utils import encrypt_single_pdf, encrypt_batch_pdf
 from popdf.lib.pdf import add_watermark_service
 from popdf.lib.pdf2docx_utils import third_convert
 from popdf.lib.pdf2imgs_utils import pdf_to_merge_image, pdf_to_images
@@ -96,22 +97,14 @@ class MainPDF():
             return False
 
     # PDF加密
-    def encrypt4pdf(self, input_file, password, output_file=None, suffix='.pdf', input_path=None):
-        """
-        @Author & Date  : CoderWanFeng 2022/5/9 18:27
-        @Desc  : path: 存放文件的路径
-                password: 你的密码
-                res_pdf: 结果文件的名称 ，可以为空，默认是：encrypt.pdf
-        """
-        if input_path:
-            pdf_files = get_files(path=input_path, suffix='.pdf')
+    def encrypt4pdf(self, password, suffix='.pdf', input_file=None, output_file=None, input_path=None,
+                    output_path=None):
+        if input_file:
+            encrypt_single_pdf(input_file, output_file, password)
+        elif input_path:
+            encrypt_batch_pdf(input_path, output_path, password)
         else:
-            pdf_files = [str(Path(input_file).absolute())]
-        if Path(output_file).absolute().parent == Path(pdf_files[0]).absolute().parent and output_file == None:
-            logger.error('the output path is same to input path')
-        else:
-
-            logger.info("encrypt4pdf is success")
+            logger.error("input file/path is None")
 
     # PDF解密
     def decrypt4pdf(self, input_file, password, output_file='decrypt.pdf'):
