@@ -124,8 +124,6 @@ def encrypt4pdf(password, output_file=None, input_file=None, input_path=None, ou
     加密pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/
     演示代码：
     """
-    if input_file is not None and output_file is not None:
-
     mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file, input_path=input_path)
 
 

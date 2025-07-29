@@ -100,7 +100,7 @@ class TestPDF(unittest.TestCase):
         encrypt4pdf(
             input_file=r'../test_files/pdf/程序员晚枫.pdf',
             password='123456',
-            output_file=r'./test_files/pdf/encrypt4pdf.pdf'
+            output_file=r'../test_files/pdf/encrypt4pdf.pdf'
         )
 
     def test_batch_encrypt4pdf(self):

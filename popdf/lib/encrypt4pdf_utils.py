@@ -60,6 +60,7 @@ def encrypt_single_pdf(input_file, output_file, password):
     if output_file == None:
         logger.error("请填写输出文件名和路径")
     else:
+        output_file = Path(output_file).absolute()
         with open(input_file, 'rb') as file:
             reader = PdfReader(file)
 
