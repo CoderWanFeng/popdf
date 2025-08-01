@@ -5,7 +5,7 @@ from pathlib import Path
 import pymupdf  # fitz就是pip install PyMuPDF
 from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
 from loguru import logger
-from pofile import get_files, mkdir
+from pofile import mkdir
 from poprogress import simple_progress
 
 from popdf.lib.del4pdf_utils import del_page

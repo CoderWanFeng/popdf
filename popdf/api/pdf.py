@@ -119,12 +119,13 @@ def split4pdf(input_file=None, output_file=None, input_path=None, output_path=No
         return False
 
 
-def encrypt4pdf(password, output_file=None, input_file=None, input_path=None, output_path=None):
+def encrypt4pdf(password, input_file=None, output_file=None, input_path=None, output_path=None):
     """
     加密pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/
     演示代码：
     """
-    mainPDF.encrypt4pdf(input_file=input_file, password=password, output_file=output_file, input_path=input_path)
+    mainPDF.encrypt4pdf(password=password, input_file=input_file, output_file=output_file, input_path=input_path,
+                        output_path=output_path)
 
 
 @cli.command()

@@ -23,12 +23,15 @@ def encrypt_batch_pdf(input_path, output_path, password):
     :return: None
     """
     pdf_files = get_files(path=input_path, suffix='.pdf')
+    if pdf_files == None:
+        logger.error("没有找到PDF文件")
+        return
     if output_path != None:
         mkdir(output_path)
     else:
         output_path = input_path
+    output_path = Path(output_path).absolute()
     for pdf_f in pdf_files:
-
         with open(pdf_f, 'rb') as file:
             reader = PdfReader(file)
 

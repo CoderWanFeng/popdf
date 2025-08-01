@@ -3,9 +3,6 @@ import unittest
 
 from popdf.api.pdf import *
 from popdf.api.pdf import split4pdf
-from loguru import logger
-
-
 
 
 class TestPDF(unittest.TestCase):
@@ -96,7 +93,7 @@ class TestPDF(unittest.TestCase):
             output_path=r'../test_files/split4pdf/out'
         )
 
-    def test_encrypt4pdf(self):
+    def test_single_encrypt4pdf(self):
         encrypt4pdf(
             input_file=r'../test_files/pdf/程序员晚枫.pdf',
             password='123456',
@@ -105,9 +102,9 @@ class TestPDF(unittest.TestCase):
 
     def test_batch_encrypt4pdf(self):
         encrypt4pdf(
-            input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            password='123456',
-            output_file=r'./test_files/pdf/encrypt4pdf.pdf'
+            input_path=r'../test_files/pdf',
+            output_path=r'../test_files/encrypt4pdf/pdf',
+            password='123456'
         )
 
     def test_decrypt4pdf(self):
@@ -207,10 +204,12 @@ class TestPDF(unittest.TestCase):
 # 当前脚本所在目录
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
+
 class TestOCR(unittest.TestCase):
     """
     pdf.py测试用的代码
     """
+
     def test_split4pdf(self):
         input_file = os.path.abspath(os.path.join(base_dir, '..', '..', 'tests', 'test_files', 'pdf', '程序员晚枫.pdf'))
         output_file = os.path.abspath(os.path.join(base_dir, '..', '..', 'tests', 'test_files', 'pdf', 'split4pdf.pdf'))
@@ -240,4 +239,3 @@ class TestOCR(unittest.TestCase):
 
         # 添加断言
         self.assertTrue(r)
-
