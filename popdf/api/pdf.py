@@ -69,11 +69,6 @@ def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=Non
             "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/")
 
 
-@cli.command()
-@click.option('--input_file', default=None)
-@click.option('--output_file', default=None)
-@click.option('--input_path', default=None)
-@click.option('--output_path', default=None)
 def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_path=None):
     """
     将文本文件转换为PDF文件。 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/
