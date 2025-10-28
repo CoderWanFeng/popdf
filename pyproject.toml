@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "popdf"
+version = "1.0.7"
+description = "pip install popdf"
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
+authors = [{ name = "CoderWanFeng", email = "1957875073@qq.com" }]
+
+dependencies = [
+  "PyPDF2",
+  "pdf2docx",
+  "PyMuPDF",
+  "poprogress",
+  "pofile",
+  "loguru",
+  "pillow",
+  "click",
+]
+
+[project.urls]
+Homepage = "https://www.python-office.com/"
+"Bug Tracker" = "https://github.com/CoderWanFeng/popdf/issues"
+Documentation = "http://www.python-office.com/course-002/10-popdf/10-popdf.html"
+"Source Code" = "https://github.com/CoderWanFeng/popdf"
+
+[project.scripts]
+popdf = "popdf.api.pdf:cli"
+
+[tool.uv]
+dev-dependencies = ["pytest>=7"]
