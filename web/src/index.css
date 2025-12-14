@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border border-white/20 dark:border-slate-700/50;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 
+           text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 
+           shadow-lg hover:shadow-xl active:scale-95;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/60 dark:bg-slate-700/60 hover:bg-white/80 dark:hover:bg-slate-600/80 
+           text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 
+           font-medium py-2 px-4 rounded-lg transition-all duration-200 
+           shadow-md hover:shadow-lg active:scale-95;
+  }
+  
+  .card {
+    @apply glass-effect rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 bg-white/50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 
+           rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent 
+           transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-500;
+  }
+}
+
+/* PDF Viewer 自定义样式 */
+.react-pdf__Page {
+  @apply shadow-lg rounded-lg overflow-hidden;
+}
+
+.react-pdf__Page__canvas {
+  @apply max-w-full h-auto;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 dark:bg-slate-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-slate-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-500;
+}
+
+/* 动画效果 */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
