@@ -25,7 +25,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://www.python-office.com/"
 "Bug Tracker" = "https://github.com/CoderWanFeng/popdf/issues"
-Documentation = "http://www.python-office.com/course-002/10-popdf/10-popdf.html"
+Documentation = "https://www.python-office.com/course-002/10-popdf/10-popdf.html"
 "Source Code" = "https://github.com/CoderWanFeng/popdf"
 
 [project.scripts]
