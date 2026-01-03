@@ -10,8 +10,8 @@
   <a target="_blank" href='https://github.com/CoderWanFeng/popdf'>
     <img src="https://img.shields.io/github/stars/CoderWanFeng/popdf.svg?style=social" alt="github star"/>
     </a>
-        <a target="_blank" href='https://gitcode.com/python4office/popdf'>
-		<img src='https://gitcode.com/python4office/popdf/star/badge.svg?theme=dark' alt='gitcode star'/>
+        <a target="_blank" href='https://atomgit.com/python4office/popdf'>
+		<img src='https://atomgit.com/python4office/popdf/star/badge.svg?theme=dark' alt='atomgit star'/>
 	</a>
  <a target="_blank" href='https://github.com/CoderWanFeng/popdf'>
 <img src="https://static.pepy.tech/badge/popdf" alt="PyPI Downloads">
@@ -36,7 +36,7 @@ popdf 是python自动化办公之**PDF**操作的第三方库。
 #### 源码安装
 
 ```
-git clone https://gitcode.com/python4office/popdf.git
+git clone https://atomgit.com/python4office/popdf.git
 
 cd popdf
 
@@ -93,15 +93,15 @@ pip install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
 
 - [Github issue](https://github.com/CoderWanFeng/popdf/issues)
 - [gitee issue](https://gitee.com/CoderWanFeng/popdf/issues)
-- [GitCode issue](https://gitcode.com/python4office/popdf/issues)
+- [atomgit issue](https://atomgit.com/python4office/popdf/issues)
 
 ### 🧬贡献代码的步骤
 
-1. 在Gitee/Github/GitCode上fork项目到自己的repo
+1. 在Gitee/Github/atomgit上fork项目到自己的repo
 2. 把fork过去的项目也就是你的项目clone到你的本地
 3. 修改代码
 4. commit后push到自己的库
-5. 登录Gitee/Github/GitCode在你首页可以看到一个 pull request 按钮，点击它，填写一些说明信息，然后提交到master/main分支即可。
+5. 登录Gitee/Github/atomgit在你首页可以看到一个 pull request 按钮，点击它，填写一些说明信息，然后提交到master/main分支即可。
 6. 等待程序员晚枫合并，＋微信说一声更好👉[python-office](http://python4office.cn/wechat-qrcode/)
 
 -------------------------------------------------------------------------------

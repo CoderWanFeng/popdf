@@ -29,7 +29,7 @@ pdf2docx==0.5.8
 pillow==11.2.1
 pluggy==1.5.0
 pofile==0.1.5
-popdf @ file:///D:/workplace/code/gitcode/popdf
+popdf @ file:///D:/workplace/code/atomgit/popdf
 poprogress==0.0.2
 psutil==7.0.0
 pycryptodome==3.22.0

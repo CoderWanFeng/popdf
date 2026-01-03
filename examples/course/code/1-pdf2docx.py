@@ -12,7 +12,7 @@ import popdf
 
 popdf.pdf2docx(
     input_file=r'D:\workplace\BaiduNetdiskWorkspace\test\测试文件夹\02-03目录.pdf',
-    output_file=r'D:\workplace\code\gitcode\popdf\examples\course\code\test_files\doc\0203.docx'
+    output_file=r'D:\workplace\code\atomgit\popdf\examples\course\code\test_files\doc\0203.docx'
 )
 
 # import poword
