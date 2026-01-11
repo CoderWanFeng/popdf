@@ -1,6 +1,6 @@
 from popdf.api.pdf import *
 
-__version__ = '1.0.7'
+__version__ = '1.0.8'
 __author__ = '程序员晚枫'
 __license__ = 'MIT'
 __url__ = 'https://www.python-office.com/office/pdf.html'

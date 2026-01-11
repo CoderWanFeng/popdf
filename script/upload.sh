@@ -1,5 +1,8 @@
 rm -rf ./dist/* ./build/*
-python setup.py sdist
-python setup.py bdist_wheel
-twine upload dist/*
+
+# 从 .pypirc 读取 token
+TOKEN=$(grep -A2 '\[pypi\]' ~/.pypirc | grep password | sed 's/.*= *//')
+
+uv build
+uv publish --token "$TOKEN"
 

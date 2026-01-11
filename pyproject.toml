@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "popdf"
-version = "1.0.7"
+version = "1.0.8"
 description = "pip install popdf"
 readme = "README.md"
 requires-python = ">=3.7"
@@ -12,7 +12,7 @@ license = { file = "LICENSE" }
 authors = [{ name = "CoderWanFeng", email = "1957875073@qq.com" }]
 
 dependencies = [
-  "PyPDF2",
+  "pypdf",
   "pdf2docx",
   "PyMuPDF",
   "poprogress",
