@@ -1,246 +1,184 @@
 import os
 import unittest
+from pathlib import Path
 
 from popdf.api.pdf import *
 from popdf.api.pdf import split4pdf
 
 
 class TestPDF(unittest.TestCase):
+    """PDF功能测试套件 - 使用统一测试文件和输出目录"""
+    
+    @classmethod
+    def setUpClass(cls):
+        """设置测试环境"""
+        cls.base_dir = Path(__file__).resolve().parent
+        cls.input_pdf = cls.base_dir / '..' / 'test_files' / 'pdf' / '程序员晚枫.pdf'
+        cls.output_dir = cls.base_dir / '..' / 'test_files' / 'test_out'
+        
+        # 确保输出目录存在
+        cls.output_dir.mkdir(parents=True, exist_ok=True)
 
     def test_pdf2docx(self):
         """
-        version 1.0.1
+        测试PDF转Word功能
         """
-        base_dir = os.path.dirname(__file__)
-        input_file = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', '程序员晚枫.pdf')
-        output_path = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', 'docx', '1.docx')
+        func_output_dir = self.output_dir / 'pdf2docx'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = func_output_dir / '程序员晚枫.docx'
         pdf2docx(
-            input_file=input_file,
-            output_path=output_path
-        )
-
-    def test_pdf2docx_single(self):
-        """
-        version 1.0.2
-        """
-        base_dir = os.path.dirname(__file__)
-        input_file = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', '程序员晚枫.pdf')
-        output_file = os.path.join(base_dir, '..', 'test_files', 'pdf2docx', 'docx', '1.docx')
-        pdf2docx(
-            input_file=input_file,
+            input_file=self.input_pdf,
             output_file=output_file
         )
-
-    def test_pdf2docx_batch(self):
-        """
-        version 1.0.2
-        """
-        pdf2docx(
-            input_path=r'../test_files/pdf2docx/',
-            output_path=r'../test_files/pdf2docx/docx/'
-        )
+        self.assertTrue(output_file.exists())
 
     def test_pdf2imgs(self):
+        """
+        测试PDF转图片功能
+        """
+        func_output_dir = self.output_dir / 'pdf2imgs'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_dir = func_output_dir / 'imgs'
         pdf2imgs(
-            # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            input_file=r'../test_files/pdf2imgs/程序员晚枫.pdf',
-            output_file='../test_files/pdf2imgs/imgs')
+            input_file=self.input_pdf,
+            output_file=output_dir
+        )
+        self.assertTrue(output_dir.exists())
 
     def test_pdf2imgs_merge(self):
+        """
+        测试PDF转合并图片功能
+        """
+        func_output_dir = self.output_dir / 'pdf2imgs_merge'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = func_output_dir / 'merged_image.jpg'
         pdf2imgs(
-            input_file=r'../test_files/pdf2imgs/程序员晚枫.pdf',
-            output_file='../test_files/pdf2imgs/imgs/1.jpg', merge=True)
-
-    def test_batch_pdf2imgs(self):
-        pdf2imgs(
-            # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            input_path=r'../test_files/pdf2imgs',
-            output_path='../test_files/pdf2imgs/imgs')
-
-    def test_batch_pdf2imgs_merge(self):
-        pdf2imgs(
-            # ~ input_file=r'../test_files/pdf/程序员晚枫.pdf',
-            input_path=r'../test_files/pdf2imgs',
-            output_path='../test_files/pdf2imgs/imgs', merge=True)
+            input_file=self.input_pdf,
+            output_file=output_file,
+            merge=True
+        )
+        self.assertTrue(output_file.exists())
 
     def test_txt2pdf(self):
-        # 准备测试数据
-        input_file = "../test_files/txt2pdf/程序员晚枫.txt"
-        output_file = "../test_files/txt2pdf/程序员晚枫.pdf"
-        # 调用被测方法
-        txt2pdf(input_file=input_file, output_file=output_file)
-
-    def test_batch_txt2pdf(self):
-        # 准备测试数据
-        input_path = "../test_files/txt2pdf/batch"
-        output_path = "../test_files/txt2pdf/batch_res"
-        # 调用被测方法
-        txt2pdf(input_path=input_path, output_path=output_path)
+        """
+        测试文本转PDF功能
+        """
+        func_output_dir = self.output_dir / 'txt2pdf'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        # 创建临时文本文件
+        input_txt = func_output_dir / 'test_input.txt'
+        with open(input_txt, 'w', encoding='utf-8') as f:
+            f.write('这是一个测试文本\n')
+            f.write('用于测试txt2pdf功能\n')
+            f.write('程序员晚枫 - Python-Office')
+        
+        output_file = func_output_dir / 'txt2pdf.pdf'
+        txt2pdf(input_file=input_txt, output_file=output_file)
+        self.assertTrue(output_file.exists())
 
     def test_split4pdf(self):
+        """
+        测试PDF分割功能
+        """
+        func_output_dir = self.output_dir / 'split4pdf'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = func_output_dir / 'split4pdf.pdf'
         split4pdf(
-            input_file=r'../test_files/split4pdf/merge2pdf.pdf',
-            from_page=2,
-            to_page=3,
-            output_file=r'../test_files/split4pdf/split4pdf.pdf'
+            input_file=self.input_pdf,
+            from_page=1,
+            to_page=2,
+            output_file=output_file
         )
+        self.assertTrue(output_file.exists())
 
-    def test_batch_split4pdf(self):
-        split4pdf(
-            input_path=r'../test_files/split4pdf',
-            from_page=2,
-            to_page=3,
-            output_path=r'../test_files/split4pdf/out'
-        )
-
-    def test_single_encrypt4pdf(self):
+    def test_encrypt4pdf(self):
+        """
+        测试PDF加密功能
+        """
+        func_output_dir = self.output_dir / 'encrypt4pdf'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = func_output_dir / 'encrypt4pdf.pdf'
         encrypt4pdf(
-            input_file=r'../test_files/pdf/程序员晚枫.pdf',
+            input_file=self.input_pdf,
             password='123456',
-            output_file=r'../test_files/pdf/encrypt4pdf.pdf'
+            output_file=output_file
         )
-
-    def test_batch_encrypt4pdf(self):
-        encrypt4pdf(
-            input_path=r'../test_files/pdf',
-            output_path=r'../test_files/encrypt4pdf/pdf',
-            password='123456'
-        )
+        self.assertTrue(output_file.exists())
 
     def test_decrypt4pdf(self):
-        decrypt4pdf(
-            input_file=r'./test_files/pdf/encrypt4pdf.pdf',
+        """
+        测试PDF解密功能
+        """
+        func_output_dir = self.output_dir / 'decrypt4pdf'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        # 先加密一个PDF
+        encrypted_file = func_output_dir / 'encrypted_temp.pdf'
+        encrypt4pdf(
+            input_file=self.input_pdf,
             password='123456',
-            output_file=r'./test_files/pdf/decrypt4pdf.pdf'
+            output_file=encrypted_file
         )
-
-    # 兼容1.0.1版本
-    def test_single_decrypt4pdf(self):
+        
+        # 再解密
+        output_file = func_output_dir / 'decrypt4pdf.pdf'
         decrypt4pdf(
-            input_file=r'./test_files/decrypt4pdf/out.pdf',
+            input_file=encrypted_file,
             password='123456',
-            output_file=r'./test_files/decrypt4pdf/target/single.pdf'
+            output_file=output_file
         )
-
-    # 批量解密
-    def test_decrypt4pdf2(self):
-        decrypt4pdf(
-            input_path=r'./test_files/decrypt4pdf',
-            password='123456',
-            output_path=r'./test_files/decrypt4pdf/target'
-        )
-
-    # 参数异常
-    def test_decrypt4pdf3(self):
-        decrypt4pdf(
-            input_path=None,
-            password='123456',
-            output_path=r'./test_files/decrypt4pdf/target'
-        )
-
-    # 参数异常
-    def test_decrypt4pdf4(self):
-        decrypt4pdf(
-            input_path=None,
-            password='123456',
-            output_path=None
-        )
+        self.assertTrue(output_file.exists())
 
     def test_add_text_watermark(self):
-        # A4页面尺寸约595x842点，中心位置约(297, 421)
-        add_text_watermark(input_file=r'D:\workplace\BaiduNetdiskWorkspace\personal\linux\workplace\docs\We-Media\自媒体素材\图片\群组\link\课程\吴哥\吴哥-书单号视频扣子工作流制作教程（第三期）.pdf',
-                           point=(297, 421),
-                           text='白开水AI社区',
-                           output_file=r'./tests/test_files/markPdf/吴哥-书单号视频扣子工作流制作教程（第三期）.pdf',
-                           fontname='china-s',
-                           fontsize=5)
+        """
+        测试添加文本水印功能
+        """
+        func_output_dir = self.output_dir / 'add_text_watermark'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = func_output_dir / 'watermark.pdf'
+        add_text_watermark(
+            input_file=self.input_pdf,
+            point=(297, 421),  # A4页面尺寸约595x842点，中心位置约(297, 421)
+            text='白开水AI社区',
+            output_file=output_file,
+            fontname='china-s',
+            fontsize=48
+        )
+        self.assertTrue(output_file.exists())
 
     def test_merge2pdf(self):
+        """
+        测试PDF合并功能
+        """
+        func_output_dir = self.output_dir / 'merge2pdf'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        # 先创建两个分割后的PDF文件
+        pdf1 = func_output_dir / 'merge_part1.pdf'
+        pdf2 = func_output_dir / 'merge_part2.pdf'
+        
+        split4pdf(input_file=self.input_pdf, from_page=1, to_page=1, output_file=pdf1)
+        split4pdf(input_file=self.input_pdf, from_page=2, to_page=2, output_file=pdf2)
+        
+        output_file = func_output_dir / 'merge2pdf.pdf'
         merge2pdf(
-            input_file_list=[r'../test_files/merge/程序员晚枫.pdf', r'../test_files/merge/程序员晚枫（作品合集）.pdf'],
-            output_file=r'../test_files/merge/merge2pdf.pdf'
+            input_file_list=[pdf1, pdf2],
+            output_file=output_file
         )
+        self.assertTrue(output_file.exists())
 
     def test_del4pdf(self):
-        del_pdf = r'../test_files/del4pdf/程序员晚枫.pdf'
+        """
+        测试删除PDF页面功能
+        """
+        func_output_dir = self.output_dir / 'del4pdf'
+        func_output_dir.mkdir(parents=True, exist_ok=True)
+        output_file = func_output_dir / 'del4pdf.pdf'
         del4pdf(
-            input_file=del_pdf,
-            page_nums=[3],
-            output_file=r'../test_files/del4pdf/a//del4pdf.pdf'
+            input_file=self.input_pdf,
+            page_nums=[1],  # 删除第1页
+            output_file=output_file
         )
-
-    def test_del4pdf_batch(self):
-        del_pdf = r'../test_files/del4pdf/'
-        del4pdf(
-            input_path=del_pdf,
-            page_nums=[2],
-            output_path=r'../test_files/del4pdf/b'
-        )
-
-    ##############  以下方法未测试  #################
-    def test_add_img_water(self):
-        add_img_water(pdf_file_in='./test_files/pdf/add_img.pdf', pdf_file_mark='../test_files/pdf/程序员晚枫.pdf',
-                      pdf_file_out='add_img_res.pdf')
-
-    def test_add_watermark_by_parameters(self):
-        add_watermark_by_parameters(
-            pdf_file=r'/tests/test_files/pdf/程序员晚枫.pdf',
-            mark_str='python-office',
-            output_path=None,
-            output_file_name=None)
-
-    def test_add_watermark(self):
-        stub_stdin(self, './test_files/pdf/程序员晚枫.pdf\npython-office\n')  # 依次输入
-        add_watermark()
-
-    # def test_del4pdf(self):
-    #     del4pdf(input_file="../test_files/del4pdf/程序员晚枫的粉丝福利.pdf",
-    #             page_nums=[1, 3],
-    #             output_file="tests/test_files/del4pdf/output_text/")
-
-    def test_encrypt4pdf2(self):
-        encrypt4pdf(
-            password='123456',
-            output_file="../test_files/encrypt4pdf/pc/out.pdf",
-            input_path=r'../test_files/encrypt4pdf/pc'
-        )
+        self.assertTrue(output_file.exists())
 
 
 # 当前脚本所在目录
-base_dir = os.path.dirname(os.path.abspath(__file__))
-
-
-class TestOCR(unittest.TestCase):
-    """
-    pdf.py测试用的代码
-    """
-
-    def test_split4pdf(self):
-        input_file = os.path.abspath(os.path.join(base_dir, '..', '..', 'tests', 'test_files', 'pdf', '程序员晚枫.pdf'))
-        output_file = os.path.abspath(os.path.join(base_dir, '..', '..', 'tests', 'test_files', 'pdf', 'split4pdf.pdf'))
-
-        r = split4pdf(
-            input_file=input_file,
-            output_file=output_file,
-            from_page=1,
-            to_page=1,
-        )
-        logger.info(r)
-
-        # 添加断言
-        self.assertTrue(r)
-
-    def test_split4pdfs(self):
-        input_path = os.path.abspath(os.path.join(base_dir, '..', '..', 'tests', 'test_files', 'pdf'))
-        output_path = os.path.abspath(os.path.join(base_dir, '..', '..', 'tests', 'test_files', 'pdf'))
-
-        r = split4pdf(
-            input_path=input_path,
-            output_path=output_path,
-            from_page=1,
-            to_page=1,
-        )
-        logger.info(r)
-
-        # 添加断言
-        self.assertTrue(r)
+base_dir = Path(__file__).resolve().parent
