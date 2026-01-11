@@ -10,3 +10,6 @@ dist/
 *.egg-info
 .vscode/
 __pycache__
+
+# test files
+test_files/
