@@ -17,7 +17,7 @@ def main():
     """主函数"""
     try:
         # 检查依赖
-        required_packages = ["PySide6", "popdf", "pymupdf", "PyPDF2", "loguru", "pofile", "poprogress"]
+        required_packages = ["PySide6", "popdf", "pymupdf", "pypdf", "loguru", "pofile", "poprogress"]
         missing_packages = []
         
         for package in required_packages:

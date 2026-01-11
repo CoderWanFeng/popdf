@@ -1,6 +1,6 @@
 # # -*- coding: utf-8 -*-
 # import reportlab
-# from PyPDF2 import PdfFileWriter, PdfFileReader, PdfReader, PdfWriter
+# from pypdf import PdfFileWriter, PdfFileReader, PdfReader, PdfWriter
 # from poprogress import simple_progress
 # from reportlab.pdfgen import canvas
 # from reportlab.pdfbase.ttfonts import TTFont

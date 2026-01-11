@@ -148,12 +148,12 @@ class TestPDF(unittest.TestCase):
 
     def test_add_text_watermark(self):
         # A4页面尺寸约595x842点，中心位置约(297, 421)
-        add_text_watermark(input_file=r'D:\workplace\code\github\poppt\tests\ppt\test_ppt\test_output_pdf\晚枫-1211重庆.pdf',
+        add_text_watermark(input_file=r'D:\workplace\BaiduNetdiskWorkspace\personal\linux\workplace\docs\We-Media\自媒体素材\图片\群组\link\课程\吴哥\吴哥-书单号视频扣子工作流制作教程（第三期）.pdf',
                            point=(297, 421),
                            text='白开水AI社区',
-                           output_file=r'./tests/test_files/markPdf/从0到1学AI编程.pdf',
+                           output_file=r'./tests/test_files/markPdf/吴哥-书单号视频扣子工作流制作教程（第三期）.pdf',
                            fontname='china-s',
-                           fontsize=48)
+                           fontsize=5)
 
     def test_merge2pdf(self):
         merge2pdf(

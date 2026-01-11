@@ -22,7 +22,7 @@ def check_dependencies():
         subprocess.check_call([sys.executable, "-m", "pip", "install", "pyinstaller"])
     
     # 检查其他依赖
-    dependencies = ["PySide6", "popdf", "pymupdf", "PyPDF2", "loguru", "pofile", "poprogress"]
+    dependencies = ["PySide6", "popdf", "pymupdf", "pypdf", "loguru", "pofile", "poprogress"]
     for dep in dependencies:
         try:
             __import__(dep)

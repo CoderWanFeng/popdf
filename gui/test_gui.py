@@ -15,7 +15,7 @@ def test_gui():
     """测试 GUI 界面"""
     try:
         # 检查依赖
-        required_packages = ["PySide6", "popdf", "pymupdf", "PyPDF2", "loguru", "pofile", "poprogress"]
+        required_packages = ["PySide6", "popdf", "pymupdf", "pypdf", "loguru", "pofile", "poprogress"]
         missing_packages = []
         
         print("🔍 检查依赖包...")

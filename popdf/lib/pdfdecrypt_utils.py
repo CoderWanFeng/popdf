@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 
 
 # PDF解密

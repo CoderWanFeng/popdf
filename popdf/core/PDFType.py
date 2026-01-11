@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-import pymupdf  # fitz就是pip install PyMuPDF
-from PyPDF2 import PdfReader, PdfWriter  # PdfFileReader, PdfFileWriter,
+import pymupdf
+from pypdf import PdfReader, PdfWriter
 from loguru import logger
 from pofile import mkdir
 from poprogress import simple_progress

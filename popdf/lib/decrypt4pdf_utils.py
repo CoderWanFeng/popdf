@@ -8,7 +8,7 @@
 '''
 from pathlib import Path
 
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 from loguru import logger
 from pofile import get_files, mkdir
 
