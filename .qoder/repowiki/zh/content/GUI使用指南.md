@@ -15,7 +15,7 @@
 ## 更新摘要
 **变更内容**
 - 将文档中所有HTTP链接更新为HTTPS链接，确保用户访问安全的文档地址。
-- 更新了功能文档链接，从`http://www.python4office.cn`改为`https://www.python4office.cn`。
+- 更新了功能文档链接，从`https://www.python4office.cn`改为`https://www.python4office.cn`。
 
 ## 目录
 1. [简介](#简介)

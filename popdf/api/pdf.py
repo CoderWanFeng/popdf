@@ -16,7 +16,7 @@ def cli():
 
 def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=None):
     """
-    PDF转Word 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/
+    PDF转Word 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/
     > version 1.0.1
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -39,12 +39,12 @@ def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=Non
         batch_main_pdf.pdf2docx(input_path=input_path, output_path=output_path)
     else:
         logger.error(
-            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/")
+            "参数填写错误，详见：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/1-pdf2docx/")
 
 
 def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=None, merge=False):
     """
-    pdf批量转图片 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/
+    pdf批量转图片 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/
     > version 1.0.1
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -66,12 +66,12 @@ def pdf2imgs(input_file=None, output_file=None, input_path=None, output_path=Non
         batch_main_pdf.pdf2imgs(input_path=input_path, output_path=output_path, merge=merge)
     else:
         logger.error(
-            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/")
+            "参数填写错误，详见：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/2-pdf2imgs/")
 
 
 def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_path=None):
     """
-    将文本文件转换为PDF文件。 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/
+    将文本文件转换为PDF文件。 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/
 
     Args:
         input_file (str): 输入的文本文件路径。
@@ -87,12 +87,12 @@ def txt2pdf(input_file: str = None, output_file=None, input_path=None, output_pa
         batch_main_pdf.txt2pdf(input_path=input_path, output_path=output_path)
     else:
         logger.error(
-            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
+            "参数填写错误，详见：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/3-txt2pdf/")
 
 
 def split4pdf(input_file=None, output_file=None, input_path=None, output_path=None, from_page=1, to_page=-1):
     """
-    截取目标页范围的 PDF视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/4-split4pdf/
+    截取目标页范围的 PDF视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/4-split4pdf/
 
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -116,7 +116,7 @@ def split4pdf(input_file=None, output_file=None, input_path=None, output_path=No
 
 def encrypt4pdf(password, input_file=None, output_file=None, input_path=None, output_path=None):
     """
-    加密pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/
+    加密pdf 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/5-encrypt4pdf/
     演示代码：
     """
     mainPDF.encrypt4pdf(password=password, input_file=input_file, output_file=output_file, input_path=input_path,
@@ -125,7 +125,7 @@ def encrypt4pdf(password, input_file=None, output_file=None, input_path=None, ou
 
 def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf', input_path=None, output_path=None):
     """
-    解密pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/6-decrypt4pdf/
+    解密pdf 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/6-decrypt4pdf/
     > version 1.0.1 ？
     Args:
         input_file: 输入的单个pdf的存储位置。
@@ -154,7 +154,7 @@ def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf', input
 def add_text_watermark(input_file, point, text='python-office',
                        output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
     """
-    在PDF文档中添加文本水印。视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/7-add_text_watermark/
+    在PDF文档中添加文本水印。视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/7-add_text_watermark/
 
     Args:
         input_file (str): 要添加水印的PDF文件路径。
@@ -174,7 +174,7 @@ def add_text_watermark(input_file, point, text='python-office',
 
 def merge2pdf(input_file_list, output_file):
     """
-    合并pdf 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/
+    合并pdf 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/
     演示代码：
     """
     mainPDF.merge2pdf(input_file_list, output_file)
@@ -182,7 +182,7 @@ def merge2pdf(input_file_list, output_file):
 
 def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, output_path=None):
     """
-     删除pdf中的指定页码 视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/
+     删除pdf中的指定页码 视频&文档：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/8-merge2pdf/
     """
     if input_file is not None and output_file is not None and page_nums is not None:
         mainPDF.del4pdf(page_nums=page_nums, input_file=input_file, output_file=output_file)
@@ -190,7 +190,7 @@ def del4pdf(page_nums, input_file=None, output_file=None, input_path=None, outpu
         batch_main_pdf.del4pdf(page_nums=page_nums, input_path=input_path, output_path=output_path)
     else:
         logger.error(
-            "参数填写错误，详见：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/9-del4pdf/")
+            "参数填写错误，详见：https://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/9-del4pdf/")
 
 
 ########################################### 下面是不推荐使用的 ###########################################
