@@ -9,8 +9,8 @@
 # pip install popdf
 import popdf
 
-popdf.add_text_watermark(input_file=r'test_files/pdf/程序员晚枫.pdf', point=(50, 50),
-                         output_file=r'./test_files/pdf/add_text_watermark.pdf')
+popdf.add_text_watermark(input_file=r'./wanfeng/Downloads/OpenClaw应用高级教程.pdf', point=(50, 50),
+                         output_file=r'./test_files/pdf/OpenClaw应用高级教程.pdf')
 """
 
 #### 参数说明

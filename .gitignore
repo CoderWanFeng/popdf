@@ -13,3 +13,6 @@ __pycache__
 
 # test files
 test_files/
+
+# system files
+*/.DS_Store
