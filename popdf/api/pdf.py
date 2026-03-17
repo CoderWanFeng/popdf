@@ -151,7 +151,7 @@ def decrypt4pdf(input_file=None, password=None, output_file='decrypt.pdf', input
         logger.error("参数填写错误，详见：https://mp.weixin.qq.com/s/GiXYB_xZdlsYv5AIeIELkA")
 
 
-def add_text_watermark(input_file, point, text='python-office',
+def add_text_watermark(input_file, point, text='www.python-office.com',
                        output_file='./pdf_watermark.pdf', fontname="Helvetica", fontsize=12, color=(1, 0, 0)) -> None:
     """
     在PDF文档中添加文本水印。视频&文档：http://www.python4office.cn/python-office/popdf/%E8%AF%BE%E7%A8%8B/7-add_text_watermark/
