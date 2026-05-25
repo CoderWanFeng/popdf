@@ -1,0 +1,7 @@
+2026-04-23_13-53-14_177  MiniMax-M2.7  step=0  msgs=2/1197tok  →  2981ms  tools=1 [list_directory]
+2026-04-23_13-53-17_161  MiniMax-M2.7  step=0  msgs=4/1277tok  →  3461ms  tools=2 [read_file, read_file]
+2026-04-23_13-53-20_632  MiniMax-M2.7  step=0  msgs=7/1889tok  →  12938ms  tools=0 text_only
+2026-04-23_13-54-56_911  MiniMax-M2.7  step=0  msgs=9/2321tok  →  4526ms  tools=1 [list_directory]
+2026-04-23_13-55-01_443  MiniMax-M2.7  step=0  msgs=11/2672tok  →  3986ms  tools=2 [read_file, read_file]
+2026-04-23_13-55-05_437  MiniMax-M2.7  step=0  msgs=14/5758tok  →  42368ms  tools=1 [edit_file]
+2026-04-23_13-55-47_872  MiniMax-M2.7  step=0  msgs=16/9015tok  →  12120ms  tools=0 text_only

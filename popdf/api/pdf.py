@@ -31,7 +31,7 @@ def pdf2docx(input_file=None, output_file=None, input_path=None, output_path=Non
     Returns:
 
     """
-    if input_file is not None and output_path is not None:  # 兼容1.0.1版本
+    if input_file is not None or output_path is not None:  # 兼容1.0.1版本
         mainPDF.pdf2docx(input_file=input_file, output_file=output_path)
     elif input_file is not None and output_file is not None:  # 优先单个识别
         mainPDF.pdf2docx(input_file=input_file, output_file=output_file)
