@@ -8,6 +8,8 @@ node_modules
 build/
 dist/
 *.egg-info
+.qoder/
+.trae/
 .vscode/
 __pycache__
 
