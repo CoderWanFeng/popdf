@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>popdf · PDF 自动化处理库</title>
+  <meta name="description" content="popdf 是 Python 自动化办公之 PDF 操作的第三方库，一行代码搞定 PDF 转换、分割、合并、加密、水印等操作。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='80'%3E📄%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --c-primary: #e74c3c;
+      --c-primary-dark: #c0392b;
+      --c-accent: #f39c12;
+      --c-bg: #fafafa;
+      --c-surface: #ffffff;
+      --c-text: #2c3e50;
+      --c-text-light: #7f8c8d;
+      --c-border: #ecf0f1;
+      --c-code-bg: #1e1e2e;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.04);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--c-bg);
+      color: var(--c-text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ─────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 24px;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-size: 22px; font-weight: 800; color: var(--c-primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .nav-logo span { font-size: 13px; font-weight: 500; color: var(--c-text-light); }
+    .nav-links { display: flex; gap: 28px; font-size: 14px; }
+    .nav-links a { color: var(--c-text); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--c-primary); }
+    .nav-cta {
+      background: var(--c-primary); color: #fff !important;
+      padding: 6px 16px; border-radius: 20px; font-weight: 600;
+    }
+    .nav-cta:hover { background: var(--c-primary-dark); color: #fff !important; }
+
+    /* ── Sections ────────────────── */
+    section { padding: 80px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    /* ── Hero ────────────────────── */
+    .hero {
+      padding-top: 136px; padding-bottom: 80px;
+      text-align: center; background: linear-gradient(135deg, #fff5f5 0%, #fff 50%, #fef9f0 100%);
+    }
+    .hero .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid var(--c-border); border-radius: 100px;
+      padding: 4px 14px; font-size: 13px; color: var(--c-text-light); margin-bottom: 24px;
+    }
+    .hero .badge .dot { width: 8px; height: 8px; background: #27ae60; border-radius: 50%; }
+    .hero h1 { font-size: 52px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .hero h1 .hl { background: linear-gradient(135deg, var(--c-primary), var(--c-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero .subtitle { font-size: 20px; color: var(--c-text-light); max-width: 600px; margin: 0 auto 32px; }
+    .hero .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 24px; border-radius: 8px; font-size: 15px; font-weight: 600;
+      text-decoration: none; transition: all .2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--c-primary); color: #fff; }
+    .btn-primary:hover { background: var(--c-primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .btn-outline { background: #fff; color: var(--c-text); border: 1px solid var(--c-border); }
+    .btn-outline:hover { border-color: var(--c-primary); color: var(--c-primary); }
+
+    .stats { display: flex; gap: 40px; justify-content: center; margin-top: 48px; }
+    .stat { text-align: center; }
+    .stat .num { font-size: 28px; font-weight: 800; color: var(--c-primary); }
+    .stat .label { font-size: 13px; color: var(--c-text-light); }
+
+    /* ── Features ────────────────── */
+    .features { background: #fff; }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h2 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .section-title p { color: var(--c-text-light); font-size: 16px; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .feature-card {
+      background: var(--c-bg); border-radius: var(--radius); padding: 28px;
+      border: 1px solid var(--c-border); transition: all .25s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: transparent; }
+    .feature-card .icon { font-size: 36px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 18px; margin-bottom: 6px; }
+    .feature-card p { font-size: 14px; color: var(--c-text-light); }
+    .feature-card code {
+      display: inline-block; margin-top: 12px; padding: 4px 10px;
+      background: var(--c-code-bg); color: #f8f8f2; border-radius: 6px;
+      font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", monospace;
+      font-size: 12px;
+    }
+
+    /* ── Install ─────────────────── */
+    .install { background: var(--c-bg); }
+    .code-block {
+      background: var(--c-code-bg); color: #f8f8f2; border-radius: var(--radius);
+      padding: 20px 24px; position: relative; font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", monospace;
+      font-size: 14px; line-height: 1.6; overflow-x: auto; max-width: 560px; margin: 0 auto;
+      box-shadow: var(--shadow-lg);
+    }
+    .code-block .token-comment { color: #6c7086; }
+    .code-block .token-string { color: #a6e3a1; }
+    .code-block .token-func { color: #89b4fa; }
+    .code-block .token-kw { color: #cba6f7; }
+    .copy-btn {
+      position: absolute; top: 12px; right: 14px;
+      background: rgba(255,255,255,.1); border: none; color: #fff;
+      padding: 4px 10px; border-radius: 6px; font-size: 12px; cursor: pointer;
+      transition: background .2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.2); }
+    .copy-btn.copied { background: #27ae60; }
+
+    .install-options { display: flex; gap: 16px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+    .install-card {
+      background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--c-border);
+      font-size: 13px; color: var(--c-text-light);
+    }
+    .install-card strong { color: var(--c-text); }
+
+    /* ── Quick Start ─────────────── */
+    .quickstart { background: #fff; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 16px; justify-content: center; }
+    .tab {
+      padding: 8px 20px; border-radius: 8px; border: 1px solid var(--c-border);
+      background: #fff; cursor: pointer; font-size: 14px; transition: all .2s;
+    }
+    .tab.active { background: var(--c-primary); color: #fff; border-color: var(--c-primary); }
+    .tab:hover:not(.active) { border-color: var(--c-primary); color: var(--c-primary); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .quickstart .code-block { max-width: 700px; }
+
+    /* ── CLI ─────────────────────── */
+    .cli { background: var(--c-bg); }
+    .cli-features { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 32px; }
+    .cli-feature { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: var(--c-text-light); }
+    .cli-feature .check { color: #27ae60; font-weight: 700; font-size: 16px; }
+
+    /* ── Architecture ────────────── */
+    .architecture { background: #fff; }
+    .arch-diagram {
+      max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;
+    }
+    .arch-row {
+      display: flex; gap: 12px; justify-content: center;
+    }
+    .arch-box {
+      padding: 14px 20px; border-radius: var(--radius); text-align: center;
+      font-size: 14px; font-weight: 600; flex: 1; max-width: 200px;
+    }
+    .arch-api { background: #fdecea; color: var(--c-primary); border: 1px solid #f5c6cb; }
+    .arch-core { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+    .arch-lib { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .arch-arrow { text-align: center; color: var(--c-text-light); font-size: 20px; }
+
+    /* ── Community ───────────────── */
+    .community { background: linear-gradient(135deg, #fef2f2 0%, #fff 100%); text-align: center; }
+    .community-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+    .community-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 20px; background: #fff; border-radius: var(--radius);
+      border: 1px solid var(--c-border); text-decoration: none; color: var(--c-text);
+      font-size: 14px; font-weight: 500; transition: all .2s;
+    }
+    .community-link:hover { border-color: var(--c-primary); box-shadow: var(--shadow); }
+
+    /* ── Footer ──────────────────── */
+    footer {
+      padding: 32px 24px; text-align: center; font-size: 13px;
+      color: var(--c-text-light); border-top: 1px solid var(--c-border);
+    }
+    footer a { color: var(--c-primary); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Responsive ──────────────── */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; }
+      .hero .subtitle { font-size: 16px; }
+      .nav-links { display: none; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">📄 popdf <span>v1.0.8</span></a>
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#install">安装</a>
+      <a href="#quickstart">快速开始</a>
+      <a href="#architecture">架构</a>
+      <a href="https://github.com/CoderWanFeng/popdf" target="_blank">GitHub</a>
+      <a href="#install" class="nav-cta">pip install popdf</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Hero ─────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="badge"><span class="dot"></span> 最新版本 v1.0.8 · MIT 开源协议</div>
+    <h1>用 <span class="hl">一行代码</span><br>搞定 PDF 自动化</h1>
+    <p class="subtitle">popdf 是 Python 自动化办公的 PDF 操作库，支持转换、分割、合并、加密、水印等，简单到零基础也能用。</p>
+    <div class="actions">
+      <a href="#install" class="btn btn-primary">⚡ 快速开始</a>
+      <a href="https://github.com/CoderWanFeng/popdf" target="_blank" class="btn btn-outline">⭐ GitHub</a>
+      <a href="https://www.python-office.com/course-002/10-popdf/10-popdf.html" target="_blank" class="btn btn-outline">📖 文档</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">9</div><div class="label">核心功能</div></div>
+      <div class="stat"><div class="num">1.0.8</div><div class="label">最新版本</div></div>
+      <div class="stat"><div class="num">MIT</div><div class="label">开源协议</div></div>
+      <div class="stat"><div class="num">≥3.7</div><div class="label">Python 版本</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ─────────────────── -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-title">
+      <h2>9 大核心功能</h2>
+      <p>单文件处理 or 批量处理，一个参数切换模式</p>
+    </div>
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="icon">📝</div>
+        <h3>PDF 转 Word</h3>
+        <p>将 PDF 文档转换为可编辑的 Word 文件，保留排版格式</p>
+        <code>popdf.pdf2docx(input_file='a.pdf', output_file='b.docx')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🖼️</div>
+        <h3>PDF 转图片</h3>
+        <p>将 PDF 页面导出为高清图片，支持合并为单张</p>
+        <code>popdf.pdf2imgs(input_file='a.pdf', output_path='./imgs/')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">📄</div>
+        <h3>TXT 转 PDF</h3>
+        <p>将纯文本文件一键转为 PDF 文档</p>
+        <code>popdf.txt2pdf(input_file='readme.txt', output_file='readme.pdf')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">✂️</div>
+        <h3>PDF 分割</h3>
+        <p>按页码范围精准截取，提取你需要的部分</p>
+        <code>popdf.split4pdf(input_file='a.pdf', from_page=1, to_page=5)</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🔒</div>
+        <h3>PDF 加密</h3>
+        <p>为 PDF 添加密码保护，支持单文件和批量加密</p>
+        <code>popdf.encrypt4pdf(password='pwd', input_file='a.pdf')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🔓</div>
+        <h3>PDF 解密</h3>
+        <p>移除 PDF 密码保护，恢复自由访问</p>
+        <code>popdf.decrypt4pdf(input_file='a.pdf', password='pwd')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">💧</div>
+        <h3>添加水印</h3>
+        <p>自定义文本水印，灵活控制位置、字号、颜色</p>
+        <code>popdf.add_text_watermark(input_file='a.pdf', point=(100,100), text='机密')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🧩</div>
+        <h3>PDF 合并</h3>
+        <p>将多个 PDF 文件合并为一个完整的文档</p>
+        <code>popdf.merge2pdf(input_file_list=['a.pdf','b.pdf'], output_file='c.pdf')</code>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon">🗑️</div>
+        <h3>删除页面</h3>
+        <p>按页码删除不需要的页面，精简你的文档</p>
+        <code>popdf.del4pdf(page_nums=[2,4], input_file='a.pdf')</code>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Install ──────────────────── -->
+<section class="install" id="install">
+  <div class="container">
+    <div class="section-title">
+      <h2>📦 安装</h2>
+      <p>一行命令，即刻开始</p>
+    </div>
+    <div class="code-block" id="install-code">
+      <span class="token-comment"># pip 安装（推荐使用阿里云镜像）</span><br>
+      <span class="token-kw">pip</span> install -i https://mirrors.aliyun.com/pypi/simple/ popdf -U
+      <button class="copy-btn" onclick="copyCode('install-code')">复制</button>
+    </div>
+    <div class="install-options">
+      <div class="install-card">
+        <strong>源码安装</strong><br>
+        git clone + pip install -e .
+      </div>
+      <div class="install-card">
+        <strong>Python</strong> ≥ 3.7<br>
+        支持 Windows / macOS / Linux
+      </div>
+      <div class="install-card">
+        <strong>CLI 命令行</strong><br>
+        安装后直接使用 <code>popdf</code> 命令
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Quick Start ──────────────── -->
+<section class="quickstart" id="quickstart">
+  <div class="container">
+    <div class="section-title">
+      <h2>⚡ 快速开始</h2>
+      <p>3 行代码体验 PDF 转换</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('basic')">基础示例</button>
+      <button class="tab" onclick="switchTab('batch')">批量处理</button>
+      <button class="tab" onclick="switchTab('cli')">命令行</button>
+    </div>
+
+    <div class="tab-content active" id="tab-basic">
+      <div class="code-block">
+<span class="token-kw">import</span> popdf<br><br>
+<span class="token-comment"># PDF 转 Word</span><br>
+popdf.<span class="token-func">pdf2docx</span>(input_file=<span class="token-string">'report.pdf'</span>, output_file=<span class="token-string">'report.docx'</span>)<br><br>
+<span class="token-comment"># PDF 加密</span><br>
+popdf.<span class="token-func">encrypt4pdf</span>(password=<span class="token-string">'123456'</span>, input_file=<span class="token-string">'secret.pdf'</span>)<br><br>
+<span class="token-comment"># PDF 加水印</span><br>
+popdf.<span class="token-func">add_text_watermark</span>(input_file=<span class="token-string">'doc.pdf'</span>, point=(<span class="token-string">200</span>, <span class="token-string">300</span>), text=<span class="token-string">'机密文件'</span>)
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-batch">
+      <div class="code-block">
+<span class="token-kw">import</span> popdf<br><br>
+<span class="token-comment"># 批量 PDF 转 Word — 整个目录一键处理</span><br>
+popdf.<span class="token-func">pdf2docx</span>(input_path=<span class="token-string">'/home/pdf/'</span>, output_path=<span class="token-string">'/home/docx/'</span>)<br><br>
+<span class="token-comment"># 批量加密 — 所有 PDF 统一加密码</span><br>
+popdf.<span class="token-func">encrypt4pdf</span>(password=<span class="token-string">'pwd'</span>, input_path=<span class="token-string">'./input/'</span>, output_path=<span class="token-string">'./output/'</span>)
+      </div>
+    </div>
+
+    <div class="tab-content" id="tab-cli">
+      <div class="code-block">
+<span class="token-comment"># 命令行方式调用 — 无需写 Python 代码</span><br>
+$ <span class="token-kw">popdf</span> pdf2docx --input_file report.pdf --output_file report.docx<br><br>
+<span class="token-comment"># 所有功能都可通过 CLI 调用</span><br>
+$ <span class="token-kw">popdf</span> --help
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Architecture ─────────────── -->
+<section class="architecture" id="architecture">
+  <div class="container">
+    <div class="section-title">
+      <h2>🏗️ 项目架构</h2>
+      <p>分层清晰，易扩展、易维护</p>
+    </div>
+    <div class="arch-diagram">
+      <div class="arch-row">
+        <div class="arch-box arch-api">📡 API 层<br><small>pdf.py — 对外接口 & CLI</small></div>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-row">
+        <div class="arch-box arch-core">⚙️ Core 层<br><small>PDFType / Batch_PDFType</small></div>
+      </div>
+      <div class="arch-arrow">↓</div>
+      <div class="arch-row">
+        <div class="arch-box arch-lib">🛠 Lib 层<br><small>pdf2docx / PyMuPDF / pypdf …</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Three Forms ──────────────── -->
+<section class="features" style="background:var(--c-bg);">
+  <div class="container">
+    <div class="section-title">
+      <h2>🎯 三种使用形态</h2>
+      <p>无论你是开发者还是普通用户，总有一种适合你</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">🐍</div>
+        <h3>Python 库</h3>
+        <p>pip install popdf，import 即用，3 行代码搞定 PDF 操作</p>
+        <code>pip install popdf</code>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🖥️</div>
+        <h3>桌面 GUI</h3>
+        <p>基于 PySide6 的桌面应用，可视化操作，支持打包为 .exe</p>
+        <code>python gui/run.py</code>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🌐</div>
+        <h3>Web 应用</h3>
+        <p>基于 React + TypeScript 的前端工具，浏览器本地处理</p>
+        <code>cd web && npm run dev</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Community ────────────────── -->
+<section class="community" id="community">
+  <div class="container">
+    <div class="section-title">
+      <h2>🤝 加入社区</h2>
+      <p>开源项目欢迎你的参与</p>
+    </div>
+    <div class="community-links">
+      <a href="https://github.com/CoderWanFeng/popdf" target="_blank" class="community-link">⭐ GitHub</a>
+      <a href="https://atomgit.com/python4office/popdf" target="_blank" class="community-link">🔵 AtomGit</a>
+      <a href="https://gitee.com/CoderWanFeng/popdf" target="_blank" class="community-link">🔴 Gitee</a>
+      <a href="https://www.python4office.cn/wechat-group/" target="_blank" class="community-link">💬 交流群</a>
+      <a href="https://www.python-office.com/course-002/10-popdf/10-popdf.html" target="_blank" class="community-link">📖 教程文档</a>
+      <a href="https://www.bilibili.com/video/BV1BS9UYGEW7" target="_blank" class="community-link">🎬 视频教程</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────── -->
+<footer>
+  <p>© 2025 <a href="https://github.com/CoderWanFeng" target="_blank">CoderWanFeng（程序员晚枫）</a>
+  &nbsp;·&nbsp; <a href="https://www.python-office.com/" target="_blank">python-office.com</a>
+  &nbsp;·&nbsp; MIT License</p>
+</footer>
+
+<script>
+function copyCode(id) {
+  const el = document.getElementById(id);
+  const text = el.innerText.replace(/复制\n?/g, '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.querySelector('.copy-btn');
+    btn.textContent = '已复制!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab[onclick="switchTab('${name}')"]`).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+</script>
+</body>
+</html>
